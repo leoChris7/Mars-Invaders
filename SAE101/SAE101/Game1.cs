@@ -2,13 +2,16 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+//salut leo
 namespace SAE101
 {
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        // pls marche
+
+        //aller
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
