@@ -22,6 +22,7 @@ namespace SAE101
         private int speed;
         private String pseudo;
         private AnimatedSprite _perso;
+        private Vector2 positionPerso;
         private SpriteBatch _spriteBatch { get; set; }
 
 
@@ -33,6 +34,7 @@ namespace SAE101
             this.Attack = 1;
             this.Speed = 100;
             this.Points = 0;
+            this.PositionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
         }
 
         public int Health
@@ -51,6 +53,7 @@ namespace SAE101
                     throw new ArgumentOutOfRangeException();
             }
         }
+       
 
         public int Attack
         {
@@ -113,6 +116,19 @@ namespace SAE101
                     this.pseudo = value.ToUpper();
                 else
                     throw new ArgumentNullException("Le pseudo est nul ou vide.");
+            }
+        }
+
+        public Vector2 PositionPerso
+        {
+            get
+            {
+                return this._positionPerso;
+            }
+
+            set
+            {
+                this._positionPerso = value;
             }
         }
 
