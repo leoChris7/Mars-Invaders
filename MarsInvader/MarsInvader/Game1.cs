@@ -55,11 +55,11 @@ namespace SAE101
                 Exit();
             {
                 KeyboardState keyboardState = Keyboard.GetState();
-                if (keyboardState.IsKeyDown(Keys.Left))
+                if (keyboardState.IsKeyDown(Keys.Space))
                 {
                     _screenManager.LoadScreen(_myScreen1, new FadeTransition(GraphicsDevice, Color.Black));
                 }
-                else if (keyboardState.IsKeyDown(Keys.Right))
+                else if (keyboardState.IsKeyDown(Keys.Escape))
                 {
                     _screenManager.LoadScreen(_myScreen2, new FadeTransition(GraphicsDevice, Color.Black));
                 }
