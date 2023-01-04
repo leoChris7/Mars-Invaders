@@ -10,6 +10,7 @@ public class MyScreen2 : GameScreen
 	{
 		private SpriteFont _police;
 		private Game1 _myGame;
+		private readonly ScreenManager _screenManager;
 
 		// pour récupérer une référence à l’objet game pour avoir accès à tout ce qui est
 		// défini dans Game1
@@ -17,6 +18,8 @@ public class MyScreen2 : GameScreen
 			public MyScreen2(Game1 game) : base(game)
 			{
 				_myGame = game;
+				_screenManager = new ScreenManager();
+				
 			}
 
 		public override void LoadContent()
@@ -24,8 +27,10 @@ public class MyScreen2 : GameScreen
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
 			_police = Content.Load<SpriteFont>("fontPauseMenu");
 
-			base.LoadContent();
+
+		base.LoadContent();
 		}
+
 		public override void Update(GameTime gameTime)
 		{ 
 		
@@ -45,18 +50,19 @@ public class MyScreen2 : GameScreen
 
 
 			MouseState _mouseState = Mouse.GetState();
-			if (Continue.Contains(_mouseState.Position))
+			if (Continue.Contains(_mouseState.Position) && 
+			_mouseState.LeftButton == ButtonState.Pressed &&
+			_myGame._gameState == "Menu")
 			{
-				if (_mouseState.LeftButton == ButtonState.Pressed)
-				{
-					// Afficher le jeu
-				}
+				_myGame._gameState = "Game";
+				_myGame.LoadScreen1();
+
 			}
 			else if (Leave.Contains(_mouseState.Position))
 			{
 				if (_mouseState.LeftButton == ButtonState.Pressed)
 				{
-					// Quitter le jeu
+					_myGame.Exit();
 				}
 			}
 				
