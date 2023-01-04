@@ -44,13 +44,11 @@ namespace SAE101
                 KeyboardState keyboardState = Keyboard.GetState();
                 if (keyboardState.IsKeyDown(Keys.Left))
                 {
-                _screenManager.LoadScreen(_myScreen1, new FadeTransition(GraphicsDevice,
-                Color.Black));
+                    _screenManager.LoadScreen(_myScreen1, new FadeTransition(GraphicsDevice, Color.Black));
                 }
                 else if (keyboardState.IsKeyDown(Keys.Right))
                 {
-                _screenManager.LoadScreen(_myScreen2, new FadeTransition(GraphicsDevice,
-                Color.Black));
+                    _screenManager.LoadScreen(_myScreen2, new FadeTransition(GraphicsDevice, Color.Black));
                 }
             }
             // TODO: Add your update logic here
