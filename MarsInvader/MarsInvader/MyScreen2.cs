@@ -18,6 +18,7 @@ public class MyScreen2 : GameScreen
 		}
 		public override void LoadContent()
 		{
+			SpriteBatch = new SpriteBatch(GraphicsDevice);
 			_police = Content.Load<SpriteFont>("fontPauseMenu");
 			base.LoadContent();
 		}
@@ -25,12 +26,13 @@ public class MyScreen2 : GameScreen
 		{ }
 		public override void Draw(GameTime gameTime)
 		{
+
+		_myGame.GraphicsDevice.Clear(Color.Blue); // on utilise la reference vers
+												  // Game1 pour chnager le graphisme
 			SpriteBatch.Begin();
 			SpriteBatch.DrawString(_police, "MENU", new Vector2((float)Game1._WINDOWSIZE/2, (float)Game1._WINDOWSIZE/2), Color.White);
 			SpriteBatch.End();
 
-			_myGame.GraphicsDevice.Clear(Color.Blue); // on utilise la reference vers
-													 // Game1 pour chnager le graphisme
 		}
 	}
 
