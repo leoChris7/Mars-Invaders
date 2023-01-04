@@ -15,8 +15,7 @@ namespace SAE101
         private ScreenManager _screenManager;
         private MyScreen1 _myScreen1;
         private MyScreen2 _myScreen2;
-        private TiledMap _tiledMap;
-        private TiledMapRenderer _tiledMapRenderer;
+        
 
         public Game1()
         {
@@ -38,14 +37,13 @@ namespace SAE101
         {
             _myScreen1 = new MyScreen1(this); // en leur donnant une référence au Game
             _myScreen2 = new MyScreen2(this);
-            _tiledMap = Content.Load<TiledMap>("map_V1");
-            _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
+            
             // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
-            _tiledMapRenderer.Update(gameTime);
+            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             {
@@ -67,7 +65,7 @@ namespace SAE101
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            _tiledMapRenderer.Draw();
+            
             base.Draw(gameTime);
         }
     }
