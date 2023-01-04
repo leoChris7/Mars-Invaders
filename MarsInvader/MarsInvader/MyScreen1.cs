@@ -77,11 +77,13 @@ public class MyScreen1 : GameScreen
 	}
 		public override void Draw(GameTime gameTime)
 		{
-		_spriteBatch.Begin();
 		_tiledMapRenderer.Draw();
-		
+		_spriteBatch.Begin();
 		_spriteBatch.Draw(_perso, _positionPerso);
 		_spriteBatch.End();
+
+
+
 		// on utilise la reference vers
 		// Game1 pour chnager le graphisme
 	}
