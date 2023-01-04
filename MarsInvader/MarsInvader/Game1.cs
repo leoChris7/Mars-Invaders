@@ -15,7 +15,8 @@ namespace SAE101
         private ScreenManager _screenManager;
         private MyScreen1 _myScreen1;
         private MyScreen2 _myScreen2;
-        
+
+        public const int _WINDOWSIZE = 800;
 
         public Game1()
         {
@@ -30,10 +31,12 @@ namespace SAE101
             _screenManager = new ScreenManager();
             Components.Add(_screenManager);
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
+
             _graphics.IsFullScreen = false;
-            _graphics.PreferredBackBufferWidth = 800;
-            _graphics.PreferredBackBufferHeight = 800;
+            _graphics.PreferredBackBufferWidth = _WINDOWSIZE;
+            _graphics.PreferredBackBufferHeight = _WINDOWSIZE;
             _graphics.ApplyChanges();
+
             base.Initialize();
         }
 

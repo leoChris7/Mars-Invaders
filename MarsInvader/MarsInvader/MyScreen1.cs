@@ -31,8 +31,8 @@ public class MyScreen1 : GameScreen
 		public override void Draw(GameTime gameTime)
 		{
 		_tiledMapRenderer.Draw();
-		//_myGame.GraphicsDevice.Clear(Color.Red); // on utilise la reference vers
-													 // Game1 pour chnager le graphisme
+		// on utilise la reference vers
+	// Game1 pour chnager le graphisme
 		}
 	}
 

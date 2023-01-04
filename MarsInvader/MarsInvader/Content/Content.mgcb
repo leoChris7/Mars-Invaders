@@ -18,6 +18,13 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin fontPauseMenu.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fontPauseMenu.spritefont
+
 #begin map_V1.tmx
 /importer:TiledMapImporter
 /processor:TiledMapProcessor
