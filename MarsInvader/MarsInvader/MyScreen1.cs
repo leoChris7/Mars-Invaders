@@ -20,10 +20,10 @@ public class MyScreen1 : GameScreen
 		public override void LoadContent()
 		{
 			base.LoadContent();
-		_tiledMap = Content.Load<TiledMap>("map_V1");
-		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
+			_tiledMap = Content.Load<TiledMap>("map_V1");
+			_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 
-	}
+		}
 		public override void Update(GameTime gameTime)
 		{
 		_tiledMapRenderer.Update(gameTime);
