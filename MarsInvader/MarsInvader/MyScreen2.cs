@@ -8,13 +8,21 @@ using SAE101;
 
 public class MyScreen2 : GameScreen
 	{
+		private Texture2D _menuBackground;
 		private SpriteFont _police;
 		private Game1 _myGame;
 		private readonly ScreenManager _screenManager;
 
+		public SpriteBatch SpriteBatch { get; set; }
+		
+	MouseState _mouseState;
+
+		Rectangle Continue;
+		Rectangle Leave;
+
 		// pour récupérer une référence à l’objet game pour avoir accès à tout ce qui est
 		// défini dans Game1
-		public SpriteBatch SpriteBatch { get; set; }
+		
 			public MyScreen2(Game1 game) : base(game)
 			{
 				_myGame = game;
@@ -26,8 +34,8 @@ public class MyScreen2 : GameScreen
 		{
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
 			_police = Content.Load<SpriteFont>("fontPauseMenu");
-
-
+			_menuBackground = Content.Load<Texture2D>("MenuBackground");
+			
 		base.LoadContent();
 		}
 
@@ -37,36 +45,34 @@ public class MyScreen2 : GameScreen
 		}
 		public override void Draw(GameTime gameTime)
 		{
-			_myGame.GraphicsDevice.Clear(Color.Black); // on utilise la reference vers
-												  // Game1 pour chnager le graphisme
+			_myGame.GraphicsDevice.Clear(Color.Black);
+
 			SpriteBatch.Begin();
-			
+
+			SpriteBatch.Draw(_menuBackground, new Vector2(0, 0), Color.White);
+
 			SpriteBatch.DrawString(_police, "MENU", new Vector2((float)Game1._WINDOWSIZE/2 - 60, 0), Color.White);
 			SpriteBatch.DrawString(_police, "Reprendre", new Vector2((float)Game1._WINDOWSIZE / 2 - 60, 50), Color.White);
 			SpriteBatch.DrawString(_police, "Quitter", new Vector2((float)Game1._WINDOWSIZE / 2 - 60, 100), Color.White);
 
-			Rectangle Continue = new Rectangle(Game1._WINDOWSIZE / 2 - 60, 50, 100, 50);
-			Rectangle Leave = new Rectangle(Game1._WINDOWSIZE / 2 - 60, 100, 100, 50);
+			Continue = new Rectangle((int)(float)Game1._WINDOWSIZE / 2 - 60, 50, 100, 50);
+			Leave = new Rectangle((int)(float)Game1._WINDOWSIZE / 2 - 60, 100, 100, 50);
+
+			_mouseState = Mouse.GetState();
+			bool mouseClickOnContinue = Continue.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
+			bool mouseClickOnLeave = Leave.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
 
 
-			MouseState _mouseState = Mouse.GetState();
-			if (Continue.Contains(_mouseState.Position) && 
-			_mouseState.LeftButton == ButtonState.Pressed &&
+			if ( mouseClickOnContinue &&
 			_myGame._gameState == "Menu")
 			{
 				_myGame._gameState = "Game";
 				_myGame.LoadScreen1();
-
 			}
-			else if (Leave.Contains(_mouseState.Position))
+			else if (mouseClickOnLeave)
 			{
-				if (_mouseState.LeftButton == ButtonState.Pressed)
-				{
-					_myGame.Exit();
-				}
+				_myGame.Exit();
 			}
-				
-
 			SpriteBatch.End();
 		}
 	}

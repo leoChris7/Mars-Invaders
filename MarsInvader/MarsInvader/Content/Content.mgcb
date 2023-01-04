@@ -60,6 +60,18 @@
 /processor:TiledMapProcessor
 /build:map_V1.tmx
 
+#begin MenuBackground.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:MenuBackground.png
+
 #begin terrain_3.png
 /importer:TextureImporter
 /processor:TextureProcessor
