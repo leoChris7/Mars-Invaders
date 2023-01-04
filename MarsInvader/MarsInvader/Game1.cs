@@ -30,6 +30,10 @@ namespace SAE101
             _screenManager = new ScreenManager();
             Components.Add(_screenManager);
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
+            _graphics.IsFullScreen = false;
+            _graphics.PreferredBackBufferWidth = 800;
+            _graphics.PreferredBackBufferHeight = 800;
+            _graphics.ApplyChanges();
             base.Initialize();
         }
 
