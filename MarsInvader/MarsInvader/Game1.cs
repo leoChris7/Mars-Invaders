@@ -59,7 +59,7 @@ namespace SAE101
                 {
                     _screenManager.LoadScreen(_myScreen1, new FadeTransition(GraphicsDevice, Color.Black));
                 }
-                else if (keyboardState.IsKeyDown(Keys.Escape))
+                else if (keyboardState.IsKeyDown(Keys.Tab))
                 {
                     _screenManager.LoadScreen(_myScreen2, new FadeTransition(GraphicsDevice, Color.Black));
                 }
