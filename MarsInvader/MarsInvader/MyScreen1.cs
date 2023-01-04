@@ -15,11 +15,13 @@ public class MyScreen1 : GameScreen
 		private Game1 _myGame;
 		private TiledMap _tiledMap;
 		private TiledMapRenderer _tiledMapRenderer;
-	public SpriteBatch _spriteBatch { get; set; }
-	private Vector2 _positionPerso;
+	private SpriteBatch _spriteBatch { get; set; }
 	private AnimatedSprite _perso;
+	Player _joueur = new Player("Jed");
+	private Vector2 _positionPerso;
 	private KeyboardState _keyboardState;
-	private int _vitesse;
+
+
 	// pour récupérer une référence à l’objet game pour avoir accès à tout ce qui est
 	// défini dans Game1
 	public MyScreen1(Game1 game) : base(game)
@@ -28,8 +30,7 @@ public class MyScreen1 : GameScreen
 		}
     public override void Initialize()
     {
-		_positionPerso = new Vector2(20, 340);
-		_vitesse = 100;
+		
 		base.Initialize();
     }
     public override void LoadContent()
@@ -37,38 +38,39 @@ public class MyScreen1 : GameScreen
 		_spriteBatch = new SpriteBatch(GraphicsDevice);
 		SpriteSheet spriteSheet = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
 		_perso = new AnimatedSprite(spriteSheet);
-		
+
 		_tiledMap = Content.Load<TiledMap>("map_V1");
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 		base.LoadContent();
 	}
 		public override void Update(GameTime gameTime)
 		{
-		
+		//_joueur.Deplacer(gameTime,out _positionPerso);
 		float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 		_tiledMapRenderer.Update(gameTime);
 		_keyboardState = Keyboard.GetState();
+		_perso.Update(deltaTime);
 
 		if (_keyboardState.IsKeyDown(Keys.Right))
 		{
-			_positionPerso.X += _vitesse * deltaTime;
+			_positionPerso.X += _joueur.Speed * deltaTime;
 			_perso.Play("walkEast");
 		}
 
 		else if (_keyboardState.IsKeyDown(Keys.Left))
 		{
-			_positionPerso.X -= _vitesse * deltaTime;
+			_positionPerso.X -= _joueur.Speed * deltaTime;
 			_perso.Play("walkWest");
 		}
 		else if (_keyboardState.IsKeyDown(Keys.Down))
 		{
-			_positionPerso.Y += _vitesse * deltaTime;
+			_positionPerso.Y += _joueur.Speed * deltaTime;
 			_perso.Play("walkSouth");
 		}
 
 		else if (_keyboardState.IsKeyDown(Keys.Up))
 		{
-			_positionPerso.Y -= _vitesse * deltaTime;
+			_positionPerso.Y -= _joueur.Speed * deltaTime;
 			_perso.Play("walkNorth");
 
 		}
@@ -84,8 +86,9 @@ public class MyScreen1 : GameScreen
 
 
 
+
 		// on utilise la reference vers
 		// Game1 pour chnager le graphisme
 	}
-	}
+}
 

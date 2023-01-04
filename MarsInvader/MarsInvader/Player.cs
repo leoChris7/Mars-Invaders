@@ -6,8 +6,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Sprites;
+using MonoGame.Extended.Content;
 using SAE101;
+using MonoGame.Extended.Serialization;
 
 namespace SAE101
 {
@@ -18,17 +21,17 @@ namespace SAE101
         private int points;
         private int speed;
         private String pseudo;
-        
+        private AnimatedSprite _perso;
+        private SpriteBatch _spriteBatch { get; set; }
 
-        private Texture2D _texturePlayer;
+
 
         public Player(string pseudo)
         {
             this.Pseudo = pseudo;
-
             this.Health = 100;
             this.Attack = 1;
-            this.Speed = 1;
+            this.Speed = 100;
             this.Points = 0;
         }
 
@@ -90,7 +93,7 @@ namespace SAE101
 
             set
             {
-                if ( this.speed != 0 && !String.IsNullOrEmpty(value.ToString()) )
+                if ( this.speed >= 0 && !String.IsNullOrEmpty(value.ToString()) )
                     this.speed = value;
                 else
                     throw new ArgumentNullException("La vitesse du joueur est soit égale à 0, soit vide ou nulle.");
@@ -119,7 +122,8 @@ namespace SAE101
         {
             if (this.Health + additionalHealth > 100)
                 this.Health = 100;
-            
+            else
+                this.Health += additionalHealth;
         }
 
         public int removeHealth(int damage)
@@ -133,5 +137,45 @@ namespace SAE101
             return 1;
             // le joueur n'a pas une vie inférieure à 0, le jeu continue. 
         }
+        public void CreationPerso()
+        {
+            
+        }
+        /*public void Deplacer(GameTime gameTime, out Vector2 _positionPerso)
+
+        {
+            _positionPerso = new Vector2(20, 340);
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            _keyboardState = Keyboard.GetState();
+            _perso.Update(deltaTime);
+
+            if (_keyboardState.IsKeyDown(Keys.Right))
+            {
+                _positionPerso.X += this.Speed * deltaTime;
+                _perso.Play("walkEast");
+            }
+
+            else if (_keyboardState.IsKeyDown(Keys.Left))
+            {
+                _positionPerso.X -= this.Speed * deltaTime;
+                _perso.Play("walkWest");
+            }
+            else if (_keyboardState.IsKeyDown(Keys.Down))
+            {
+                _positionPerso.Y += this.Speed * deltaTime;
+                _perso.Play("walkSouth");
+            }
+
+            else if (_keyboardState.IsKeyDown(Keys.Up))
+            {
+                _positionPerso.Y -= this.Speed * deltaTime;
+                _perso.Play("walkNorth");
+
+            }
+            else
+                _perso.Play("idle");
+
+        }*/
+        
     }
 }
