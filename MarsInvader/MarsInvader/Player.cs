@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.Sprites;
 using SAE101;
 
 namespace SAE101
@@ -16,6 +18,7 @@ namespace SAE101
         private int points;
         private int speed;
         private String pseudo;
+        
 
         private Texture2D _texturePlayer;
 

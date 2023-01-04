@@ -2,7 +2,7 @@
   "textureAtlas": {
     "texture": "astronaut_V1.png",
     "regionWidth": 32,
-    "regionHeight": 22
+    "regionHeight": 32
   },
   "cycles": {
     "idle": {
