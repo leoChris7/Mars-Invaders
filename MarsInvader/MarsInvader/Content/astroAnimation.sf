@@ -1,0 +1,34 @@
+{
+  "textureAtlas": {
+    "texture": "astronaut_V1.png",
+    "regionWidth": 32,
+    "regionHeight": 22
+  },
+  "cycles": {
+    "idle": {
+      "frames": [1],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "walkSouth": {
+      "frames": [0,1,2,1],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "walkWest": {
+      "frames": [3,4,5,4],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "walkEast": {
+      "frames": [6,7,8,7],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "walkNorth": {
+      "frames": [9,10,11,10],
+      "isLooping": false,
+      "frameDuration": 0.1
+    }
+  }
+}
