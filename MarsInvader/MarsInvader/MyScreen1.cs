@@ -6,7 +6,6 @@ using MonoGame.Extended.Screens;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
 using SAE101;
-
 public class MyScreen1 : GameScreen
 	{
 		private Game1 _myGame;

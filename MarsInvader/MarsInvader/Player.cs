@@ -114,22 +114,19 @@ namespace SAE101
         // Cette méthode permet d'ajouter de la vie, mais surtout de vérifier que la vie ne dépasse pas le nombre de 100
         // Si la vie dépasse 100, elle est remise à 100
         {
-            int newHealth = this.Health + additionalHealth;
-            if (newHealth > 100)
-            {
+            if (this.Health + additionalHealth > 100)
                 this.Health = 100;
-            }
             
         }
 
         public int removeHealth(int damage)
         {
-            int newHealth = this.Health - damage;
-            if (newHealth <= 0)
-            {
-                return 0; 
-                // configurer la fin du jeu car si le joueur a une vie inférieure à 0, il meurt. 
+            if (this.Health - damage <= 0)
+            { 
+                this.Health = 0;
+                return 0;
             }
+            // configurer la fin du jeu car si le joueur a une vie inférieure à 0, il meurt. 
             return 1;
             // le joueur n'a pas une vie inférieure à 0, le jeu continue. 
         }
