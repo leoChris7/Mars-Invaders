@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAE101", "SAE101\SAE101.csproj", "{579F42D9-5458-4FF9-9741-95093B8F381C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarsInvader", "MarsInvader\MarsInvader.csproj", "{6A5FF12B-2AA4-4CEF-A033-CDB3BA044E96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{579F42D9-5458-4FF9-9741-95093B8F381C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{579F42D9-5458-4FF9-9741-95093B8F381C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{579F42D9-5458-4FF9-9741-95093B8F381C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{579F42D9-5458-4FF9-9741-95093B8F381C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A5FF12B-2AA4-4CEF-A033-CDB3BA044E96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A5FF12B-2AA4-4CEF-A033-CDB3BA044E96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A5FF12B-2AA4-4CEF-A033-CDB3BA044E96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A5FF12B-2AA4-4CEF-A033-CDB3BA044E96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {4C2288F1-1EA2-4129-9313-6E25C77BC074}
+		SolutionGuid = {D8327A4D-60AB-462B-8616-DC618E8C9D6F}
 	EndGlobalSection
 EndGlobal
