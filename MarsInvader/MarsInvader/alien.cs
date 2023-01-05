@@ -135,6 +135,19 @@ namespace MarsInvader
 
             }
         }
+
+        public void directionAlien()
+        {
+            if(this.PositionAlien.X-_joueur.Position.X<0)
+                if(this.PositionAlien.Y - _joueur.Position.Y)
+
+                    if(this.PositionAlien.X - _joueur.Position.X< this.PositionAlien.Y - _joueur.Position.Y)
+            else
+                if (this.PositionAlien.Y - _joueur.Position.Y)
+
+                     if (this.PositionAlien.X - _joueur.Position.X < this.PositionAlien.Y - _joueur.Position.Y)
+
+        }
     }
 
 
