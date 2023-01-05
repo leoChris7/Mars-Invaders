@@ -22,7 +22,7 @@ namespace SAE101
         private int speed;
         private String pseudo;
         private AnimatedSprite _perso;
-        private Vector2 positionPerso;
+        //private Vector2 positionPerso;
         private SpriteBatch _spriteBatch { get; set; }
 
 
@@ -34,7 +34,7 @@ namespace SAE101
             this.Attack = 1;
             this.Speed = 100;
             this.Points = 0;
-            this.PositionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
+            //this.PositionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
         }
 
         public int Health
@@ -83,7 +83,7 @@ namespace SAE101
                 if ( value >= 0 && !String.IsNullOrEmpty(value.ToString()) ) 
                     this.points = value;
                 else
-                    throw new ArgumentOutOfRangeException("Les points du joueur sont soit inférieur à 0, soit vide. ");
+                    throw new ArgumentOutOfRangeException(/*"Les points du joueur sont soit inférieur à 0, soit vide. "*/);
             }
         }
 
@@ -96,10 +96,10 @@ namespace SAE101
 
             set
             {
-                if ( this.speed >= 0 && !String.IsNullOrEmpty(value.ToString()) )
+                if ( value >= 0 && !String.IsNullOrEmpty(value.ToString()) )
                     this.speed = value;
                 else
-                    throw new ArgumentNullException("La vitesse du joueur est soit égale à 0, soit vide ou nulle.");
+                    throw new ArgumentNullException(/*"La vitesse du joueur est soit égale à 0, soit vide ou nulle."*/);
             }
         }
 
@@ -119,7 +119,7 @@ namespace SAE101
             }
         }
 
-        public Vector2 PositionPerso
+        /*public Vector2 PositionPerso
         {
             get
             {
@@ -130,7 +130,7 @@ namespace SAE101
             {
                 this._positionPerso = value;
             }
-        }
+        }*/
 
         public void addHealth(int additionalHealth)
         // Cette méthode permet d'ajouter de la vie, mais surtout de vérifier que la vie ne dépasse pas le nombre de 100
