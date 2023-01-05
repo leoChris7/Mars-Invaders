@@ -96,7 +96,7 @@ namespace SAE101
 
             set
             {
-                if ( this.speed >= 0 && !String.IsNullOrEmpty(value.ToString()) )
+                if ( value >= 0 && !String.IsNullOrEmpty(value.ToString()) )
                     this.speed = value;
                 else
                     throw new ArgumentNullException("La vitesse a une erreur de valeur, soit inférieure ou égale à 0, soit vide.");
