@@ -25,6 +25,7 @@ namespace SAE101
         private AnimatedSprite _perso;
         private Texture2D _textureBalle;
         private Vector2 _positionPerso;
+        private TiledMapTileLayer mapLayer;
         private KeyboardState _keyboardState;
         public TiledMap _tiledMap;
         private SpriteBatch _spriteBatch { get; set; }
