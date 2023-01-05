@@ -138,6 +138,7 @@ namespace MarsInvader
 
         public void directionAlien(GameTime gameTime, Vector2 Position )
         {
+            String animation = "idle"; 
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             alienTexture.Update(deltaTime);
@@ -151,11 +152,12 @@ namespace MarsInvader
                     if (this.PositionAlien.X- Position.X  > this.PositionAlien.Y- Position.Y   )//X est plus pres
                     {
                         this.positionAlien.X -= walkSpeed;
+                        animation = "walkWest";
                     }
                     else
                     {
                         this.positionAlien.Y -= walkSpeed;
-
+                        animation = "walkNorth";
                     }
                 }
                 else//alien est au dessus a droite
@@ -163,11 +165,12 @@ namespace MarsInvader
                     if (this.PositionAlien.X - Position.X >  Position.Y - this.PositionAlien.Y)//X est plus pres
                     {
                         this.positionAlien.X -= walkSpeed;
+                        animation = "walkWest";
                     }
                     else
                     {
                         this.positionAlien.Y += walkSpeed;
-
+                        animation = "walkSouth";
                     }
                 }
             }
@@ -178,11 +181,12 @@ namespace MarsInvader
                     if  ( Position.X- this.PositionAlien.X  >  this.PositionAlien.Y - Position.Y)//X est plus pres
                     {
                         this.positionAlien.X += walkSpeed;
+                        animation = "walkEast";
                     }
                     else
                     {
                         this.positionAlien.Y -= walkSpeed;
-
+                        animation = "walkNorth";
                     }
                 }
                 else//alien est au dessus a droite
@@ -190,16 +194,17 @@ namespace MarsInvader
                     if (Position.X - this.PositionAlien.X > Position.Y - this.PositionAlien.Y )//X est plus pres
                     {
                         this.positionAlien.X += walkSpeed;
+                        animation = "walkEast";
                     }
                     else
                     {
                         this.positionAlien.Y += walkSpeed;
-
+                        animation = "walkSouth";
                     }
                 }
                 
             }
-
+            alienTexture.Play(animation);
 
 
         }
