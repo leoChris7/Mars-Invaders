@@ -18,7 +18,7 @@ public class MyScreen1 : GameScreen
 		private TiledMapRenderer _tiledMapRenderer;
 		private SpriteBatch _spriteBatch { get; set; }
 		Player _joueur;
-		Alien[] _alien;
+		Alien[] _alien=new Alien[10] ;
 		private TiledMapTileLayer mapLayer;
 		private Texture2D _cible;
 
@@ -48,7 +48,7 @@ public class MyScreen1 : GameScreen
 		_joueur  = new Player("Jed",_tiledMap, mapLayer, spriteSheetAstro);
 		for (int i=0; i<10;i++)
         {
-			_alien[i] = new Alien(1, _tiledMap, spriteSheetAlien1);
+			_alien[i] = new Alien(1, _tiledMap, spriteSheetAlien3);
 		}
 
 		base.LoadContent();
