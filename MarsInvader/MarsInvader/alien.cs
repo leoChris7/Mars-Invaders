@@ -25,7 +25,7 @@ namespace MarsInvader
             Random rnd = new Random();
             this.Health = 100;
             this.Attack = 1;
-            this.Speed = 100;
+            this.Speed = 50;
             this.TiledMap = _tiledMap;
             this.AlienTexture = new AnimatedSprite(spriteSheet);
             this.PositionAlien = new Vector2(rnd.Next(50, Game1._WINDOWSIZE -50), rnd.Next(50, Game1._WINDOWSIZE - 50));
@@ -136,16 +136,71 @@ namespace MarsInvader
             }
         }
 
-        public void directionAlien()
+        public void directionAlien(GameTime gameTime, Vector2 Position )
         {
-            if(this.PositionAlien.X-_joueur.Position.X<0)
-                if(this.PositionAlien.Y - _joueur.Position.Y)
 
-                    if(this.PositionAlien.X - _joueur.Position.X< this.PositionAlien.Y - _joueur.Position.Y)
-            else
-                if (this.PositionAlien.Y - _joueur.Position.Y)
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            alienTexture.Update(deltaTime);
 
-                     if (this.PositionAlien.X - _joueur.Position.X < this.PositionAlien.Y - _joueur.Position.Y)
+            float walkSpeed = deltaTime * this.Speed; // Vitesse de déplacement du sprite
+
+            if (this.PositionAlien.X - Position.X >= 0)//alien est a droite
+            {
+                if (this.PositionAlien.Y - Position.Y >= 0)//alien est en dessous a droite
+                {
+                    if (this.PositionAlien.X- Position.X  > this.PositionAlien.Y- Position.Y   )//X est plus pres
+                    {
+                        this.positionAlien.X -= walkSpeed;
+                    }
+                    else
+                    {
+                        this.positionAlien.Y -= walkSpeed;
+
+                    }
+                }
+                else//alien est au dessus a droite
+                {
+                    if (this.PositionAlien.X - Position.X >  Position.Y - this.PositionAlien.Y)//X est plus pres
+                    {
+                        this.positionAlien.X -= walkSpeed;
+                    }
+                    else
+                    {
+                        this.positionAlien.Y += walkSpeed;
+
+                    }
+                }
+            }
+            else//alien est a gauche
+            {
+                if (this.PositionAlien.Y - Position.Y >= 0)//alien est en dessous a droite
+                {
+                    if  ( Position.X- this.PositionAlien.X  >  this.PositionAlien.Y - Position.Y)//X est plus pres
+                    {
+                        this.positionAlien.X += walkSpeed;
+                    }
+                    else
+                    {
+                        this.positionAlien.Y -= walkSpeed;
+
+                    }
+                }
+                else//alien est au dessus a droite
+                {
+                    if (Position.X - this.PositionAlien.X > Position.Y - this.PositionAlien.Y )//X est plus pres
+                    {
+                        this.positionAlien.X += walkSpeed;
+                    }
+                    else
+                    {
+                        this.positionAlien.Y += walkSpeed;
+
+                    }
+                }
+                
+            }
+
+
 
         }
     }

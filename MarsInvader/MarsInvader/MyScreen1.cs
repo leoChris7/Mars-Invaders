@@ -55,7 +55,14 @@ public class MyScreen1 : GameScreen
 	}
 	public override void Update(GameTime gameTime)
 	{
+
 		_joueur.Deplacer(gameTime);
+		for (int i = 0; i < 10; i++)
+		{
+			_alien[i].directionAlien( gameTime, _joueur.PositionPerso);
+		}
+
+		
 		_tiledMapRenderer.Update(gameTime);
 	}
 		public override void Draw(GameTime gameTime)
