@@ -11,6 +11,7 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Content;
 using SAE101;
 using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Tiled;
 
 namespace SAE101
 {
@@ -25,10 +26,12 @@ namespace SAE101
         private Texture2D _textureBalle;
         private Vector2 _positionPerso;
         private KeyboardState _keyboardState;
+        public TiledMap _tiledMap;
         private SpriteBatch _spriteBatch { get; set; }
         private MouseState _mouseState;
 
-        public Player(string pseudo)
+
+        public Player(string pseudo,TiledMap _tiledMap, TiledMapTileLayer mapLayer, SpriteSheet spriteSheet)
         {
             this.Pseudo = pseudo;
 
@@ -36,8 +39,10 @@ namespace SAE101
             this.Attack = 1;
             this.Speed = 100;
             this.Points = 0;
-            
-            //this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
+            this._tiledMap = _tiledMap;
+            this.Perso = new AnimatedSprite(spriteSheet);
+            this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
+            this.mapLayer = mapLayer;
         }
 
         public int Health
@@ -144,6 +149,19 @@ namespace SAE101
         }
 
 
+        public AnimatedSprite Perso
+        {
+            get
+            {
+                return this._perso;
+            }
+
+            set
+            {
+                this._perso = value;
+            }
+        }
+
         public void addHealth(int additionalHealth)
         // Cette méthode permet d'ajouter de la vie, mais surtout de vérifier que la vie ne dépasse pas le nombre de 100
         // Si la vie dépasse 100, elle est remise à 100
@@ -165,45 +183,64 @@ namespace SAE101
             return 1;
             // le joueur n'a pas une vie inférieure à 0, le jeu continue. 
         }
-        public void CreationPerso()
+        /*public void CreationPerso(SpriteSheet spriteSheet)
         {
-            
-        }
-        public void Deplacer(GameTime gameTime, out Vector2 _positionPerso)
+           _perso = new AnimatedSprite(spriteSheet);
+        }*/
+        public void Deplacer(GameTime gameTime)
 
         {
-            _positionPerso = new Vector2(20, 340);
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _keyboardState = Keyboard.GetState();
-            _perso.Update(deltaTime);
+            Perso.Update(deltaTime);
 
+            float walkSpeed = deltaTime * this.Speed; // Vitesse de déplacement du sprite
+            String animation = "idle";
+            if (_keyboardState.IsKeyDown(Keys.Up))
+            {
+                ushort tx = (ushort)(this._positionPerso.X / _tiledMap.TileWidth);
+                ushort ty = (ushort)(this._positionPerso.Y / _tiledMap.TileHeight - 1);
+                animation = "walkNorth";
+                if (!IsCollision(tx, ty))
+                    this._positionPerso.Y -= walkSpeed;
+            }
+            if (_keyboardState.IsKeyDown(Keys.Down))
+            {
+                ushort tx = (ushort)(this._positionPerso.X / this._tiledMap.TileWidth);
+                ushort ty = (ushort)(this._positionPerso.Y / this._tiledMap.TileHeight + 1);
+                animation = "walkSouth";
+                if (!IsCollision(tx, ty))
+                    this._positionPerso.Y += walkSpeed;
+            }
+            if (_keyboardState.IsKeyDown(Keys.Left))
+            {
+                ushort tx = (ushort)(this._positionPerso.X / this._tiledMap.TileWidth - 1);
+                ushort ty = (ushort)(this._positionPerso.Y / this._tiledMap.TileHeight);
+                animation = "walkWest";
+                if (!IsCollision(tx, ty))
+                    this._positionPerso.X -= walkSpeed;
+            }
             if (_keyboardState.IsKeyDown(Keys.Right))
             {
-                _positionPerso.X += this.Speed * deltaTime;
-                _perso.Play("walkEast");
+                ushort tx = (ushort)(this._positionPerso.X / this._tiledMap.TileWidth + 1);
+                ushort ty = (ushort)(this._positionPerso.Y / this._tiledMap.TileHeight);
+                animation = "walkEast";
+                if (!IsCollision(tx, ty))
+                    this._positionPerso.X += walkSpeed;
             }
-
-            else if (_keyboardState.IsKeyDown(Keys.Left))
-            {
-                _positionPerso.X -= this.Speed * deltaTime;
-                _perso.Play("walkWest");
-            }
-            else if (_keyboardState.IsKeyDown(Keys.Down))
-            {
-                _positionPerso.Y += this.Speed * deltaTime;
-                _perso.Play("walkSouth");
-            }
-
-            else if (_keyboardState.IsKeyDown(Keys.Up))
-            {
-                _positionPerso.Y -= this.Speed * deltaTime;
-                _perso.Play("walkNorth");
-
-            }
-            else
-                _perso.Play("idle");
+            Perso.Play(animation);
 
         }
-        
+        private bool IsCollision(ushort x, ushort y)
+        {
+            // définition de tile qui peut être null (?)
+            TiledMapTile? tile;
+            if (this.mapLayer.TryGetTile(x, y, out tile) == false)
+                return false;
+            if (!tile.Value.IsBlank)
+                return true;
+            return false;
+        }
+
     }
 }
