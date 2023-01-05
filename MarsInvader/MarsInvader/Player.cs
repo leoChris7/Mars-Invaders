@@ -50,7 +50,7 @@ namespace SAE101
                 if ( value > 0 && value <= 100 && !String.IsNullOrEmpty(value.ToString()) )
                     this.health = value;
                 else
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("La vie a une erreur de valeur, est soit inférieure ou égale à 0 ou supérieure à 100 ou vide / null.");
             }
         }
        
@@ -67,7 +67,7 @@ namespace SAE101
                 if ( value > 0 && !String.IsNullOrEmpty(value.ToString()) )
                     this.attack = value;
                 else
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("L'attaque a une erreur de valeur, est soit inférieure ou égale à 0, soit vide.");
             }
         }
 
@@ -83,7 +83,7 @@ namespace SAE101
                 if ( value >= 0 && !String.IsNullOrEmpty(value.ToString()) ) 
                     this.points = value;
                 else
-                    throw new ArgumentOutOfRangeException(/*"Les points du joueur sont soit inférieur à 0, soit vide. "*/);
+                    throw new ArgumentOutOfRangeException("Les points ont une erreur de valeur, soit inférieur strictement à 0, soit vide.");
             }
         }
 
@@ -96,10 +96,10 @@ namespace SAE101
 
             set
             {
-                if ( value >= 0 && !String.IsNullOrEmpty(value.ToString()) )
+                if ( this.speed >= 0 && !String.IsNullOrEmpty(value.ToString()) )
                     this.speed = value;
                 else
-                    throw new ArgumentNullException(/*"La vitesse du joueur est soit égale à 0, soit vide ou nulle."*/);
+                    throw new ArgumentNullException("La vitesse a une erreur de valeur, soit inférieure ou égale à 0, soit vide.");
             }
         }
 
@@ -115,7 +115,7 @@ namespace SAE101
                 if (!String.IsNullOrEmpty(value))
                     this.pseudo = value.ToUpper();
                 else
-                    throw new ArgumentNullException("Le pseudo est nul ou vide.");
+                    throw new ArgumentNullException("Le pseudo a une erreur de valeur, est nul ou vide.");
             }
         }
 

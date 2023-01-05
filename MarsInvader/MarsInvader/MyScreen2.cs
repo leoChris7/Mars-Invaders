@@ -8,6 +8,7 @@ using SAE101;
 
 public class MyScreen2 : GameScreen
 	{
+		private Texture2D _menuBackground;
 		private SpriteFont _police;
 		private Game1 _myGame;
 		private readonly ScreenManager _screenManager;
@@ -33,6 +34,8 @@ public class MyScreen2 : GameScreen
 		{
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
 			_police = Content.Load<SpriteFont>("fontPauseMenu");
+			_menuBackground = Content.Load<Texture2D>("MenuBackground");
+			
 		base.LoadContent();
 		}
 
@@ -42,10 +45,12 @@ public class MyScreen2 : GameScreen
 		}
 		public override void Draw(GameTime gameTime)
 		{
-			_myGame.GraphicsDevice.Clear(Color.Black); // on utilise la reference vers
-												  // Game1 pour chnager le graphisme
+			_myGame.GraphicsDevice.Clear(Color.Black);
+
 			SpriteBatch.Begin();
-			
+
+			SpriteBatch.Draw(_menuBackground, new Vector2(0, 0), Color.White);
+
 			SpriteBatch.DrawString(_police, "MENU", new Vector2((float)Game1._WINDOWSIZE/2 - 60, 0), Color.White);
 			SpriteBatch.DrawString(_police, "Reprendre", new Vector2((float)Game1._WINDOWSIZE / 2 - 60, 50), Color.White);
 			SpriteBatch.DrawString(_police, "Quitter", new Vector2((float)Game1._WINDOWSIZE / 2 - 60, 100), Color.White);
@@ -68,8 +73,6 @@ public class MyScreen2 : GameScreen
 			{
 				_myGame.Exit();
 			}
-				
-
 			SpriteBatch.End();
 		}
 	}
