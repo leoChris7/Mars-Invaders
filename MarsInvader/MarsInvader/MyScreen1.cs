@@ -18,6 +18,7 @@ public class MyScreen1 : GameScreen
 		private TiledMapRenderer _tiledMapRenderer;
 		private SpriteBatch _spriteBatch { get; set; }
 		Player _joueur;
+	Rectangle barreVie;
 		Alien[] _alien=new Alien[10] ;
 		private TiledMapTileLayer mapLayer;
 		private Texture2D _cible;
@@ -40,7 +41,7 @@ public class MyScreen1 : GameScreen
 		SpriteSheet spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
-
+		
 		_cible = Content.Load<Texture2D>("cible");
 		_tiledMap = Content.Load<TiledMap>("map_V1");
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
@@ -50,12 +51,11 @@ public class MyScreen1 : GameScreen
         {
 			_alien[i] = new Alien(1, _tiledMap, spriteSheetAlien4);
 		}
-
 		base.LoadContent();
 	}
 	public override void Update(GameTime gameTime)
 	{
-
+		// barreVie = new Rectangle(Game1._WINDOWSIZE +50, 100, _joueur.Health, 10);
 		_joueur.Deplacer(gameTime);
 		for (int i = 0; i < 10; i++)
 		{
@@ -69,11 +69,13 @@ public class MyScreen1 : GameScreen
 		{
 		_tiledMapRenderer.Draw();
 		_spriteBatch.Begin();
+		//_spriteBatch.Draw(Fill, barreVie,Color.Green );
 		_spriteBatch.Draw(_joueur.Perso, _joueur.PositionPerso);
 		for (int i = 0; i < 10; i++)
 		{
 			_spriteBatch.Draw(_alien[i].AlienTexture, _alien[i].PositionAlien);
 		}
+		
 		_spriteBatch.End();
 
 
