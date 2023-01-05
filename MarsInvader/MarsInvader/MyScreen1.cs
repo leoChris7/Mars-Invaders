@@ -21,6 +21,7 @@ public class MyScreen1 : GameScreen
 		private Vector2 _positionPerso;
 		private KeyboardState _keyboardState;
 		private TiledMapTileLayer mapLayer;
+		private Texture2D _cible;
 
 	// pour récupérer une référence à l’objet game pour avoir accès à tout ce qui est
 	// défini dans Game1
@@ -39,6 +40,7 @@ public class MyScreen1 : GameScreen
 		SpriteSheet spriteSheet = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
 		_perso = new AnimatedSprite(spriteSheet);
 
+		_cible = Content.Load<Texture2D>("cible");
 		_tiledMap = Content.Load<TiledMap>("map_V1");
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 

@@ -22,17 +22,21 @@ namespace SAE101
         private int speed;
         private String pseudo;
         private AnimatedSprite _perso;
+        private Texture2D _textureBalle;
         private Vector2 _positionPerso;
         private KeyboardState _keyboardState;
         private SpriteBatch _spriteBatch { get; set; }
+        private MouseState _mouseState;
 
         public Player(string pseudo)
         {
             this.Pseudo = pseudo;
+
             this.Health = 100;
             this.Attack = 1;
             this.Speed = 100;
             this.Points = 0;
+            
             //this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
         }
 
@@ -130,6 +134,15 @@ namespace SAE101
                 this._positionPerso = value;
             }
         }
+
+
+
+        public void ShootingBullets(int bulletSpeed)
+        {
+           _mouseState = Mouse.GetState();
+           Point _mousePosition = _mouseState.Position;
+        }
+
 
         public void addHealth(int additionalHealth)
         // Cette méthode permet d'ajouter de la vie, mais surtout de vérifier que la vie ne dépasse pas le nombre de 100
