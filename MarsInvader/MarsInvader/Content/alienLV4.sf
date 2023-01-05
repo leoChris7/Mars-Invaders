@@ -1,6 +1,6 @@
 {
   "textureAtlas": {
-    "texture": "alienLV4.png",
+    "texture": "alien.png",
     "regionWidth": 48,
     "regionHeight": 48
   },
