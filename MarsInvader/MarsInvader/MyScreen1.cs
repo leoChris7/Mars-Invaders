@@ -48,7 +48,7 @@ public class MyScreen1 : GameScreen
 		_joueur  = new Player("Jed",_tiledMap, mapLayer, spriteSheetAstro);
 		for (int i=0; i<10;i++)
         {
-			_alien[i] = new Alien(1, _tiledMap, spriteSheetAlien3);
+			_alien[i] = new Alien(1, _tiledMap, spriteSheetAlien4);
 		}
 
 		base.LoadContent();

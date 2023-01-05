@@ -25,6 +25,7 @@ namespace SAE101
         KeyboardState keyboardState;
 
         public const int _WINDOWSIZE = 800;
+        public const int _WINDOWWIDTH = 1000;
 
         public Game1()
         {
@@ -42,7 +43,7 @@ namespace SAE101
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
             _graphics.IsFullScreen = false;
-            _graphics.PreferredBackBufferWidth = _WINDOWSIZE;
+            _graphics.PreferredBackBufferWidth = _WINDOWWIDTH;
             _graphics.PreferredBackBufferHeight = _WINDOWSIZE;
             _graphics.ApplyChanges();
 
@@ -93,7 +94,7 @@ namespace SAE101
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.OrangeRed);
             
             base.Draw(gameTime);
         }
