@@ -33,7 +33,7 @@ namespace SAE101
             this.Attack = 1;
             this.Speed = 100;
             this.Points = 0;
-            this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
+            //this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
         }
 
         public int Health

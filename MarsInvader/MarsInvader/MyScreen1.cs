@@ -15,12 +15,12 @@ public class MyScreen1 : GameScreen
 		private Game1 _myGame;
 		private TiledMap _tiledMap;
 		private TiledMapRenderer _tiledMapRenderer;
-	private SpriteBatch _spriteBatch { get; set; }
-	private AnimatedSprite _perso;
-	Player _joueur = new Player("Jed");
-	private Vector2 _positionPerso;
-	private KeyboardState _keyboardState;
-	private TiledMapTileLayer mapLayer;
+		private SpriteBatch _spriteBatch { get; set; }
+		private AnimatedSprite _perso;
+		Player _joueur = new Player("Jed");
+		private Vector2 _positionPerso;
+		private KeyboardState _keyboardState;
+		private TiledMapTileLayer mapLayer;
 
 	// pour récupérer une référence à l’objet game pour avoir accès à tout ce qui est
 	// défini dans Game1
