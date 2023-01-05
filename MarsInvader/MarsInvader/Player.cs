@@ -22,10 +22,9 @@ namespace SAE101
         private int speed;
         private String pseudo;
         private AnimatedSprite _perso;
-        //private Vector2 positionPerso;
+        private Vector2 _positionPerso;
+        private KeyboardState _keyboardState;
         private SpriteBatch _spriteBatch { get; set; }
-
-
 
         public Player(string pseudo)
         {
@@ -34,7 +33,7 @@ namespace SAE101
             this.Attack = 1;
             this.Speed = 100;
             this.Points = 0;
-            //this.PositionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
+            this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
         }
 
         public int Health
@@ -119,7 +118,7 @@ namespace SAE101
             }
         }
 
-        /*public Vector2 PositionPerso
+        public Vector2 PositionPerso
         {
             get
             {
@@ -130,7 +129,7 @@ namespace SAE101
             {
                 this._positionPerso = value;
             }
-        }*/
+        }
 
         public void addHealth(int additionalHealth)
         // Cette méthode permet d'ajouter de la vie, mais surtout de vérifier que la vie ne dépasse pas le nombre de 100
@@ -157,7 +156,7 @@ namespace SAE101
         {
             
         }
-        /*public void Deplacer(GameTime gameTime, out Vector2 _positionPerso)
+        public void Deplacer(GameTime gameTime, out Vector2 _positionPerso)
 
         {
             _positionPerso = new Vector2(20, 340);
@@ -191,7 +190,7 @@ namespace SAE101
             else
                 _perso.Play("idle");
 
-        }*/
+        }
         
     }
 }
