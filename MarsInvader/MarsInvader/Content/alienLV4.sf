@@ -1,0 +1,34 @@
+{
+  "textureAtlas": {
+    "texture": "alienLV4.png",
+    "regionWidth": 48,
+    "regionHeight": 48
+  },
+  "cycles": {
+    "idle": {
+      "frames": [58],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "walkSouth": {
+      "frames": [54,55,54,55],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "walkWest": {
+      "frames": [66,67,66,67],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "walkEast": {
+      "frames": [78,79,78,79],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "walkNorth": {
+      "frames": [90,91,90,91],
+      "isLooping": false,
+      "frameDuration": 0.1
+    }
+  }
+}
