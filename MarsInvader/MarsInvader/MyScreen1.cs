@@ -9,7 +9,6 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
 using MonoGame.Extended.Serialization;
-using MarsInvader;
 using SAE101;
 using System.Collections.Generic;
 
@@ -108,6 +107,10 @@ public class MyScreen1 : GameScreen
 
 
 		_cible = Content.Load<Texture2D>("cible");
+=========
+		
+		_bullet = Content.Load<Texture2D>("bullet");
+>>>>>>>>> Temporary merge branch 2
 		_tiledMap = Content.Load<TiledMap>("map_V1");
 		mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 		_target = Content.Load<Texture2D>("cible");
@@ -181,8 +184,7 @@ public class MyScreen1 : GameScreen
 		}
 		for (int i = 0; i < 5; i++)
 		{
-			_spriteBatch.Draw(_coeur[i].Vie, _coeur[i].PositionCoeur);
-
+			_spriteBatch.Draw(_coeur[i].VieTexture, _coeur[i].PositionCoeur);
 		}
 
 		// On dessine la cible

@@ -18,12 +18,12 @@ namespace SAE101
     internal class Coeur
     {
         private int numCoeur;
-        private AnimatedSprite vie;
+        private AnimatedSprite vieTexture;
         private Vector2 positionCoeur;
         public Coeur(int numCoeur, SpriteSheet spriteSheetVie, int coeur)
         {
             this.NumCoeur = numCoeur;
-            this.Vie = new AnimatedSprite(spriteSheetVie);
+            this.VieTexture = new AnimatedSprite(spriteSheetVie);
             this.PositionCoeur = new Vector2(Game1._WINDOWSIZE + 50 + (coeur * 20), 50);
         }
 
@@ -39,16 +39,16 @@ namespace SAE101
                 this.numCoeur = value;
             }
         }
-        public AnimatedSprite Vie
+        public AnimatedSprite VieTexture
         {
             get
             {
-                return this.vie;
+                return this.vieTexture;
             }
 
             set
             {
-                this.vie = value;
+                this.vieTexture = value;
             }
         }
 
@@ -67,8 +67,13 @@ namespace SAE101
 
         public void VieCalcul(int coeur, Player Joueur)
         {
-            string etatVie = "full";
-            if ((coeur * 20 + 14) < Joueur.Health)
+            string etatVie = "empty"; 
+
+            if ((coeur * 20 + 20) == Joueur.Health)
+            {
+                etatVie = "full";
+            }
+            else if ((coeur * 20 + 14) < Joueur.Health)
             {
                 etatVie = "3/4";
             }
@@ -80,11 +85,8 @@ namespace SAE101
             {
                 etatVie = "1/4";
             }
-            else if ((coeur * 20 - 1) < Joueur.Health)
-            {
-                etatVie = "empty";
-            }
-            Vie.Play(etatVie);
+           
+            VieTexture.Play(etatVie);
         }
         /*public Vector2 ViePos(int coeur)
         {
@@ -115,7 +117,7 @@ namespace SAE101
         {
             this.Pseudo = pseudo;
 
-            this.Health = 50;
+            this.Health = 1;
             this.Attack = 1;
             this.Speed = 100;
             this.Points = 0;
