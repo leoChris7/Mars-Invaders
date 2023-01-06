@@ -168,7 +168,7 @@ public class MyScreen1 : GameScreen
 
 			if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox))
 			{
-				_joueur.removeHealth(50);
+				_joueur.removeHealth(2);
 			}
 
 
@@ -193,7 +193,7 @@ public class MyScreen1 : GameScreen
 		if (Chrono > 40)
         {
 			// Joueur, Cible, Vitesse
-			Bullets.Add(new Bullet(_joueur, GameTarget, 100));
+			Bullets.Add(new Bullet(_joueur, GameTarget, 400));
 			Chrono = 0;
         }
 

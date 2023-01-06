@@ -220,7 +220,7 @@ namespace SAE101
             set
             {
                 this._positionPerso = value;
-                this.hitBox = new Rectangle((int)value.X, (int)value.Y, Player.PLAYERSIZE, Player.PLAYERSIZE); ;
+                
             }
         }
 
@@ -323,7 +323,7 @@ namespace SAE101
                     this._positionPerso.X += walkSpeed;
             }
             Perso.Play(animation);
-
+            this.hitBox = new Rectangle((int)PositionPerso.X, (int)PositionPerso.Y, Player.PLAYERSIZE, Player.PLAYERSIZE);
 
         }
 
