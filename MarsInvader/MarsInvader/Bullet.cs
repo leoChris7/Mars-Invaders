@@ -12,6 +12,7 @@ namespace MarsInvader
     public class Bullet
     {
         public const int BULLETSIZE = 25;
+        public const double PADDING = 0.9;
 
         private int _shootingSpeed;
         private Texture2D _bulletTexture;
@@ -26,7 +27,7 @@ namespace MarsInvader
             this.BulletPosition = new Vector2((int)Player.PositionPerso.X, (int)Player.PositionPerso.Y);
             this.TargetPosition = Target.PositionTarget;
             this.PlayerPosition = Player.PositionPerso;
-            this._hitBox = new Rectangle((int)Player.PositionPerso.X, (int)Player.PositionPerso.Y, BULLETSIZE, BULLETSIZE);
+            this._hitBox = new Rectangle((int)Player.PositionPerso.X, (int)Player.PositionPerso.Y, (int)(BULLETSIZE * PADDING), (int)(BULLETSIZE * PADDING));
         }
 
         public int ShootingSpeed

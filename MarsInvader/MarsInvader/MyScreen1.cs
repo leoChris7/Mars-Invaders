@@ -164,16 +164,13 @@ public class MyScreen1 : GameScreen
 		for (int i = 0; i < this.Aliens.Count; i++)
 		{
 			_aliens[i].directionAlien( gameTime, _joueur.PositionPerso);
-			if (_aliens[i].hitBox.Intersects(_joueur.hitBox))
+
+			if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox))
 			{
-				_joueur.removeHealth(5);
+				_joueur.removeHealth(50);
 			}
 
-			if (this.Aliens[i].Health <= 0)
-			{
-				this.RemoveAlien(i);
-				continue;
-			}
+
 		}
 
 		for (int i = 0; i < 5; i++)
@@ -233,12 +230,8 @@ public class MyScreen1 : GameScreen
 		_spriteBatch.End();
 	}
 
-	public void RemoveAlien(int index)
-    {
-		this.Aliens.RemoveAt(index);
-    }
 
-	public void shootingBullets()
+	public int shootingBullets()
 	/// Cette méthode gère le jet de balles prenant en compte le joueur ainsi que la cible
 	{
 		for (int i = 0; i < Bullets.Count; i++)
@@ -269,16 +262,25 @@ public class MyScreen1 : GameScreen
 				continue;
 			}
 
-			foreach(Bullet _bullet in Bullets)
-				foreach(Alien _alien in _aliens)
+			foreach (Alien _alien in _aliens)
 				{
-					if (_alien.hitBox.Intersects(_bullet._hitBox))
-                    {
-						_alien.Health -= 5;
-						this.Bullets.Remove(_bullet);
-                    }
-				}
+					Console.WriteLine(Aliens.Count);
+					if (this.Bullets[i]._hitBox.Intersects(_alien.hitBox))
+				{
+						_alien.Health -= 50;
+					
+						this.Bullets.RemoveAt(i);
+						return 0;
+						
+					}
+					if (_alien.Health <= 0)
+					{
+						this.Aliens.Remove(_alien);
+						return 0;
+					}
+			}	
 		}
+		return 1;
 	}
 	
 }

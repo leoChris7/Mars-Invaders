@@ -21,6 +21,9 @@ namespace MarsInvader
         private int niveau;
         public Rectangle hitBox;
 
+        public const int ALIENSIZE = 24;
+        public const double PADDING = 0.9;
+
         public Alien( int Niveau,TiledMap _tiledMap, SpriteSheet spriteSheet)
         {
             Random rnd = new Random();
@@ -30,10 +33,9 @@ namespace MarsInvader
             this.TiledMap = _tiledMap;
             this.AlienTexture = new AnimatedSprite(spriteSheet);
 
-            int randomPos = rnd.Next(50, Game1._WINDOWSIZE - 50);
 
-            this.PositionAlien = new Vector2(randomPos, randomPos); 
-            this.hitBox = new Rectangle(randomPos, randomPos, 24, 24);
+            this.PositionAlien = new Vector2(rnd.Next(50, Game1._WINDOWSIZE - 50), rnd.Next(50, Game1._WINDOWSIZE - 50)); 
+            this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, (int)(ALIENSIZE * PADDING), (int)(ALIENSIZE * PADDING));
         }
 
         public int Health
@@ -209,6 +211,7 @@ namespace MarsInvader
                 }
                 
             }
+            this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, 20, 20);
             alienTexture.Play(animation);
 
 

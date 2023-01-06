@@ -117,14 +117,14 @@ namespace SAE101
         {
             this.Pseudo = pseudo;
 
-            this.Health = 30;
+            this.Health = 100;
             this.Attack = 1;
             this.Speed = 100;
             this.Points = 0;
             this._tiledMap = _tiledMap;
             this.Perso = new AnimatedSprite(spriteSheet);
             this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
-            this.hitBox = new Rectangle(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2, 32, 32);
+            this.hitBox = new Rectangle(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2, Player.PLAYERSIZE, Player.PLAYERSIZE);
             this.mapLayer = mapLayer;
         }
 
@@ -220,6 +220,7 @@ namespace SAE101
             set
             {
                 this._positionPerso = value;
+                this.hitBox = new Rectangle((int)value.X, (int)value.Y, Player.PLAYERSIZE, Player.PLAYERSIZE); ;
             }
         }
 
@@ -259,12 +260,18 @@ namespace SAE101
 
         public int removeHealth(int damage)
         {
+            
             if (this.Health - damage <= 0)
             {
                 this.Health = 0;
                 return 0;
+
+                /// PROBLEME : 
+                /// QUAND UN ALIEN MEURT, LE JOUEUR N'A PLUS DE VIE
+                /// 
             }
             // configurer la fin du jeu car si le joueur a une vie inférieure à 0, il meurt. 
+            this.Health -= damage;
             return 1;
             // le joueur n'a pas une vie inférieure à 0, le jeu continue. 
         }
@@ -316,6 +323,7 @@ namespace SAE101
                     this._positionPerso.X += walkSpeed;
             }
             Perso.Play(animation);
+
 
         }
 
