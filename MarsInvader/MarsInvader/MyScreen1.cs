@@ -19,7 +19,7 @@ public class MyScreen1 : GameScreen
 		private TiledMapRenderer _tiledMapRenderer;
 		private SpriteBatch _spriteBatch { get; set; }
 		Player _joueur;
-		Alien[] _alien=new Alien[10] ;
+		private List<Alien> _aliens;
 		Coeur[] _coeur = new Coeur[5];
 	public Texture2D _coeurFull;
 	public Texture2D _coeurHigh;
@@ -47,6 +47,7 @@ public class MyScreen1 : GameScreen
 		{
 		// INITIALIZE
 		this.gameTarget = new Target(_target);
+		this.Aliens = new List<Alien>();
 
 		_myGame = game;
 		Chrono = 0;
@@ -99,6 +100,19 @@ public class MyScreen1 : GameScreen
         }
     }
 
+    internal List<Alien> Aliens
+    {
+        get
+        {
+            return this._aliens;
+        }
+
+        set
+        {
+            this._aliens = value;
+        }
+    }
+
     public override void LoadContent()
 	{
 		_spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -117,8 +131,7 @@ public class MyScreen1 : GameScreen
 		SpriteSheet spriteSheetVie = Content.Load<SpriteSheet>("vie.sf", new JsonContentLoader());
 
 
-
-
+		_cible = Content.Load<Texture2D>("cible");
 		
 		_bullet = Content.Load<Texture2D>("bullet");
 		_tiledMap = Content.Load<TiledMap>("map_V1");
@@ -129,8 +142,9 @@ public class MyScreen1 : GameScreen
 		_joueur  = new Player("Jed",_tiledMap, mapLayer, spriteSheetAstro);
 		for (int i=0; i<10;i++)
         {
-			_alien[i] = new Alien(1, _tiledMap, spriteSheetAlien4);
+			Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien4));
 		}
+
 		for (int i = 0; i < 5; i++)
 		{
 			_coeur[i] = new Coeur(5,i,  _coeurVide);
@@ -141,14 +155,27 @@ public class MyScreen1 : GameScreen
 		base.LoadContent();
 	}
 
+
+
 	public override void Update(GameTime gameTime)
 	{
 		// barreVie = new Rectangle(Game1._WINDOWSIZE +50, 100, _joueur.Health, 10);
 		_joueur.Deplacer(gameTime);
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < this.Aliens.Count; i++)
 		{
-			_alien[i].directionAlien( gameTime, _joueur.PositionPerso);
+			_aliens[i].directionAlien( gameTime, _joueur.PositionPerso);
+			if (_aliens[i].hitBox.Intersects(_joueur.hitBox))
+			{
+				_joueur.removeHealth(5);
+			}
+
+			if (this.Aliens[i].Health <= 0)
+			{
+				this.RemoveAlien(i);
+				continue;
+			}
 		}
+
 		for (int i = 0; i < 5; i++)
 		{
 			_coeur[i].VieCalcul(i,_joueur, _coeurFull, _coeurHigh, _coeurHalf, _coeurLow, _coeurVide);
@@ -187,9 +214,9 @@ public class MyScreen1 : GameScreen
 		_spriteBatch.Draw(_joueur.Perso, _joueur.PositionPerso);
 
 		// On dessine les aliens
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < this.Aliens.Count; i++)
 		{
-			_spriteBatch.Draw(_alien[i].AlienTexture, _alien[i].PositionAlien);
+			_spriteBatch.Draw(_aliens[i].AlienTexture, _aliens[i].PositionAlien);
 		}
 		for (int i = 0; i < 5; i++)
 		{
@@ -205,6 +232,11 @@ public class MyScreen1 : GameScreen
 
 		_spriteBatch.End();
 	}
+
+	public void RemoveAlien(int index)
+    {
+		this.Aliens.RemoveAt(index);
+    }
 
 	public void shootingBullets()
 	/// Cette méthode gère le jet de balles prenant en compte le joueur ainsi que la cible
@@ -236,6 +268,16 @@ public class MyScreen1 : GameScreen
 				this.Bullets.RemoveAt(i);
 				continue;
 			}
+
+			foreach(Bullet _bullet in Bullets)
+				foreach(Alien _alien in _aliens)
+				{
+					if (_alien.hitBox.Intersects(_bullet._hitBox))
+                    {
+						_alien.Health -= 5;
+						this.Bullets.Remove(_bullet);
+                    }
+				}
 		}
 	}
 	

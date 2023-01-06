@@ -5,6 +5,7 @@ using MonoGame.Extended.Screens;
 using MonoGame.Extended.Screens.Transitions;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
+using System.Threading.Tasks;
 
 namespace SAE101
 {
@@ -57,8 +58,8 @@ namespace SAE101
             _graphics.PreferredBackBufferWidth = _WINDOWWIDTH;
             _graphics.PreferredBackBufferHeight = _WINDOWSIZE;
             _graphics.ApplyChanges();
-            
 
+            
             base.Initialize();
         }
 

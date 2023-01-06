@@ -12,6 +12,7 @@ using MonoGame.Extended.Content;
 using SAE101;
 using MonoGame.Extended.Serialization;
 using MonoGame.Extended.Tiled;
+using MarsInvader;
 
 namespace SAE101
 {
@@ -103,6 +104,8 @@ namespace SAE101
         private int speed;
         private String pseudo;
         private AnimatedSprite _perso;
+        public Rectangle hitBox;
+
         private Vector2 _positionPerso;
         private TiledMapTileLayer mapLayer;
         private KeyboardState _keyboardState;
@@ -110,7 +113,7 @@ namespace SAE101
         //private SpriteBatch _spriteBatch { get; set; }
         private MouseState _mouseState;
 
-        public Player(string pseudo,TiledMap _tiledMap, TiledMapTileLayer mapLayer, SpriteSheet spriteSheet)
+        public Player(string pseudo, TiledMap _tiledMap, TiledMapTileLayer mapLayer, SpriteSheet spriteSheet)
         {
             this.Pseudo = pseudo;
 
@@ -121,6 +124,7 @@ namespace SAE101
             this._tiledMap = _tiledMap;
             this.Perso = new AnimatedSprite(spriteSheet);
             this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
+            this.hitBox = new Rectangle(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2, 32, 32);
             this.mapLayer = mapLayer;
         }
 
@@ -134,13 +138,13 @@ namespace SAE101
             set
             {
                 // si la vie est bien supérieure à 0, inférieure ou égale à 100 et n'est pas vide / null
-                if ( value > 0 && value <= 100 && !String.IsNullOrEmpty(value.ToString()) )
+                if (value <= 100 && !String.IsNullOrEmpty(value.ToString()))
                     this.health = value;
                 else
                     throw new ArgumentOutOfRangeException("La vie a une erreur de valeur, est soit inférieure ou égale à 0 ou supérieure à 100 ou vide / null.");
             }
         }
-       
+
 
         public int Attack
         {
@@ -151,7 +155,7 @@ namespace SAE101
 
             set
             {
-                if ( value > 0 && !String.IsNullOrEmpty(value.ToString()) )
+                if (value > 0 && !String.IsNullOrEmpty(value.ToString()))
                     this.attack = value;
                 else
                     throw new ArgumentOutOfRangeException("L'attaque a une erreur de valeur, est soit inférieure ou égale à 0, soit vide.");
@@ -167,7 +171,7 @@ namespace SAE101
 
             set
             {
-                if ( value >= 0 && !String.IsNullOrEmpty(value.ToString()) ) 
+                if (value >= 0 && !String.IsNullOrEmpty(value.ToString()))
                     this.points = value;
                 else
                     throw new ArgumentOutOfRangeException("Les points ont une erreur de valeur, soit inférieur strictement à 0, soit vide.");
@@ -183,7 +187,7 @@ namespace SAE101
 
             set
             {
-                if ( value >= 0 && !String.IsNullOrEmpty(value.ToString()) )
+                if (value >= 0 && !String.IsNullOrEmpty(value.ToString()))
                     this.speed = value;
                 else
                     throw new ArgumentNullException("La vitesse a une erreur de valeur, soit inférieure ou égale à 0, soit vide.");
@@ -223,8 +227,8 @@ namespace SAE101
 
         public void ShootingBullets(int bulletSpeed)
         {
-           _mouseState = Mouse.GetState();
-           Point _mousePosition = _mouseState.Position;
+            _mouseState = Mouse.GetState();
+            Point _mousePosition = _mouseState.Position;
         }
 
 
@@ -241,7 +245,7 @@ namespace SAE101
             }
         }
 
-        
+
 
         public void addHealth(int additionalHealth)
         /// Cette méthode permet d'ajouter de la vie, mais surtout de vérifier que la vie ne dépasse pas le nombre de 100
@@ -256,7 +260,7 @@ namespace SAE101
         public int removeHealth(int damage)
         {
             if (this.Health - damage <= 0)
-            { 
+            {
                 this.Health = 0;
                 return 0;
             }
@@ -269,8 +273,8 @@ namespace SAE101
            _perso = new AnimatedSprite(spriteSheet);
         }*/
         public void Deplacer(GameTime gameTime)
-            /// Cette méthode gère les déplacements et l'animation du joueur
-            /// Elle ne retourne rien mais modifie les champs de position du personnage
+        /// Cette méthode gère les déplacements et l'animation du joueur
+        /// Elle ne retourne rien mais modifie les champs de position du personnage
 
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -314,6 +318,7 @@ namespace SAE101
             Perso.Play(animation);
 
         }
+
         private bool IsCollision(ushort x, ushort y)
         {
             // définition de tile qui peut être null (?)
