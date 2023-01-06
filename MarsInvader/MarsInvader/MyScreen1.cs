@@ -117,13 +117,11 @@ public class MyScreen1 : GameScreen
 		SpriteSheet spriteSheetVie = Content.Load<SpriteSheet>("vie.sf", new JsonContentLoader());
 
 
-		_cible = Content.Load<Texture2D>("cible");
-=========
+
+
 		
 		_bullet = Content.Load<Texture2D>("bullet");
->>>>>>>>> Temporary merge branch 2
 		_tiledMap = Content.Load<TiledMap>("map_V1");
-		mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 		_target = Content.Load<Texture2D>("cible");
 
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
