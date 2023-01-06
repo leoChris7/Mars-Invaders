@@ -139,7 +139,10 @@ public class MyScreen1 : GameScreen
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 		mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 		_joueur  = new Player("Jed",_tiledMap, mapLayer, spriteSheetAstro);
-
+		for (int i = 0; i < 10; i++)
+		{
+			Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien4));
+		}
 
 		for (int i = 0; i < 5; i++)
 		{
