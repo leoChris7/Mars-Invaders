@@ -19,14 +19,14 @@ namespace SAE101
     internal class Coeur
     {
         private int numCoeur;
-        private AnimatedSprite vieTexture;
+        private Texture2D vieTexture;
         private Vector2 positionCoeur;
-
-        public Coeur(int numCoeur, SpriteSheet spriteSheetVie, int coeur)
+        public Coeur(int numCoeur , int coeur,Texture2D _coeurVide)
         {
             this.NumCoeur = numCoeur;
-            this.VieTexture = new AnimatedSprite(spriteSheetVie);
-            this.PositionCoeur = new Vector2(Game1._WINDOWSIZE + 50 + (coeur * 20), 50);
+            
+            this.PositionCoeur = new Vector2(Game1._WINDOWSIZE + 20 + (coeur * 34), 50);
+            this.VieTexture = _coeurVide;
         }
 
         public int NumCoeur
@@ -41,7 +41,7 @@ namespace SAE101
                 this.numCoeur = value;
             }
         }
-        public AnimatedSprite VieTexture
+        public Texture2D VieTexture
         {
             get
             {
@@ -67,34 +67,31 @@ namespace SAE101
             }
         }
 
-        public void VieCalcul(int coeur, Player Joueur)
+        public Texture2D VieCalcul(int coeur, Player Joueur, Texture2D _coeurFull, Texture2D _coeurHigh, Texture2D _coeurHalf, Texture2D _coeurLow, Texture2D _coeurVide)
         {
-            string etatVie = "empty"; 
 
-            if ((coeur * 20 + 20) == Joueur.Health)
+
+            if ((coeur * 20 + 19) < Joueur.Health)
             {
-                etatVie = "full";
+                vieTexture = _coeurFull;
             }
             else if ((coeur * 20 + 14) < Joueur.Health)
             {
-                etatVie = "3/4";
+                vieTexture = _coeurHigh;
             }
             else if ((coeur * 20 + 9) < Joueur.Health)
             {
-                etatVie = "1/2";
+                vieTexture = _coeurHalf;
             }
             else if ((coeur * 20 + 4) < Joueur.Health)
             {
-                etatVie = "1/4";
+                vieTexture = _coeurLow;
             }
-           
-            VieTexture.Play(etatVie);
+            else
+                vieTexture = _coeurVide;
+            return vieTexture ;
         }
-        /*public Vector2 ViePos(int coeur)
-        {
-            Vector2 viePosition = new Vector2(Game1._WINDOWSIZE + 50 + (coeur * 20), 50);
-            return viePosition;
-        }*/
+        
     }
 
     public class Player
@@ -113,21 +110,21 @@ namespace SAE101
         private TiledMapTileLayer mapLayer;
         private KeyboardState _keyboardState;
         public TiledMap _tiledMap;
-        private SpriteBatch _spriteBatch { get; set; }
+        //private SpriteBatch _spriteBatch { get; set; }
         private MouseState _mouseState;
 
         public Player(string pseudo, TiledMap _tiledMap, TiledMapTileLayer mapLayer, SpriteSheet spriteSheet)
         {
             this.Pseudo = pseudo;
 
-            this.Health = 1;
+            this.Health = 100;
             this.Attack = 1;
             this.Speed = 100;
             this.Points = 0;
             this._tiledMap = _tiledMap;
             this.Perso = new AnimatedSprite(spriteSheet);
             this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
-            this.hitBox = new Rectangle(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2, 32, 32);
+            this.hitBox = new Rectangle(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2, Player.PLAYERSIZE, Player.PLAYERSIZE);
             this.mapLayer = mapLayer;
         }
 
@@ -223,6 +220,7 @@ namespace SAE101
             set
             {
                 this._positionPerso = value;
+                this.hitBox = new Rectangle((int)value.X, (int)value.Y, Player.PLAYERSIZE, Player.PLAYERSIZE); ;
             }
         }
 
@@ -262,12 +260,18 @@ namespace SAE101
 
         public int removeHealth(int damage)
         {
+            
             if (this.Health - damage <= 0)
             {
                 this.Health = 0;
                 return 0;
+
+                /// PROBLEME : 
+                /// QUAND UN ALIEN MEURT, LE JOUEUR N'A PLUS DE VIE
+                /// 
             }
             // configurer la fin du jeu car si le joueur a une vie inférieure à 0, il meurt. 
+            this.Health -= damage;
             return 1;
             // le joueur n'a pas une vie inférieure à 0, le jeu continue. 
         }
@@ -319,6 +323,7 @@ namespace SAE101
                     this._positionPerso.X += walkSpeed;
             }
             Perso.Play(animation);
+
 
         }
 
