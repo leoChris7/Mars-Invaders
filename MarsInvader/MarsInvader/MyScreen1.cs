@@ -9,7 +9,6 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
 using MonoGame.Extended.Serialization;
-using MarsInvader;
 using SAE101;
 using System.Collections.Generic;
 
@@ -174,8 +173,7 @@ public class MyScreen1 : GameScreen
 		}
 		for (int i = 0; i < 5; i++)
 		{
-			_spriteBatch.Draw(_coeur[i].Vie, _coeur[i].PositionCoeur);
-
+			_spriteBatch.Draw(_coeur[i].VieTexture, _coeur[i].PositionCoeur);
 		}
 
 

@@ -14,7 +14,6 @@ namespace MarsInvader
         private int _shootingSpeed;
         private Texture2D _bulletTexture;
         private Vector2 _bulletPosition;
-        private Vector2 _bulletDirection;
         private Vector2 _targetPosition;
         private Vector2 _playerPosition;
 
