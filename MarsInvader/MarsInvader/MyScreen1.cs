@@ -135,7 +135,6 @@ public class MyScreen1 : GameScreen
 		
 		_bullet = Content.Load<Texture2D>("bullet");
 		_tiledMap = Content.Load<TiledMap>("map_V1");
-		mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 		_target = Content.Load<Texture2D>("cible");
 
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
