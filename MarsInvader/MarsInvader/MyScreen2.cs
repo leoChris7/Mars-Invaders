@@ -44,7 +44,7 @@ public class MyScreen2 : GameScreen
 		
 		}
 
-		public void SourisSurRect(Rectangle rect)
+		public bool SourisSurRect(Rectangle rect)
 		{
 			_mouseState = Mouse.GetState();
 			return rect.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
@@ -58,9 +58,9 @@ public class MyScreen2 : GameScreen
 
 			SpriteBatch.Draw(_menuBackground, new Vector2(0, 0), Color.White);
 
-			SpriteBatch.DrawString(_police, "MENU", new Vector2((float)Game1._WINDOWSIZE/2 - 60, 0), Color.White);
-			SpriteBatch.DrawString(_police, "Reprendre", new Vector2((float)Game1._WINDOWSIZE / 2 - 60, 50), Color.White);
-			SpriteBatch.DrawString(_police, "Quitter", new Vector2((float)Game1._WINDOWSIZE / 2 - 60, 100), Color.White);
+			SpriteBatch.DrawString(_police, "MENU", new Vector2((float)Game1._WINDOWWIDTH / 2 - 60, 0), Color.White);
+			SpriteBatch.DrawString(_police, "Reprendre", new Vector2((float)Game1._WINDOWWIDTH / 2 - 60, 50), Color.White);
+			SpriteBatch.DrawString(_police, "Quitter", new Vector2((float)Game1._WINDOWWIDTH / 2 - 60, 100), Color.White);
 
 			Continue = new Rectangle((int)(float)Game1._WINDOWSIZE / 2 - 60, 50, 100, 50);
 			Leave = new Rectangle((int)(float)Game1._WINDOWSIZE / 2 - 60, 100, 100, 50);
@@ -74,6 +74,7 @@ public class MyScreen2 : GameScreen
 			_myGame._gameState == "Menu")
 			{
 				_myGame._gameState = "Game";
+				_myGame.IsMouseVisible = false;
 				_myGame.LoadScreen1();
 			}
 			else if (mouseClickOnLeave)

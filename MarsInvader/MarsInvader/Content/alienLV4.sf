@@ -1,8 +1,8 @@
 {
   "textureAtlas": {
-    "texture": "alienLV4.png",
-    "regionWidth": 48,
-    "regionHeight": 48
+    "texture": "alien.png",
+    "regionWidth": 24,
+    "regionHeight": 24
   },
   "cycles": {
     "idle": {
