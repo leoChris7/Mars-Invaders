@@ -1,0 +1,34 @@
+{
+  "textureAtlas": {
+    "texture": "vie.png",
+    "regionWidth": 16,
+    "regionHeight": 16
+  },
+  "cycles": {
+    "full": {
+      "frames": [0],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "3/4": {
+      "frames": [1],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "1/2": {
+      "frames": [2],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "1/4": {
+      "frames": [3],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "empty": {
+      "frames": [4],
+      "isLooping": false,
+      "frameDuration": 0.1
+    }
+  }
+}

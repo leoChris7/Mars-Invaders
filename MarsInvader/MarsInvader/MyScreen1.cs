@@ -37,6 +37,7 @@ public class MyScreen1 : GameScreen
 		{
 		_spriteBatch = new SpriteBatch(GraphicsDevice);
 		SpriteSheet spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
+		SpriteSheet spriteSheetVie = Content.Load<SpriteSheet>("vie.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien1 = Content.Load<SpriteSheet>("alienLV1.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
@@ -46,7 +47,7 @@ public class MyScreen1 : GameScreen
 		_tiledMap = Content.Load<TiledMap>("map_V1");
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 		mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
-		_joueur  = new Player("Jed",_tiledMap, mapLayer, spriteSheetAstro);
+		_joueur  = new Player("Jed",_tiledMap, mapLayer, spriteSheetAstro, spriteSheetVie);
 		for (int i=0; i<10;i++)
         {
 			_alien[i] = new Alien(1, _tiledMap, spriteSheetAlien4);
@@ -61,8 +62,12 @@ public class MyScreen1 : GameScreen
 		{
 			_alien[i].directionAlien( gameTime, _joueur.PositionPerso);
 		}
+		for (int i = 0; i < 5; i++)
+		{
+			_joueur.VieCalcul(i);
 
-		
+		}
+
 		_tiledMapRenderer.Update(gameTime);
 	}
 		public override void Draw(GameTime gameTime)
@@ -75,7 +80,13 @@ public class MyScreen1 : GameScreen
 		{
 			_spriteBatch.Draw(_alien[i].AlienTexture, _alien[i].PositionAlien);
 		}
-		
+		for (int i = 0; i < 5; i++)
+		{
+			_spriteBatch.Draw(_joueur.Vie,_joueur.ViePos(i));
+
+		}
+
+
 		_spriteBatch.End();
 
 
