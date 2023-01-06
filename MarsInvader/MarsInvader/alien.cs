@@ -19,6 +19,7 @@ namespace MarsInvader
         private int speed;
         private TiledMap tiledMap;
         private int niveau;
+        public Rectangle hitBox;
 
         public Alien( int Niveau,TiledMap _tiledMap, SpriteSheet spriteSheet)
         {
@@ -28,8 +29,11 @@ namespace MarsInvader
             this.Speed = 50;
             this.TiledMap = _tiledMap;
             this.AlienTexture = new AnimatedSprite(spriteSheet);
-            this.PositionAlien = new Vector2(rnd.Next(50, Game1._WINDOWSIZE -50), rnd.Next(50, Game1._WINDOWSIZE - 50));
 
+            int randomPos = rnd.Next(50, Game1._WINDOWSIZE - 50);
+
+            this.PositionAlien = new Vector2(randomPos, randomPos); 
+            this.hitBox = new Rectangle(randomPos, randomPos, 24, 24);
         }
 
         public int Health
@@ -41,7 +45,7 @@ namespace MarsInvader
 
             set
             {
-                if (value > 0 && value <= 100 && !String.IsNullOrEmpty(value.ToString()))
+                if (value <= 100 && !String.IsNullOrEmpty(value.ToString()))
                     this.health = value;
                 else
                     throw new ArgumentOutOfRangeException("La vie a une erreur de valeur, est soit inférieure ou égale à 0 ou supérieure à 100 ou vide / null.");
@@ -71,6 +75,7 @@ namespace MarsInvader
             set
             {
                 this.positionAlien = value;
+                this.hitBox = new Rectangle((int)value.X, (int)value.Y, 24, 24);
             }
         }
 
