@@ -15,8 +15,10 @@ using MonoGame.Extended.Tiled;
 
 namespace SAE101
 {
-    internal class Player
+    public class Player
     {
+        public const int PLAYERSIZE = 32;
+
         private int health;
         private int attack;
         private int points;
@@ -141,15 +143,6 @@ namespace SAE101
             }
         }
 
-
-
-        public void ShootingBullets(int bulletSpeed)
-        {
-           _mouseState = Mouse.GetState();
-           Point _mousePosition = _mouseState.Position;
-        }
-
-
         public AnimatedSprite Perso
         {
             get
@@ -164,8 +157,8 @@ namespace SAE101
         }
 
         public void addHealth(int additionalHealth)
-        // Cette méthode permet d'ajouter de la vie, mais surtout de vérifier que la vie ne dépasse pas le nombre de 100
-        // Si la vie dépasse 100, elle est remise à 100
+        /// Cette méthode permet d'ajouter de la vie, mais surtout de vérifier que la vie ne dépasse pas le nombre de 100
+        /// Si la vie dépasse 100, elle est remise à 100
         {
             if (this.Health + additionalHealth > 100)
                 this.Health = 100;
@@ -189,6 +182,8 @@ namespace SAE101
            _perso = new AnimatedSprite(spriteSheet);
         }*/
         public void Deplacer(GameTime gameTime)
+            /// Cette méthode gère les déplacements et l'animation du joueur
+            /// Elle ne retourne rien mais modifie les champs de position du personnage
 
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;

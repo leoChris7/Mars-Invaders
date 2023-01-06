@@ -15,7 +15,7 @@ public class MyScreen2 : GameScreen
 
 		public SpriteBatch SpriteBatch { get; set; }
 		
-	MouseState _mouseState;
+		MouseState _mouseState;
 
 		Rectangle Continue;
 		Rectangle Leave;
@@ -43,6 +43,13 @@ public class MyScreen2 : GameScreen
 		{ 
 		
 		}
+
+		public void SourisSurRect(Rectangle rect)
+		{
+			_mouseState = Mouse.GetState();
+			return rect.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
+		}
+
 		public override void Draw(GameTime gameTime)
 		{
 			_myGame.GraphicsDevice.Clear(Color.Black);
