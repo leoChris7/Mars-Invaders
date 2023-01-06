@@ -118,6 +118,10 @@ public class MyScreen1 : GameScreen
 
 
 		_cible = Content.Load<Texture2D>("cible");
+=========
+		
+		_bullet = Content.Load<Texture2D>("bullet");
+>>>>>>>>> Temporary merge branch 2
 		_tiledMap = Content.Load<TiledMap>("map_V1");
 		mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 		_target = Content.Load<Texture2D>("cible");
@@ -173,11 +177,18 @@ public class MyScreen1 : GameScreen
 	}
 		public override void Draw(GameTime gameTime)
 		{
+		// On réinitialise le fond en couleur CornflowereBlue
+		_myGame.GraphicsDevice.Clear(Color.Black);
+
+		// On dessine la map
 		_tiledMapRenderer.Draw();
 
+		// On commence à dessiner les objets
 		_spriteBatch.Begin();
 
 		_spriteBatch.Draw(_joueur.Perso, _joueur.PositionPerso);
+
+		// On dessine les aliens
 		for (int i = 0; i < 10; i++)
 		{
 			_spriteBatch.Draw(_alien[i].AlienTexture, _alien[i].PositionAlien);
@@ -187,7 +198,7 @@ public class MyScreen1 : GameScreen
 			_spriteBatch.Draw(_coeur[i].VieTexture, _coeur[i].PositionCoeur, Color.White);
 		}
 
-
+		// On dessine la cible
 		_spriteBatch.Draw(_target, this.GameTarget.PositionTarget, Color.White);
 
 		// On dessine chaque balle sur l'écran
@@ -221,8 +232,8 @@ public class MyScreen1 : GameScreen
 					(float)Math.Sin(_angle) * _vitesseBalle
 					);
 			// La balle disparaît de la liste quand elle disparaît de l'écran
-			if (Bullets[i].BulletPosition.X > Game1._WINDOWSIZE || Bullets[i].BulletPosition.Y > Game1._WINDOWSIZE ||
-			Bullets[i].BulletPosition.X < 0 || Bullets[i].BulletPosition.Y < 0)
+			if (Bullets[i].BulletPosition.X + Bullet.BULLETSIZE > Game1._WINDOWSIZE || Bullets[i].BulletPosition.Y + Bullet.BULLETSIZE > Game1._WINDOWSIZE ||
+			Bullets[i].BulletPosition.X - Bullet.BULLETSIZE < 0 || Bullets[i].BulletPosition.Y - Bullet.BULLETSIZE < 0)
 			{
 				this.Bullets.RemoveAt(i);
 				continue;
