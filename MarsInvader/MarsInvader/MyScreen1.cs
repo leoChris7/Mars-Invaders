@@ -21,6 +21,12 @@ public class MyScreen1 : GameScreen
 		Player _joueur;
 		Alien[] _alien=new Alien[10] ;
 		Coeur[] _coeur = new Coeur[5];
+	public Texture2D _coeurFull;
+	public Texture2D _coeurHigh;
+	public Texture2D _coeurHalf;
+		public Texture2D _coeurLow;
+		public Texture2D _coeurVide;
+
 		private Texture2D _cible;
 		private TiledMapTileLayer mapLayer;
 		private Texture2D _target;
@@ -99,6 +105,11 @@ public class MyScreen1 : GameScreen
 		SpriteSheet spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
 		
 		_bullet = Content.Load<Texture2D>("bullet");
+		_coeurFull = Content.Load<Texture2D>("coeurFull");
+		_coeurHigh = Content.Load<Texture2D>("coeurHigh");
+		_coeurHalf = Content.Load<Texture2D>("coeurHalf");
+		_coeurLow = Content.Load<Texture2D>("coeurLow");
+		_coeurVide = Content.Load<Texture2D>("coeurVide");
 		SpriteSheet spriteSheetAlien1 = Content.Load<SpriteSheet>("alienLV1.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
@@ -120,7 +131,7 @@ public class MyScreen1 : GameScreen
 		}
 		for (int i = 0; i < 5; i++)
 		{
-			_coeur[i] = new Coeur(5, spriteSheetVie,i);
+			_coeur[i] = new Coeur(5,i,  _coeurVide);
 
 		}
 
@@ -138,7 +149,7 @@ public class MyScreen1 : GameScreen
 		}
 		for (int i = 0; i < 5; i++)
 		{
-			_coeur[i].VieCalcul(i,_joueur);
+			_coeur[i].VieCalcul(i,_joueur, _coeurFull, _coeurHigh, _coeurHalf, _coeurLow, _coeurVide);
 
 		}
 
@@ -173,7 +184,7 @@ public class MyScreen1 : GameScreen
 		}
 		for (int i = 0; i < 5; i++)
 		{
-			_spriteBatch.Draw(_coeur[i].VieTexture, _coeur[i].PositionCoeur);
+			_spriteBatch.Draw(_coeur[i].VieTexture, _coeur[i].PositionCoeur, Color.White);
 		}
 
 

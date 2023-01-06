@@ -18,13 +18,14 @@ namespace SAE101
     internal class Coeur
     {
         private int numCoeur;
-        private AnimatedSprite vieTexture;
+        private Texture2D vieTexture;
         private Vector2 positionCoeur;
-        public Coeur(int numCoeur, SpriteSheet spriteSheetVie, int coeur)
+        public Coeur(int numCoeur , int coeur,Texture2D _coeurVide)
         {
             this.NumCoeur = numCoeur;
-            this.VieTexture = new AnimatedSprite(spriteSheetVie);
-            this.PositionCoeur = new Vector2(Game1._WINDOWSIZE + 50 + (coeur * 20), 50);
+            
+            this.PositionCoeur = new Vector2(Game1._WINDOWSIZE + 20 + (coeur * 34), 50);
+            this.VieTexture = _coeurVide;
         }
 
         public int NumCoeur
@@ -39,7 +40,7 @@ namespace SAE101
                 this.numCoeur = value;
             }
         }
-        public AnimatedSprite VieTexture
+        public Texture2D VieTexture
         {
             get
             {
@@ -65,34 +66,31 @@ namespace SAE101
             }
         }
 
-        public void VieCalcul(int coeur, Player Joueur)
+        public Texture2D VieCalcul(int coeur, Player Joueur, Texture2D _coeurFull, Texture2D _coeurHigh, Texture2D _coeurHalf, Texture2D _coeurLow, Texture2D _coeurVide)
         {
-            string etatVie = "empty"; 
 
-            if ((coeur * 20 + 20) == Joueur.Health)
+
+            if ((coeur * 20 + 19) < Joueur.Health)
             {
-                etatVie = "full";
+                vieTexture = _coeurFull;
             }
             else if ((coeur * 20 + 14) < Joueur.Health)
             {
-                etatVie = "3/4";
+                vieTexture = _coeurHigh;
             }
             else if ((coeur * 20 + 9) < Joueur.Health)
             {
-                etatVie = "1/2";
+                vieTexture = _coeurHalf;
             }
             else if ((coeur * 20 + 4) < Joueur.Health)
             {
-                etatVie = "1/4";
+                vieTexture = _coeurLow;
             }
-           
-            VieTexture.Play(etatVie);
+            else
+                vieTexture = _coeurVide;
+            return vieTexture ;
         }
-        /*public Vector2 ViePos(int coeur)
-        {
-            Vector2 viePosition = new Vector2(Game1._WINDOWSIZE + 50 + (coeur * 20), 50);
-            return viePosition;
-        }*/
+        
     }
 
     public class Player
@@ -105,19 +103,18 @@ namespace SAE101
         private int speed;
         private String pseudo;
         private AnimatedSprite _perso;
-        
         private Vector2 _positionPerso;
         private TiledMapTileLayer mapLayer;
         private KeyboardState _keyboardState;
         public TiledMap _tiledMap;
-        private SpriteBatch _spriteBatch { get; set; }
+        //private SpriteBatch _spriteBatch { get; set; }
         private MouseState _mouseState;
 
         public Player(string pseudo,TiledMap _tiledMap, TiledMapTileLayer mapLayer, SpriteSheet spriteSheet)
         {
             this.Pseudo = pseudo;
 
-            this.Health = 1;
+            this.Health = 30;
             this.Attack = 1;
             this.Speed = 100;
             this.Points = 0;

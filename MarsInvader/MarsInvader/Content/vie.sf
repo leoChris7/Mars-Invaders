@@ -1,33 +1,33 @@
 {
   "textureAtlas": {
     "texture": "vieJoueur.png",
-    "regionWidth": 16,
-    "regionHeight": 16
+    "regionWidth": 32,
+    "regionHeight": 32
   },
   "cycles": {
     "full": {
-      "frames": [0],
-      "isLooping": false,
+      "frames": [0,1,2,3,4],
+      "isLooping": true,
       "frameDuration": 0.1
     },
     "3/4": {
-      "frames": [1],
-      "isLooping": false,
+      "frames": [ 0, 1, 2, 3, 4 ],
+      "isLooping": true,
       "frameDuration": 0.1
     },
     "1/2": {
-      "frames": [2],
-      "isLooping": false,
+      "frames": [ 0, 1, 2, 3, 4 ],
+      "isLooping": true,
       "frameDuration": 0.1
     },
     "1/4": {
-      "frames": [3],
-      "isLooping": false,
+      "frames": [ 0, 1, 2, 3, 4 ],
+      "isLooping": true,
       "frameDuration": 0.1
     },
     "empty": {
-      "frames": [4],
-      "isLooping": false,
+      "frames": [ 0, 1, 2, 3, 4 ],
+      "isLooping": true,
       "frameDuration": 0.1
     }
   }
