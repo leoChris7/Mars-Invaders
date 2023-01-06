@@ -18,8 +18,8 @@ public class MyScreen1 : GameScreen
 		private TiledMapRenderer _tiledMapRenderer;
 		private SpriteBatch _spriteBatch { get; set; }
 		Player _joueur;
-	Rectangle barreVie;
 		Alien[] _alien=new Alien[10] ;
+		Coeur[] _coeur = new Coeur[5];
 		private TiledMapTileLayer mapLayer;
 		private Texture2D _cible;
 
@@ -37,21 +37,28 @@ public class MyScreen1 : GameScreen
 		{
 		_spriteBatch = new SpriteBatch(GraphicsDevice);
 		SpriteSheet spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
-		SpriteSheet spriteSheetVie = Content.Load<SpriteSheet>("vie.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien1 = Content.Load<SpriteSheet>("alienLV1.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
-		
+		SpriteSheet spriteSheetVie = Content.Load<SpriteSheet>("vie.sf", new JsonContentLoader());
+
+
 		_cible = Content.Load<Texture2D>("cible");
 		_tiledMap = Content.Load<TiledMap>("map_V1");
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 		mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
-		_joueur  = new Player("Jed",_tiledMap, mapLayer, spriteSheetAstro, spriteSheetVie);
+		_joueur  = new Player("Jed",_tiledMap, mapLayer, spriteSheetAstro);
 		for (int i=0; i<10;i++)
         {
 			_alien[i] = new Alien(1, _tiledMap, spriteSheetAlien4);
 		}
+		for (int i = 0; i < 5; i++)
+		{
+			_coeur[i] = new Coeur(5, spriteSheetVie,i);
+
+		}
+
 		base.LoadContent();
 	}
 	public override void Update(GameTime gameTime)
@@ -64,7 +71,7 @@ public class MyScreen1 : GameScreen
 		}
 		for (int i = 0; i < 5; i++)
 		{
-			_joueur.VieCalcul(i);
+			_coeur[i].VieCalcul(i,_joueur);
 
 		}
 
@@ -82,7 +89,7 @@ public class MyScreen1 : GameScreen
 		}
 		for (int i = 0; i < 5; i++)
 		{
-			_spriteBatch.Draw(_joueur.Vie,_joueur.ViePos(i));
+			_spriteBatch.Draw(_coeur[i].Vie, _coeur[i].PositionCoeur);
 
 		}
 

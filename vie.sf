@@ -1,6 +1,6 @@
 {
   "textureAtlas": {
-    "texture": "vieJoueur.png",
+    "texture": "vie.png",
     "regionWidth": 16,
     "regionHeight": 16
   },

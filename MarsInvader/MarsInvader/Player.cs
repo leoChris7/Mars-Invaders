@@ -15,6 +15,83 @@ using MonoGame.Extended.Tiled;
 
 namespace SAE101
 {
+    internal class Coeur
+    {
+        private int numCoeur;
+        private AnimatedSprite vie;
+        private Vector2 positionCoeur;
+        public Coeur(int numCoeur, SpriteSheet spriteSheetVie, int coeur)
+        {
+            this.NumCoeur = numCoeur;
+            this.Vie = new AnimatedSprite(spriteSheetVie);
+            this.PositionCoeur = new Vector2(Game1._WINDOWSIZE + 50 + (coeur * 20), 50);
+        }
+
+        public int NumCoeur
+        {
+            get
+            {
+                return this.numCoeur;
+            }
+
+            set
+            {
+                this.numCoeur = value;
+            }
+        }
+        public AnimatedSprite Vie
+        {
+            get
+            {
+                return this.vie;
+            }
+
+            set
+            {
+                this.vie = value;
+            }
+        }
+
+        public Vector2 PositionCoeur
+        {
+            get
+            {
+                return this.positionCoeur;
+            }
+
+            set
+            {
+                this.positionCoeur = value;
+            }
+        }
+
+        public void VieCalcul(int coeur, Player Joueur)
+        {
+            string etatVie = "full";
+            if ((coeur * 20 + 14) < Joueur.Health)
+            {
+                etatVie = "3/4";
+            }
+            else if ((coeur * 20 + 9) < Joueur.Health)
+            {
+                etatVie = "1/2";
+            }
+            else if ((coeur * 20 + 4) < Joueur.Health)
+            {
+                etatVie = "1/4";
+            }
+            else if ((coeur * 20 - 1) < Joueur.Health)
+            {
+                etatVie = "empty";
+            }
+            Vie.Play(etatVie);
+        }
+        /*public Vector2 ViePos(int coeur)
+        {
+            Vector2 viePosition = new Vector2(Game1._WINDOWSIZE + 50 + (coeur * 20), 50);
+            return viePosition;
+        }*/
+    }
     internal class Player
     {
         private int health;
@@ -23,7 +100,7 @@ namespace SAE101
         private int speed;
         private String pseudo;
         private AnimatedSprite _perso;
-        private AnimatedSprite vie;
+        
         private Texture2D _textureBalle;
         private Vector2 _positionPerso;
         private TiledMapTileLayer mapLayer;
@@ -32,12 +109,11 @@ namespace SAE101
         private SpriteBatch _spriteBatch { get; set; }
         private MouseState _mouseState;
 
-
-        public Player(string pseudo,TiledMap _tiledMap, TiledMapTileLayer mapLayer, SpriteSheet spriteSheet, SpriteSheet spriteSheetVie)
+        public Player(string pseudo,TiledMap _tiledMap, TiledMapTileLayer mapLayer, SpriteSheet spriteSheet)
         {
             this.Pseudo = pseudo;
 
-            this.Health = 100;
+            this.Health = 50;
             this.Attack = 1;
             this.Speed = 100;
             this.Points = 0;
@@ -45,7 +121,6 @@ namespace SAE101
             this.Perso = new AnimatedSprite(spriteSheet);
             this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
             this.mapLayer = mapLayer;
-            this.Vie = new AnimatedSprite(spriteSheetVie);
         }
 
         public int Health
@@ -165,18 +240,7 @@ namespace SAE101
             }
         }
 
-        public AnimatedSprite Vie
-        {
-            get
-            {
-                return this.vie;
-            }
-
-            set
-            {
-                this.vie = value;
-            }
-        }
+        
 
         public void addHealth(int additionalHealth)
         // Cette méthode permet d'ajouter de la vie, mais surtout de vérifier que la vie ne dépasse pas le nombre de 100
@@ -258,31 +322,6 @@ namespace SAE101
             return false;
         }
 
-        public void VieCalcul(int coeur)
-        {
-            string etatVie = "full";
-            if((coeur*20+15)>95)
-            {
-                etatVie = "3/4";
-            }
-            else if ((coeur * 20 + 15) > 90)
-            {
-                etatVie = "1/2";
-            }
-            else if ((coeur * 20 + 15) > 85)
-            {
-                etatVie = "1/4";
-            }
-            else if ((coeur * 20 + 15) > 80)
-            {
-                etatVie = "empty";
-            }
-            Vie.Play(etatVie);
-        }
-        public Vector2 ViePos(int coeur)
-        {
-            Vector2 viePosition = new Vector2(Game1._WINDOWSIZE + 50 + (coeur * 20), 50);
-            return viePosition;
-        }
+        
     }
 }
