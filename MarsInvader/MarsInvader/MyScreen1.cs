@@ -1,4 +1,5 @@
 ﻿using System;
+using MarsInvader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,15 +19,16 @@ public class MyScreen1 : GameScreen
 		public TiledMap _tiledMap;
 		private TiledMapRenderer _tiledMapRenderer;
 		private SpriteBatch _spriteBatch { get; set; }
-
-		
+		Player _joueur;
+		Alien[] _alien=new Alien[10] ;
+		Coeur[] _coeur = new Coeur[5];
+		private Texture2D _cible;
 		private TiledMapTileLayer mapLayer;
 		private Texture2D _target;
 		private Target gameTarget;
 		private Texture2D _bullet;
 		private List<Bullet> Bullets = new List<Bullet> { };
 
-		Player _joueur;
 		private int _chrono;
 		private float _deltaTime;
 		private int _coefficient;
@@ -42,7 +44,6 @@ public class MyScreen1 : GameScreen
 		this.gameTarget = new Target(_target);
 
 		_myGame = game;
-		_myGame.IsMouseVisible = false;
 		Chrono = 0;
 		
 	}
@@ -99,17 +100,50 @@ public class MyScreen1 : GameScreen
 		SpriteSheet spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
 		
 		_bullet = Content.Load<Texture2D>("bullet");
+		SpriteSheet spriteSheetAlien1 = Content.Load<SpriteSheet>("alienLV1.sf", new JsonContentLoader());
+		SpriteSheet spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
+		SpriteSheet spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
+		SpriteSheet spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
+		SpriteSheet spriteSheetVie = Content.Load<SpriteSheet>("vie.sf", new JsonContentLoader());
+
+
+		_cible = Content.Load<Texture2D>("cible");
 		_tiledMap = Content.Load<TiledMap>("map_V1");
 		mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 		_target = Content.Load<Texture2D>("cible");
 
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
+		mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
+		_joueur  = new Player("Jed",_tiledMap, mapLayer, spriteSheetAstro);
+		for (int i=0; i<10;i++)
+        {
+			_alien[i] = new Alien(1, _tiledMap, spriteSheetAlien4);
+		}
+		for (int i = 0; i < 5; i++)
+		{
+			_coeur[i] = new Coeur(5, spriteSheetVie,i);
+
+		}
+
 		_joueur = new Player("Jed", _tiledMap, mapLayer, spriteSheetAstro);
 		base.LoadContent();
 	}
 
 	public override void Update(GameTime gameTime)
 	{
+		// barreVie = new Rectangle(Game1._WINDOWSIZE +50, 100, _joueur.Health, 10);
+		_joueur.Deplacer(gameTime);
+		for (int i = 0; i < 10; i++)
+		{
+			_alien[i].directionAlien( gameTime, _joueur.PositionPerso);
+		}
+		for (int i = 0; i < 5; i++)
+		{
+			_coeur[i].VieCalcul(i,_joueur);
+
+		}
+
+		_tiledMapRenderer.Update(gameTime);
 		_deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
 		this._joueur.Deplacer(gameTime);
@@ -134,6 +168,17 @@ public class MyScreen1 : GameScreen
 		_spriteBatch.Begin();
 
 		_spriteBatch.Draw(_joueur.Perso, _joueur.PositionPerso);
+		for (int i = 0; i < 10; i++)
+		{
+			_spriteBatch.Draw(_alien[i].AlienTexture, _alien[i].PositionAlien);
+		}
+		for (int i = 0; i < 5; i++)
+		{
+			_spriteBatch.Draw(_coeur[i].Vie, _coeur[i].PositionCoeur);
+
+		}
+
+
 		_spriteBatch.Draw(_target, this.GameTarget.PositionTarget, Color.White);
 
 		// On dessine chaque balle sur l'écran
@@ -175,7 +220,6 @@ public class MyScreen1 : GameScreen
 			}
 		}
 	}
-
-
+	
 }
 
