@@ -26,8 +26,12 @@ public class ScreenGame : GameScreen
 		public Texture2D _coeurHalf;
 		public Texture2D _coeurLow;
 		public Texture2D _coeurVide;
+		public SpriteSheet spriteSheetAlien1;
+		public SpriteSheet spriteSheetAlien2;
+		public SpriteSheet spriteSheetAlien3;
+		public SpriteSheet spriteSheetAlien4;
 
-		private Texture2D _cible;
+	private Texture2D _cible;
 		private TiledMapTileLayer mapLayer;
 		private Texture2D _target;
 		private Target gameTarget;
@@ -138,7 +142,7 @@ public class ScreenGame : GameScreen
 		_joueur  = new Player("Jed",_tiledMap, mapLayer, spriteSheetAstro);
 		for (int i = 0; i < 10; i++)
 		{
-			Aliens.Add(new Alien(1, _tiledMap , spriteSheetAlien1, spriteSheetAlien2, spriteSheetAlien3, spriteSheetAlien4));
+			Aliens.Add(new Alien(1, _tiledMap , spriteSheetAlien1));
 		}
 
 		for (int i = 0; i < 5; i++)
@@ -161,6 +165,22 @@ public class ScreenGame : GameScreen
 		for (int i = 0; i < this.Aliens.Count; i++)
 		{
 			// On update 
+			for (int j = 0; j < _aliens[i].nbAliensSpawn(1, _aliens); j++)
+			{
+				Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1/*, spriteSheetAlien2, spriteSheetAlien3, spriteSheetAlien4*/));
+			}
+			for (int j = 0; j < _aliens[i].nbAliensSpawn(2, _aliens); j++)
+			{
+				Aliens.Add(new Alien(2, _tiledMap, spriteSheetAlien2));
+			}
+			for (int j = 0; j < _aliens[i].nbAliensSpawn(3, _aliens); j++)
+			{
+				Aliens.Add(new Alien(3, _tiledMap, spriteSheetAlien3));
+			}
+			for (int j = 0; j < _aliens[i].nbAliensSpawn(4, _aliens); j++)
+			{
+				Aliens.Add(new Alien(4, _tiledMap, spriteSheetAlien4));
+			}
 
 			this.Aliens[i].updateAlien(gameTime, _joueur.PositionPerso);
 
