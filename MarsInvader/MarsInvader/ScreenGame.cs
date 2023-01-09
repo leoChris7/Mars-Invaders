@@ -12,7 +12,7 @@ using MonoGame.Extended.Serialization;
 using SAE101;
 using System.Collections.Generic;
 
-public class MyScreen1 : GameScreen
+public class ScreenGame : GameScreen
 	{
 		private Game1 _myGame;
 		public TiledMap _tiledMap;
@@ -21,9 +21,9 @@ public class MyScreen1 : GameScreen
 		Player _joueur;
 		private List<Alien> _aliens;
 		Coeur[] _coeur = new Coeur[5];
-	public Texture2D _coeurFull;
-	public Texture2D _coeurHigh;
-	public Texture2D _coeurHalf;
+		public Texture2D _coeurFull;
+		public Texture2D _coeurHigh;
+		public Texture2D _coeurHalf;
 		public Texture2D _coeurLow;
 		public Texture2D _coeurVide;
 
@@ -42,16 +42,18 @@ public class MyScreen1 : GameScreen
 		private double _distanceY;
 		private double _angle;
 		private float _vitesseBalle;
+		private int _cooldown;
 
-	public MyScreen1(Game1 game) : base(game)
+	public ScreenGame(Game1 game) : base(game)
 		{
 		// INITIALIZE
 		this.gameTarget = new Target(_target);
 		this.Aliens = new List<Alien>();
+		this._cooldown = 0;
 		_myGame = game;
 		Chrono = 0;
-		
 	}
+
 	public Target GameTarget
 	{
 		get
@@ -162,14 +164,16 @@ public class MyScreen1 : GameScreen
 		_joueur.Deplacer(gameTime);
 		for (int i = 0; i < this.Aliens.Count; i++)
 		{
+			// on déplace les aliens
 			_aliens[i].directionAlien( gameTime, _joueur.PositionPerso);
 
-			if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox))
+			// si les aliens touchent le joueur, enlever de la vie au joueur
+			if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox) && this.Aliens[i].AttackCooldown >= 10)
 			{
-				_joueur.removeHealth(2);
+				_joueur.removeHealth(this.Aliens[i].Attack);
+				// Période d'invincibilité
+				this.Aliens[i].TouchedPlayer = true;
 			}
-
-
 		}
 
 		for (int i = 0; i < 5; i++)

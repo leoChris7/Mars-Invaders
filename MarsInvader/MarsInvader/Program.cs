@@ -1,3 +1,3 @@
 ﻿
-using var game = new SAE101.Game1();
+using var game = new MarsInvader.Game1();
 game.Run();

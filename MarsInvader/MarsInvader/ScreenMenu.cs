@@ -1,12 +1,12 @@
 ﻿using System;
+using MarsInvader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Screens;
 using MonoGame.Extended.Screens.Transitions;
-using SAE101;
 
-public class MyScreen2 : GameScreen
+public class screenMenu : GameScreen
 	{
 		private Texture2D _menuBackground;
 		private SpriteFont _police;
@@ -14,7 +14,8 @@ public class MyScreen2 : GameScreen
 		private readonly ScreenManager _screenManager;
 
 		public SpriteBatch SpriteBatch { get; set; }
-		
+		private ScreenGame _gameData;	
+
 		MouseState _mouseState;
 
 		Rectangle Continue;
@@ -23,7 +24,7 @@ public class MyScreen2 : GameScreen
 		// pour récupérer une référence à l’objet game pour avoir accès à tout ce qui est
 		// défini dans Game1
 		
-			public MyScreen2(Game1 game) : base(game)
+			public screenMenu(Game1 game) : base(game)
 			{
 				_myGame = game;
 				_screenManager = new ScreenManager();
@@ -75,7 +76,8 @@ public class MyScreen2 : GameScreen
 			{
 				_myGame._gameState = "Game";
 				_myGame.IsMouseVisible = false;
-				_myGame.LoadScreen1();
+				
+				_myGame.LoadGameScreen();
 			}
 			else if (mouseClickOnLeave)
 			{

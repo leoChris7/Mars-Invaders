@@ -20,19 +20,26 @@ namespace MarsInvader
         private TiledMap tiledMap;
         private int niveau;
         public Rectangle hitBox;
+        private float _attackCooldown;
+
+        
+
+        private bool _touchedPlayer;
 
         public const int ALIENSIZE = 24;
         public const double PADDING = 0.9;
+        public const float MAXATTACKCOOLDOWN = 5;
 
         public Alien( int Niveau,TiledMap _tiledMap, SpriteSheet spriteSheet)
         {
             Random rnd = new Random();
             this.Health = 100;
-            this.Attack = 1;
-            this.Speed = 50;
+            this.Attack = 25;
+            this.Speed = 150;
             this.TiledMap = _tiledMap;
             this.AlienTexture = new AnimatedSprite(spriteSheet);
-
+            this.AttackCooldown = Alien.MAXATTACKCOOLDOWN;
+            
 
             this.PositionAlien = new Vector2(rnd.Next(50, Game1._WINDOWSIZE - 50), rnd.Next(50, Game1._WINDOWSIZE - 50)); 
             this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, (int)(ALIENSIZE * PADDING), (int)(ALIENSIZE * PADDING));
@@ -143,6 +150,32 @@ namespace MarsInvader
             }
         }
 
+        public float AttackCooldown
+        {
+            get
+            {
+                return this._attackCooldown;
+            }
+
+            set
+            {
+                this._attackCooldown = value;
+            }
+        }
+
+        public bool TouchedPlayer
+        {
+            get
+            {
+                return this._touchedPlayer;
+            }
+
+            set
+            {
+                this._touchedPlayer = value;
+            }
+        }
+
         public void directionAlien(GameTime gameTime, Vector2 Position )
         {
             String animation = "idle"; 
@@ -212,6 +245,15 @@ namespace MarsInvader
                 
             }
             this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, 20, 20);
+            if (this._attackCooldown <= 0)
+            {
+                this.AttackCooldown = MAXATTACKCOOLDOWN;
+                this.TouchedPlayer = false;
+            }
+            else if (this.TouchedPlayer == true)
+            {
+                this.AttackCooldown -= 1;
+            }
             alienTexture.Play(animation);
 
 
