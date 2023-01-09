@@ -74,7 +74,7 @@ public class screenMenu : GameScreen
 		public void gameReset()
 		{
 			_myGame._screenGame.Aliens = new List<Alien>();
-			_myGame._screenGame._joueur = new Player("New", _myGame._screenGame._tiledMap, _myGame._screenGame.MapLayer, _myGame._screenGame.spriteSheetAstro);
+			_myGame._screenGame._joueur = new Player("New", _myGame._screenGame._tiledMap, _myGame._screenGame.MapLayer, _myGame);
 			_myGame._screenGame.Chrono = 0;
 		}
 		

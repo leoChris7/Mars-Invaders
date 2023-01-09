@@ -21,27 +21,33 @@ namespace MarsInvader
         private int niveau;
         public Rectangle hitBox;
         private float _attackCooldown;
-
-        
-
+        private int nbAliensSpawnN1;
+        private int nbAliensSpawnN2;
+        private int nbAliensSpawnN3;
+        private int nbAliensSpawnN4;
         private bool _touchedPlayer;
 
         public const int ALIENSIZE = 24;
+        public const int MAXALIENHEALTH = 100;
         public const double PADDING = 0.9;
         public const float MAXATTACKCOOLDOWN = 60;
 
-        public Alien( int NiveauA,TiledMap _tiledMap, SpriteSheet spriteSheetN1, SpriteSheet spriteSheetN2, SpriteSheet spriteSheetN3, SpriteSheet spriteSheetN4)
+        public Alien( int NiveauA,TiledMap _tiledMap/*, SpriteSheet spriteSheetN1, SpriteSheet spriteSheetN2, SpriteSheet spriteSheetN3*/, SpriteSheet spriteSheetN4)
         {
             Random rnd = new Random();
+            nbAliensSpawnN1=10;
+            nbAliensSpawnN2=0;
+            nbAliensSpawnN3=0;
+            nbAliensSpawnN4=0;
+            this.Health = Alien.MAXALIENHEALTH;
             this.Niveau = NiveauA;
-            this.Health = 100;
             this.Attack = 25;
             this.Speed = 150;
             this.TiledMap = _tiledMap;
-            if(this.Niveau==1) this.AlienTexture = new AnimatedSprite(spriteSheetN1);
-            else if (this.Niveau == 2) this.AlienTexture = new AnimatedSprite(spriteSheetN2);
+            /*if(this.Niveau==1)*/ this.AlienTexture = new AnimatedSprite(spriteSheetN4);
+            /*else if (this.Niveau == 2) this.AlienTexture = new AnimatedSprite(spriteSheetN2);
             else if (this.Niveau == 3) this.AlienTexture = new AnimatedSprite(spriteSheetN3);
-            else  this.AlienTexture = new AnimatedSprite(spriteSheetN4);
+            else if (this.Niveau == 4) this.AlienTexture = new AnimatedSprite(spriteSheetN4);*/
 
 
             this.AttackCooldown = Alien.MAXATTACKCOOLDOWN;
@@ -60,7 +66,7 @@ namespace MarsInvader
 
             set
             {
-                if (value <= 100 && !String.IsNullOrEmpty(value.ToString()))
+                if (value <= Alien.MAXALIENHEALTH && !String.IsNullOrEmpty(value.ToString()))
                     this.health = value;
                 else
                     throw new ArgumentOutOfRangeException("La vie a une erreur de valeur, est soit inférieure ou égale à 0 ou supérieure à 100 ou vide / null.");
@@ -165,7 +171,10 @@ namespace MarsInvader
 
             set
             {
-                this._attackCooldown = value;
+                if (!String.IsNullOrEmpty(value.ToString()) && value >= 0)
+                    this._attackCooldown = value;
+                else
+                    throw new Exception("La période d'invincibilité du joueur a un problème, est soit vide, soit inférieure strictement à 0");
             }
         }
 
@@ -180,6 +189,21 @@ namespace MarsInvader
             {
                 this._touchedPlayer = value;
             }
+        }
+        public int nbAliensSpawn(int niveau, List<Alien> Aliens)
+        {
+            int aliens = 0;
+            if (niveau == 1) aliens = nbAliensSpawnN1;
+            else if (niveau == 2) aliens = nbAliensSpawnN2;
+            else if (niveau == 3) aliens = nbAliensSpawnN3;
+            else  aliens = nbAliensSpawnN4;
+
+            int diff = 0;
+            if (Aliens.Count < aliens)
+            {
+                diff = aliens - Aliens.Count;
+            }
+            return diff;
         }
 
         public void directionOppAlien(GameTime gameTime, Vector2 Position )
@@ -241,8 +265,6 @@ namespace MarsInvader
                 }
                 
             }
-            this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, 20, 20);
-
 
         }
         public void directionAlien(GameTime gameTime, Vector2 Position)
@@ -313,8 +335,14 @@ namespace MarsInvader
                 }
 
             }
-            this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, 20, 20);
 
+            // UPDATE ALIEN
+            alienTexture.Play(animation);
+        }
+
+        public void alienAttackCooldown()
+        /// Cette méthode permet au joueur d'être "invincible" lorsque le joueur est touché, pendant une petite période
+        {
             if (this.AttackCooldown <= 0)
             {
                 this.AttackCooldown = MAXATTACKCOOLDOWN;
@@ -324,9 +352,14 @@ namespace MarsInvader
             {
                 this.AttackCooldown -= 1;
             }
-            alienTexture.Play(animation);
+        }
 
-
+        public void updateAlien(GameTime gameTime, Vector2 positionJoueur)
+        /// Cette méthode gère strictement les aliens à chaque rafraichissement
+        {
+            this.directionAlien(gameTime, positionJoueur);
+            this.alienAttackCooldown();
+            this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, 20, 20);
         }
     }
 

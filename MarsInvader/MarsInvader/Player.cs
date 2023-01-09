@@ -114,7 +114,7 @@ namespace SAE101
         public TiledMap _tiledMap;
         private MouseState _mouseState;
 
-        public Player(string pseudo, TiledMap _tiledMap, TiledMapTileLayer mapLayer, SpriteSheet spriteSheet)
+        public Player(string pseudo, TiledMap _tiledMap, TiledMapTileLayer mapLayer, Game1 _myGame)
         {
             this.Pseudo = pseudo;
 
@@ -123,7 +123,7 @@ namespace SAE101
             this.Speed = 100;
             this.Points = 0;
             this._tiledMap = _tiledMap;
-            this.Perso = new AnimatedSprite(spriteSheet);
+            this.Perso = new AnimatedSprite(_myGame.spriteSheetAstro);
             this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
             this.hitBox = new Rectangle(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2, Player.PLAYERSIZE, Player.PLAYERSIZE);
             this.mapLayer = mapLayer;

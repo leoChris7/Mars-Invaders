@@ -26,10 +26,8 @@ public class ScreenGame : GameScreen
 		public Texture2D _coeurHalf;
 		public Texture2D _coeurLow;
 		public Texture2D _coeurVide;
-		public SpriteSheet spriteSheetAlien1;
-		public SpriteSheet spriteSheetAlien2;
-		public SpriteSheet spriteSheetAlien3;
-		public SpriteSheet spriteSheetAlien4;
+
+
 
 	private Texture2D _cible;
 		private TiledMapTileLayer mapLayer;
@@ -39,12 +37,7 @@ public class ScreenGame : GameScreen
 		private List<Bullet> Bullets = new List<Bullet> { };
 
 
-		public SpriteSheet spriteSheetAstro;
 
-		public SpriteSheet spriteSheetAlien1;
-		public SpriteSheet spriteSheetAlien2;
-		public SpriteSheet spriteSheetAlien3;
-		public SpriteSheet spriteSheetAlien4;
 
 		private int _chrono;
 		private float _deltaTime;
@@ -158,11 +151,11 @@ public class ScreenGame : GameScreen
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 		MapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 
-		_joueur  = new Player("Jed",_tiledMap, MapLayer, _myGame);
+		_joueur  = new Player("Jed",_tiledMap, MapLayer, this._myGame);
 
 		for (int i = 0; i < 10; i++)
 		{
-			Aliens.Add(new Alien(1, _tiledMap , spriteSheetAlien1));
+			Aliens.Add(new Alien(1, _tiledMap , this._myGame.spriteSheetAlien1));
 		}
 
 		for (int i = 0; i < 5; i++)
@@ -185,19 +178,19 @@ public class ScreenGame : GameScreen
 			// On update 
 			for (int j = 0; j < _aliens[i].nbAliensSpawn(1, _aliens); j++)
 			{
-				Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1/*, spriteSheetAlien2, spriteSheetAlien3, spriteSheetAlien4*/));
+				Aliens.Add(new Alien(1, _tiledMap, this._myGame.spriteSheetAlien1/*, spriteSheetAlien2, spriteSheetAlien3, spriteSheetAlien4*/));
 			}
 			for (int j = 0; j < _aliens[i].nbAliensSpawn(2, _aliens); j++)
 			{
-				Aliens.Add(new Alien(2, _tiledMap, spriteSheetAlien2));
+				Aliens.Add(new Alien(2, _tiledMap, this._myGame.spriteSheetAlien2));
 			}
 			for (int j = 0; j < _aliens[i].nbAliensSpawn(3, _aliens); j++)
 			{
-				Aliens.Add(new Alien(3, _tiledMap, spriteSheetAlien3));
+				Aliens.Add(new Alien(3, _tiledMap, this._myGame.spriteSheetAlien3));
 			}
 			for (int j = 0; j < _aliens[i].nbAliensSpawn(4, _aliens); j++)
 			{
-				Aliens.Add(new Alien(4, _tiledMap, spriteSheetAlien4));
+				Aliens.Add(new Alien(4, _tiledMap, this._myGame.spriteSheetAlien4));
 			}
 
 			this.Aliens[i].updateAlien(gameTime, _joueur.PositionPerso);
