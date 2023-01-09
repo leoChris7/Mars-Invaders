@@ -97,12 +97,14 @@ namespace SAE101
     public class Player
     {
         public const int PLAYERSIZE = 32;
+        public const int MAXPLAYERHEALTH = 100;
 
         private int health;
         private int attack;
         private int points;
         private int speed;
         private String pseudo;
+
         private AnimatedSprite _perso;
         public Rectangle hitBox;
 
@@ -110,14 +112,13 @@ namespace SAE101
         private TiledMapTileLayer mapLayer;
         private KeyboardState _keyboardState;
         public TiledMap _tiledMap;
-        //private SpriteBatch _spriteBatch { get; set; }
         private MouseState _mouseState;
 
         public Player(string pseudo, TiledMap _tiledMap, TiledMapTileLayer mapLayer, SpriteSheet spriteSheet)
         {
             this.Pseudo = pseudo;
 
-            this.Health = 100;
+            this.Health = Player.MAXPLAYERHEALTH;
             this.Attack = 1;
             this.Speed = 100;
             this.Points = 0;
@@ -252,8 +253,8 @@ namespace SAE101
         /// Cette méthode permet d'ajouter de la vie, mais surtout de vérifier que la vie ne dépasse pas le nombre de 100
         /// Si la vie dépasse 100, elle est remise à 100
         {
-            if (this.Health + additionalHealth > 100)
-                this.Health = 100;
+            if (this.Health + additionalHealth > Player.MAXPLAYERHEALTH)
+                this.Health = Player.MAXPLAYERHEALTH;
             else
                 this.Health += additionalHealth;
         }

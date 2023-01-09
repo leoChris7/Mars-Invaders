@@ -41,8 +41,6 @@ namespace MarsInvader
         public const int _BUTTONWIDTH = 128;
         public const int _BUTTONHEIGHT = 64;
 
-
-
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -84,6 +82,7 @@ namespace MarsInvader
         public void LoadGameScreen()
         // Cette méthode gère l'affichage de la scène 1 du jeu, c'est-à-dire la map avec le joueur
         {
+            this.IsMouseVisible = false;
             _gameState = "Game";
             _screenManager.LoadScreen(_screenGame, new FadeTransition(GraphicsDevice, Color.Black)); 
         }
@@ -91,45 +90,37 @@ namespace MarsInvader
         public void LoadGameMenuScreen()
         // Cette méthode gère l'affichage de la scène 2 du jeu, c'est-à-dire le menu en jeu
         {
+            this.IsMouseVisible = true;
             _gameState = "Menu";
-
             _screenManager.LoadScreen(_screenMenu, new FadeTransition(GraphicsDevice, Color.Black));
         }
 
         protected override void Update(GameTime gameTime)
         {
-            
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            keyboardState = Keyboard.GetState();
+            // Quitter le jeu
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
+                (_screenMenu.SourisSurRect(_leaveButton) && _gameState == "GeneralMenu"))
                 Exit();
             {
-                keyboardState = Keyboard.GetState();
-
                 // Afficher le jeu
                 if ((keyboardState.IsKeyDown(Keys.Space) || _screenMenu.SourisSurRect(_beginButton)) && _gameState == "GeneralMenu")
                 { 
-                    this.IsMouseVisible = false;
                     LoadGameScreen();
-                }
-
-                else if ((_screenMenu.SourisSurRect(_leaveButton)) && _gameState == "GeneralMenu")
-                {
-                    Exit();
                 }
 
                 // Afficher le menu de pause
                 else if (keyboardState.IsKeyDown(Keys.Escape) && _gameState == "Game")
                 {
-                    this.IsMouseVisible = true;
                     LoadGameMenuScreen();
                 }
-
             }
-           
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
+            // On ne dessine rien dans Game1.
             base.Draw(gameTime);
         }
     }

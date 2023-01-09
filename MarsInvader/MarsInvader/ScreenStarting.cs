@@ -18,6 +18,7 @@ public class ScreenStarting : GameScreen
 	private Texture2D _mainBackground, _begin, _options, _leaderboard, _leave;
 	private SpriteBatch _spriteBatch { get; set; }
 
+	// Dimensions de la fenêtre
 	public const int _WINDOWSIZE = 800;
 	public const int _WINDOWWIDTH = 1000;
 

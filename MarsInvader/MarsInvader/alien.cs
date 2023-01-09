@@ -22,19 +22,18 @@ namespace MarsInvader
         public Rectangle hitBox;
         private float _attackCooldown;
 
-        
-
         private bool _touchedPlayer;
 
         public const int ALIENSIZE = 24;
+        public const int MAXALIENHEALTH = 100;
         public const double PADDING = 0.9;
         public const float MAXATTACKCOOLDOWN = 60;
 
         public Alien( int NiveauA,TiledMap _tiledMap, SpriteSheet spriteSheetN1, SpriteSheet spriteSheetN2, SpriteSheet spriteSheetN3, SpriteSheet spriteSheetN4)
         {
             Random rnd = new Random();
+            this.Health = Alien.MAXALIENHEALTH;
             this.Niveau = NiveauA;
-            this.Health = 100;
             this.Attack = 25;
             this.Speed = 150;
             this.TiledMap = _tiledMap;
@@ -60,7 +59,7 @@ namespace MarsInvader
 
             set
             {
-                if (value <= 100 && !String.IsNullOrEmpty(value.ToString()))
+                if (value <= Alien.MAXALIENHEALTH && !String.IsNullOrEmpty(value.ToString()))
                     this.health = value;
                 else
                     throw new ArgumentOutOfRangeException("La vie a une erreur de valeur, est soit inférieure ou égale à 0 ou supérieure à 100 ou vide / null.");
@@ -241,8 +240,6 @@ namespace MarsInvader
                 }
                 
             }
-            this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, 20, 20);
-
 
         }
         public void directionAlien(GameTime gameTime, Vector2 Position)
@@ -313,8 +310,14 @@ namespace MarsInvader
                 }
 
             }
-            this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, 20, 20);
 
+            // UPDATE ALIEN
+            alienTexture.Play(animation);
+        }
+
+        public void alienAttackCooldown()
+        /// Cette méthode permet au joueur d'être "invincible" lorsque le joueur est touché, pendant une petite période
+        {
             if (this.AttackCooldown <= 0)
             {
                 this.AttackCooldown = MAXATTACKCOOLDOWN;
@@ -324,9 +327,14 @@ namespace MarsInvader
             {
                 this.AttackCooldown -= 1;
             }
-            alienTexture.Play(animation);
+        }
 
-
+        public void updateAlien(GameTime gameTime, Vector2 positionJoueur)
+        /// Cette méthode gère strictement les aliens à chaque rafraichissement
+        {
+            this.directionAlien(gameTime, positionJoueur);
+            this.alienAttackCooldown();
+            this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, 20, 20);
         }
     }
 
