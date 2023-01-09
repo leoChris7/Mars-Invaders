@@ -141,7 +141,7 @@ public class ScreenGame : GameScreen
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 		mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 		_joueur  = new Player("Jed",_tiledMap, mapLayer, spriteSheetAstro);
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien4));
 		}
@@ -164,11 +164,21 @@ public class ScreenGame : GameScreen
 		_joueur.Deplacer(gameTime);
 		for (int i = 0; i < this.Aliens.Count; i++)
 		{
-			// on déplace les aliens
-			_aliens[i].directionAlien( gameTime, _joueur.PositionPerso);
+			_aliens[i].directionAlien(gameTime, _joueur.PositionPerso);
+
+			for (int j = i+1; j < this.Aliens.Count; j++)
+			{
+				if (this.Aliens[i].hitBox.Intersects(this.Aliens[j].hitBox))
+				{
+					_aliens[i].directionOppAlien(gameTime, _joueur.PositionPerso);
+					break;
+				}
+			}
+
+			
 
 			// si les aliens touchent le joueur, enlever de la vie au joueur
-			if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox) && this.Aliens[i].AttackCooldown >= 10)
+			if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox) && this.Aliens[i].TouchedPlayer == false)
 			{
 				_joueur.removeHealth(this.Aliens[i].Attack);
 				// Période d'invincibilité
