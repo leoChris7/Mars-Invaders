@@ -162,21 +162,25 @@ public class MyScreen1 : GameScreen
 		_joueur.Deplacer(gameTime);
 		for (int i = 0; i < this.Aliens.Count; i++)
 		{
-			_aliens[i].directionAlien( gameTime, _joueur.PositionPerso);
+			_aliens[i].directionAlien(gameTime, _joueur.PositionPerso);
+
+			for (int j = i+1; j < this.Aliens.Count; j++)
+			{
+				if (this.Aliens[i].hitBox.Intersects(this.Aliens[j].hitBox))
+				{
+					_aliens[i].directionOppAlien(gameTime, _joueur.PositionPerso);
+					break;
+				}
+			}
+
+			
 
 			if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox))
 			{
 				_joueur.removeHealth(2);
 			}
 			 
-			for (int j =0;j<this.Aliens.Count;j++)
-            {
-				if (this.Aliens[i].hitBox.Intersects(this.Aliens[j].hitBox ) && i != j)
-                {
-					_aliens[i].directionOppAlien(gameTime, _joueur.PositionPerso);
-				}
-
-			}
+			
 
 
 		}
