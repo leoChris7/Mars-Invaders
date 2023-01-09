@@ -25,9 +25,7 @@ namespace MarsInvader
         private ScreenGame _screenGame;
         private screenMenu _screenMenu;
         private ScreenStarting _screenStarting;
-        private SaveGameMenu _saveGameMenu;
-
-        private Texture2D _mainBackground, _begin, _options, _leaderboard, _leave;
+       
 
         public Rectangle _beginButton = new Rectangle(450, 200, _BUTTONWIDTH, _BUTTONHEIGHT);
         public Rectangle _leaderboardButton = new Rectangle(450, 300, _BUTTONWIDTH, _BUTTONHEIGHT);

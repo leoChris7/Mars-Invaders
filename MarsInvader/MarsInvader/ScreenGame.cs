@@ -42,14 +42,12 @@ public class ScreenGame : GameScreen
 		private double _distanceY;
 		private double _angle;
 		private float _vitesseBalle;
-		private int _cooldown;
 
 	public ScreenGame(Game1 game) : base(game)
 		{
 		// INITIALIZE
 		this.gameTarget = new Target(_target);
 		this.Aliens = new List<Alien>();
-		this._cooldown = 0;
 		_myGame = game;
 		Chrono = 0;
 	}
@@ -129,7 +127,6 @@ public class ScreenGame : GameScreen
 		SpriteSheet spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
-		SpriteSheet spriteSheetVie = Content.Load<SpriteSheet>("vie.sf", new JsonContentLoader());
 
 
 		_cible = Content.Load<Texture2D>("cible");
@@ -141,9 +138,9 @@ public class ScreenGame : GameScreen
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 		mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 		_joueur  = new Player("Jed",_tiledMap, mapLayer, spriteSheetAstro);
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 10; i++)
 		{
-			Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien4));
+			Aliens.Add(new Alien(1, _tiledMap , spriteSheetAlien1, spriteSheetAlien2, spriteSheetAlien3, spriteSheetAlien4));
 		}
 
 		for (int i = 0; i < 5; i++)
@@ -289,7 +286,7 @@ public class ScreenGame : GameScreen
 					if (_alien.Health <= 0)
 					{
 						this.Aliens.Remove(_alien);
-						return 0;
+					return 0;
 					}
 			}	
 		}
