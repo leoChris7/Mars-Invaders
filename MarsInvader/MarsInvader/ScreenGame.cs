@@ -164,8 +164,18 @@ public class ScreenGame : GameScreen
 		_joueur.Deplacer(gameTime);
 		for (int i = 0; i < this.Aliens.Count; i++)
 		{
-			// on déplace les aliens
-			_aliens[i].directionAlien( gameTime, _joueur.PositionPerso);
+			_aliens[i].directionAlien(gameTime, _joueur.PositionPerso);
+
+			for (int j = i+1; j < this.Aliens.Count; j++)
+			{
+				if (this.Aliens[i].hitBox.Intersects(this.Aliens[j].hitBox))
+				{
+					_aliens[i].directionOppAlien(gameTime, _joueur.PositionPerso);
+					break;
+				}
+			}
+
+			
 
 			// si les aliens touchent le joueur, enlever de la vie au joueur
 			if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox) && this.Aliens[i].AttackCooldown >= 10)
