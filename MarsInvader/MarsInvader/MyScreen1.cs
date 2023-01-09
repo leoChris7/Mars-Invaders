@@ -21,9 +21,9 @@ public class MyScreen1 : GameScreen
 		Player _joueur;
 		private List<Alien> _aliens;
 		Coeur[] _coeur = new Coeur[5];
-	public Texture2D _coeurFull;
-	public Texture2D _coeurHigh;
-	public Texture2D _coeurHalf;
+		public Texture2D _coeurFull;
+		public Texture2D _coeurHigh;
+		public Texture2D _coeurHalf;
 		public Texture2D _coeurLow;
 		public Texture2D _coeurVide;
 
@@ -167,6 +167,15 @@ public class MyScreen1 : GameScreen
 			if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox))
 			{
 				_joueur.removeHealth(2);
+			}
+			 
+			for (int j =0;j<this.Aliens.Count;j++)
+            {
+				if (this.Aliens[i].hitBox.Intersects(this.Aliens[j].hitBox ) && i != j)
+                {
+					_aliens[i].directionOppAlien(gameTime, _joueur.PositionPerso);
+				}
+
 			}
 
 

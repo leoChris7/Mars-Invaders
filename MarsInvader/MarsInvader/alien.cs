@@ -143,9 +143,8 @@ namespace MarsInvader
             }
         }
 
-        public void directionAlien(GameTime gameTime, Vector2 Position )
+        public void directionOppAlien(GameTime gameTime, Vector2 Position )
         {
-            String animation = "idle"; 
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             alienTexture.Update(deltaTime);
@@ -158,6 +157,70 @@ namespace MarsInvader
                 {
                     if (this.PositionAlien.X- Position.X  > this.PositionAlien.Y- Position.Y   )//X est plus pres
                     {
+                        this.positionAlien.X += walkSpeed;
+                    }
+                    else
+                    {
+                        this.positionAlien.Y += walkSpeed;
+                    }
+                }
+                else//alien est au dessus a droite
+                {
+                    if (this.PositionAlien.X - Position.X >  Position.Y - this.PositionAlien.Y)//X est plus pres
+                    {
+                        this.positionAlien.X += walkSpeed;
+                    }
+                    else
+                    {
+                        this.positionAlien.Y -= walkSpeed;
+                    }
+                }
+            }
+            else//alien est a gauche
+            {
+                if (this.PositionAlien.Y - Position.Y >= 0)//alien est en dessous a droite
+                {
+                    if  ( Position.X- this.PositionAlien.X  >  this.PositionAlien.Y - Position.Y)//X est plus pres
+                    {
+                        this.positionAlien.X -= walkSpeed;
+                    }
+                    else
+                    {
+                        this.positionAlien.Y += walkSpeed;
+                    }
+                }
+                else//alien est au dessus a droite
+                {
+                    if (Position.X - this.PositionAlien.X > Position.Y - this.PositionAlien.Y )//X est plus pres
+                    {
+                        this.positionAlien.X -= walkSpeed;
+                    }
+                    else
+                    {
+                        this.positionAlien.Y += walkSpeed;
+                    }
+                }
+                
+            }
+            this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, 20, 20);
+
+
+        }
+        public void directionAlien(GameTime gameTime, Vector2 Position)
+        {
+            String animation = "idle";
+
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            alienTexture.Update(deltaTime);
+
+            float walkSpeed = deltaTime * this.Speed; // Vitesse de déplacement du sprite
+
+            if (this.PositionAlien.X - Position.X >= 0)//alien est a droite
+            {
+                if (this.PositionAlien.Y - Position.Y >= 0)//alien est en dessous a droite
+                {
+                    if (this.PositionAlien.X - Position.X > this.PositionAlien.Y - Position.Y)//X est plus pres
+                    {
                         this.positionAlien.X -= walkSpeed;
                         animation = "walkWest";
                     }
@@ -169,7 +232,7 @@ namespace MarsInvader
                 }
                 else//alien est au dessus a droite
                 {
-                    if (this.PositionAlien.X - Position.X >  Position.Y - this.PositionAlien.Y)//X est plus pres
+                    if (this.PositionAlien.X - Position.X > Position.Y - this.PositionAlien.Y)//X est plus pres
                     {
                         this.positionAlien.X -= walkSpeed;
                         animation = "walkWest";
@@ -185,7 +248,7 @@ namespace MarsInvader
             {
                 if (this.PositionAlien.Y - Position.Y >= 0)//alien est en dessous a droite
                 {
-                    if  ( Position.X- this.PositionAlien.X  >  this.PositionAlien.Y - Position.Y)//X est plus pres
+                    if (Position.X - this.PositionAlien.X > this.PositionAlien.Y - Position.Y)//X est plus pres
                     {
                         this.positionAlien.X += walkSpeed;
                         animation = "walkEast";
@@ -198,7 +261,7 @@ namespace MarsInvader
                 }
                 else//alien est au dessus a droite
                 {
-                    if (Position.X - this.PositionAlien.X > Position.Y - this.PositionAlien.Y )//X est plus pres
+                    if (Position.X - this.PositionAlien.X > Position.Y - this.PositionAlien.Y)//X est plus pres
                     {
                         this.positionAlien.X += walkSpeed;
                         animation = "walkEast";
@@ -209,7 +272,7 @@ namespace MarsInvader
                         animation = "walkSouth";
                     }
                 }
-                
+
             }
             this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, 20, 20);
             alienTexture.Play(animation);
