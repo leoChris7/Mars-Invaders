@@ -30,14 +30,20 @@ namespace MarsInvader
         public const double PADDING = 0.9;
         public const float MAXATTACKCOOLDOWN = 60;
 
-        public Alien( int Niveau,TiledMap _tiledMap, SpriteSheet spriteSheet)
+        public Alien( int NiveauA,TiledMap _tiledMap, SpriteSheet spriteSheetN1, SpriteSheet spriteSheetN2, SpriteSheet spriteSheetN3, SpriteSheet spriteSheetN4)
         {
             Random rnd = new Random();
+            this.Niveau = NiveauA;
             this.Health = 100;
             this.Attack = 25;
             this.Speed = 150;
             this.TiledMap = _tiledMap;
-            this.AlienTexture = new AnimatedSprite(spriteSheet);
+            if(this.Niveau==1) this.AlienTexture = new AnimatedSprite(spriteSheetN1);
+            else if (this.Niveau == 2) this.AlienTexture = new AnimatedSprite(spriteSheetN2);
+            else if (this.Niveau == 3) this.AlienTexture = new AnimatedSprite(spriteSheetN3);
+            else  this.AlienTexture = new AnimatedSprite(spriteSheetN4);
+
+
             this.AttackCooldown = Alien.MAXATTACKCOOLDOWN;
             
 
