@@ -164,7 +164,10 @@ namespace MarsInvader
 
             set
             {
-                this._attackCooldown = value;
+                if (!String.IsNullOrEmpty(value.ToString()) && value >= 0)
+                    this._attackCooldown = value;
+                else
+                    throw new Exception("La période d'invincibilité du joueur a un problème, est soit vide, soit inférieure strictement à 0");
             }
         }
 

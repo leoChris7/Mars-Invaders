@@ -2,8 +2,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.Content;
 using MonoGame.Extended.Screens;
 using MonoGame.Extended.Screens.Transitions;
+using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
 using System.Threading.Tasks;
@@ -22,10 +25,9 @@ namespace MarsInvader
         private GraphicsDeviceManager _graphics;
         public SpriteBatch SpriteBatch {get; set;}
         private ScreenManager _screenManager;
-        private ScreenGame _screenGame;
+        public ScreenGame _screenGame;
         private screenMenu _screenMenu;
         private ScreenStarting _screenStarting;
-       
 
         public Rectangle _beginButton = new Rectangle(450, 200, _BUTTONWIDTH, _BUTTONHEIGHT);
         public Rectangle _leaderboardButton = new Rectangle(450, 300, _BUTTONWIDTH, _BUTTONHEIGHT);
@@ -73,6 +75,14 @@ namespace MarsInvader
             _screenGame = new ScreenGame(this); 
             _screenMenu = new screenMenu(this);
             _screenStarting = new ScreenStarting(this);
+
+            SpriteSheet spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
+            SpriteSheet spriteSheetAlien1 = Content.Load<SpriteSheet>("alienLV1.sf", new JsonContentLoader());
+            SpriteSheet spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
+            SpriteSheet spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
+            SpriteSheet spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
+
+            base.LoadContent();
         }
         public void LoadStartingScreen()
         {
@@ -102,18 +112,17 @@ namespace MarsInvader
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
                 (_screenMenu.SourisSurRect(_leaveButton) && _gameState == "GeneralMenu"))
                 Exit();
-            {
-                // Afficher le jeu
-                if ((keyboardState.IsKeyDown(Keys.Space) || _screenMenu.SourisSurRect(_beginButton)) && _gameState == "GeneralMenu")
-                { 
-                    LoadGameScreen();
-                }
 
-                // Afficher le menu de pause
-                else if (keyboardState.IsKeyDown(Keys.Escape) && _gameState == "Game")
-                {
-                    LoadGameMenuScreen();
-                }
+            // Afficher le jeu
+            if ((keyboardState.IsKeyDown(Keys.Space) || _screenMenu.SourisSurRect(_beginButton)) && _gameState == "GeneralMenu")
+            {
+                LoadGameScreen();
+            }
+
+            // Afficher le menu de pause
+            else if (keyboardState.IsKeyDown(Keys.Escape) && _gameState == "Game")
+            {
+                LoadGameMenuScreen();
             }
             base.Update(gameTime);
         }

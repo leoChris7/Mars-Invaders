@@ -18,7 +18,7 @@ public class ScreenGame : GameScreen
 		public TiledMap _tiledMap;
 		private TiledMapRenderer _tiledMapRenderer;
 		private SpriteBatch _spriteBatch { get; set; }
-		Player _joueur;
+		public Player _joueur;
 		private List<Alien> _aliens;
 		Coeur[] _coeur = new Coeur[5];
 		public Texture2D _coeurFull;
@@ -33,6 +33,14 @@ public class ScreenGame : GameScreen
 		private Target gameTarget;
 		private Texture2D _bullet;
 		private List<Bullet> Bullets = new List<Bullet> { };
+
+
+		public SpriteSheet spriteSheetAstro;
+
+		public SpriteSheet spriteSheetAlien1;
+		public SpriteSheet spriteSheetAlien2;
+		public SpriteSheet spriteSheetAlien3;
+		public SpriteSheet spriteSheetAlien4;
 
 		private int _chrono;
 		private float _deltaTime;
@@ -112,21 +120,31 @@ public class ScreenGame : GameScreen
         }
     }
 
+    public TiledMapTileLayer MapLayer
+    {
+        get
+        {
+            return this.mapLayer;
+        }
+
+        set
+        {
+            this.mapLayer = value;
+        }
+    }
+
     public override void LoadContent()
 	{
 		_spriteBatch = new SpriteBatch(GraphicsDevice);
-		SpriteSheet spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
-		
+
+
 		_bullet = Content.Load<Texture2D>("bullet");
 		_coeurFull = Content.Load<Texture2D>("coeurFull");
 		_coeurHigh = Content.Load<Texture2D>("coeurHigh");
 		_coeurHalf = Content.Load<Texture2D>("coeurHalf");
 		_coeurLow = Content.Load<Texture2D>("coeurLow");
 		_coeurVide = Content.Load<Texture2D>("coeurVide");
-		SpriteSheet spriteSheetAlien1 = Content.Load<SpriteSheet>("alienLV1.sf", new JsonContentLoader());
-		SpriteSheet spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
-		SpriteSheet spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
-		SpriteSheet spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
+
 
 		_cible = Content.Load<Texture2D>("cible");
 		_bullet = Content.Load<Texture2D>("bullet");
@@ -134,8 +152,10 @@ public class ScreenGame : GameScreen
 		_target = Content.Load<Texture2D>("cible");
 
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
-		mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
-		_joueur  = new Player("Jed",_tiledMap, mapLayer, spriteSheetAstro);
+		MapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
+
+		_joueur  = new Player("Jed",_tiledMap, MapLayer, _myGame);
+
 		for (int i = 0; i < 10; i++)
 		{
 			Aliens.Add(new Alien(1, _tiledMap , spriteSheetAlien1, spriteSheetAlien2, spriteSheetAlien3, spriteSheetAlien4));
@@ -146,8 +166,6 @@ public class ScreenGame : GameScreen
 			_coeur[i] = new Coeur(5,i,  _coeurVide);
 
 		}
-
-		_joueur = new Player("Jed", _tiledMap, mapLayer, spriteSheetAstro);
 		base.LoadContent();
 	}
 
