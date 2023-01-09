@@ -21,7 +21,10 @@ namespace MarsInvader
         private int niveau;
         public Rectangle hitBox;
         private float _attackCooldown;
-
+        private int nbAliensSpawnN1;
+        private int nbAliensSpawnN2;
+        private int nbAliensSpawnN3;
+        private int nbAliensSpawnN4;
         private bool _touchedPlayer;
 
         public const int ALIENSIZE = 24;
@@ -29,18 +32,22 @@ namespace MarsInvader
         public const double PADDING = 0.9;
         public const float MAXATTACKCOOLDOWN = 60;
 
-        public Alien( int NiveauA,TiledMap _tiledMap, SpriteSheet spriteSheetN1, SpriteSheet spriteSheetN2, SpriteSheet spriteSheetN3, SpriteSheet spriteSheetN4)
+        public Alien( int NiveauA,TiledMap _tiledMap/*, SpriteSheet spriteSheetN1, SpriteSheet spriteSheetN2, SpriteSheet spriteSheetN3*/, SpriteSheet spriteSheetN4)
         {
             Random rnd = new Random();
+            nbAliensSpawnN1=10;
+            nbAliensSpawnN2=0;
+            nbAliensSpawnN3=0;
+            nbAliensSpawnN4=0;
             this.Health = Alien.MAXALIENHEALTH;
             this.Niveau = NiveauA;
             this.Attack = 25;
             this.Speed = 150;
             this.TiledMap = _tiledMap;
-            if(this.Niveau==1) this.AlienTexture = new AnimatedSprite(spriteSheetN1);
-            else if (this.Niveau == 2) this.AlienTexture = new AnimatedSprite(spriteSheetN2);
+            /*if(this.Niveau==1)*/ this.AlienTexture = new AnimatedSprite(spriteSheetN4);
+            /*else if (this.Niveau == 2) this.AlienTexture = new AnimatedSprite(spriteSheetN2);
             else if (this.Niveau == 3) this.AlienTexture = new AnimatedSprite(spriteSheetN3);
-            else  this.AlienTexture = new AnimatedSprite(spriteSheetN4);
+            else if (this.Niveau == 4) this.AlienTexture = new AnimatedSprite(spriteSheetN4);*/
 
 
             this.AttackCooldown = Alien.MAXATTACKCOOLDOWN;
@@ -182,6 +189,21 @@ namespace MarsInvader
             {
                 this._touchedPlayer = value;
             }
+        }
+        public int nbAliensSpawn(int niveau, List<Alien> Aliens)
+        {
+            int aliens = 0;
+            if (niveau == 1) aliens = nbAliensSpawnN1;
+            else if (niveau == 2) aliens = nbAliensSpawnN2;
+            else if (niveau == 3) aliens = nbAliensSpawnN3;
+            else  aliens = nbAliensSpawnN4;
+
+            int diff = 0;
+            if (Aliens.Count < aliens)
+            {
+                diff = aliens - Aliens.Count;
+            }
+            return diff;
         }
 
         public void directionOppAlien(GameTime gameTime, Vector2 Position )
