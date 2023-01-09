@@ -42,14 +42,12 @@ public class ScreenGame : GameScreen
 		private double _distanceY;
 		private double _angle;
 		private float _vitesseBalle;
-		private int _cooldown;
 
 	public ScreenGame(Game1 game) : base(game)
 		{
 		// INITIALIZE
 		this.gameTarget = new Target(_target);
 		this.Aliens = new List<Alien>();
-		this._cooldown = 0;
 		_myGame = game;
 		Chrono = 0;
 	}
@@ -129,11 +127,8 @@ public class ScreenGame : GameScreen
 		SpriteSheet spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
 		SpriteSheet spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
-		SpriteSheet spriteSheetVie = Content.Load<SpriteSheet>("vie.sf", new JsonContentLoader());
-
 
 		_cible = Content.Load<Texture2D>("cible");
-		
 		_bullet = Content.Load<Texture2D>("bullet");
 		_tiledMap = Content.Load<TiledMap>("map_V1");
 		_target = Content.Load<Texture2D>("cible");
@@ -162,9 +157,12 @@ public class ScreenGame : GameScreen
 	{
 		// barreVie = new Rectangle(Game1._WINDOWSIZE +50, 100, _joueur.Health, 10);
 		_joueur.Deplacer(gameTime);
+
 		for (int i = 0; i < this.Aliens.Count; i++)
 		{
-			_aliens[i].directionAlien(gameTime, _joueur.PositionPerso);
+			// On update 
+
+			this.Aliens[i].updateAlien(gameTime, _joueur.PositionPerso);
 
 			for (int j = i+1; j < this.Aliens.Count; j++)
 			{
