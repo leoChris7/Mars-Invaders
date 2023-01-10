@@ -33,6 +33,8 @@ public class ScreenGame : GameScreen
 		public SpriteSheet spriteSheetAlien3;
 		public SpriteSheet spriteSheetAlien4;
 
+	private Texture2D _menuBackground, _resumeButtonTexture, _optionsButtonTexture, _mainMenuButtonTexture;
+	private Rectangle _resumeButton, _mainMenuButton, _optionsButton;
 	private Texture2D _cible;
 		private TiledMapTileLayer mapLayer;
 		private Texture2D _target;
@@ -56,12 +58,17 @@ public class ScreenGame : GameScreen
 		private double _angle;
 		private float _vitesseBalle;
 		private SpriteFont _police;
-	public bool respawn;
+		public bool respawn;
+		MouseState _mouseState;
 
 
 	public ScreenGame(Game1 game) : base(game)
 		{
 		// INITIALIZE
+		this._resumeButton = new Rectangle((int)(float)Game1._WINDOWWIDTH / 2 - 64, 200, 128, 32);
+		this._optionsButton = new Rectangle((int)(float)Game1._WINDOWWIDTH / 2 - 64, 300, 128, 32);
+		this._mainMenuButton = new Rectangle((int)(float)Game1._WINDOWWIDTH / 2 - 64, 400, 128, 32);
+
 		respawn = false;
 		this.gameTarget = new Target(_target);
 		_myGame = game;
@@ -72,6 +79,12 @@ public class ScreenGame : GameScreen
 		aliensTue = 0;
 		ExpPos =new Vector2(Game1._WINDOWSIZE + 10 , 150);
 		NivPos = new Vector2(Game1._WINDOWSIZE + 10, 200);
+	}
+
+	public bool SourisSurRect(Rectangle rect)
+	{
+		_mouseState = Mouse.GetState();
+		return rect.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
 	}
 
 	public Target GameTarget
@@ -215,87 +228,124 @@ public class ScreenGame : GameScreen
 
 	public override void Update(GameTime gameTime)
 	{
-		_joueur.Deplacer(gameTime);
-		_joueur.Niveau=_joueur.NiveauCalcul(ref Exp, ref ExpLvlUp,  _joueur.Niveau);
-		for (int i = 0; i < this.Aliens.Count; i++)
+		if (_myGame._gameState == "Menu")
 		{
-			// On update 
+			_mouseState = Mouse.GetState();
+			bool mouseClickOnContinue = _resumeButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
+			bool mouseClickOnOptions = _optionsButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
+			bool mouseClickOnMainMenu = _mainMenuButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
 
-			
-			this.Aliens[i].updateAlien(gameTime, _joueur.PositionPerso);
-
-			for (int j = i+1; j < this.Aliens.Count; j++)
+			if (mouseClickOnContinue &&
+				_myGame._gameState == "Menu")
 			{
-				if (this.Aliens[i].hitBox.Intersects(this.Aliens[j].hitBox))
+				_myGame._gameState = "Game";
+				_myGame.IsMouseVisible = false;
+
+				_myGame.LoadGameScreen();
+			}
+			else if (mouseClickOnMainMenu)
+			{
+				//gameReset();
+				_myGame.LoadStartingScreen();
+
+			}
+		}
+		else if (_myGame._gameState == "Game")
+		{
+
+
+			_joueur.Deplacer(gameTime);
+			_joueur.Niveau = _joueur.NiveauCalcul(ref Exp, ref ExpLvlUp, _joueur.Niveau);
+			for (int i = 0; i < this.Aliens.Count; i++)
+			{
+				// On update 
+
+
+				this.Aliens[i].updateAlien(gameTime, _joueur.PositionPerso);
+
+				for (int j = i + 1; j < this.Aliens.Count; j++)
 				{
-					_aliens[i].directionOppAlien(gameTime, _joueur.PositionPerso);
-					break;
+					if (this.Aliens[i].hitBox.Intersects(this.Aliens[j].hitBox))
+					{
+						_aliens[i].directionOppAlien(gameTime, _joueur.PositionPerso);
+						break;
+					}
+				}
+
+
+
+				// si les aliens touchent le joueur, enlever de la vie au joueur
+				if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox) && this.Aliens[i].TouchedPlayer == false)
+				{
+					_joueur.removeHealth(this.Aliens[i].Attack);
+					// Période d'invincibilité
+					this.Aliens[i].TouchedPlayer = true;
+					if (_joueur.Health <= 0)
+					{
+						_myGame._gameState = "GameOver";
+						_myGame.LoadGameOverScreen();
+					}
 				}
 			}
 
-			
-
-			// si les aliens touchent le joueur, enlever de la vie au joueur
-			if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox) && this.Aliens[i].TouchedPlayer == false)
+			for (int i = 0; i < 5; i++)
 			{
-				_joueur.removeHealth(this.Aliens[i].Attack);
-				// Période d'invincibilité
-				this.Aliens[i].TouchedPlayer = true;
-				if (_joueur.Health <= 0)
-                {
-					_myGame._gameState = "GameOver";
-					_myGame.LoadGameOverScreen();
-                }
+				_coeur[i].VieCalcul(i, _joueur, _coeurFull, _coeurHigh, _coeurHalf, _coeurLow, _coeurVide);
+
 			}
+
+			_tiledMapRenderer.Update(gameTime);
+			_deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+			ChronoGeneral += _deltaTime;
+
+			this._joueur.Deplacer(gameTime);
+			this.GameTarget.PlaceTarget();
+			this._tiledMapRenderer.Update(gameTime);
+			Chrono += 1;
+
+			shootingBullets();
+
+			if (Chrono > 40)
+			{
+				// Joueur, Cible, Vitesse
+				Bullets.Add(new Bullet(_joueur, GameTarget, 400));
+				Chrono = 0;
+			}
+			if (respawn)
+			{
+				for (int j = 0; j < _aliens[j].nbAliensSpawn(1, _aliens); j++)
+				{
+					Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1));
+				}
+				for (int j = 0; j < _aliens[j].nbAliensSpawn(2, _aliens); j++)
+				{
+					Aliens.Add(new Alien(2, _tiledMap, spriteSheetAlien2));
+				}
+				for (int j = 0; j < _aliens[j].nbAliensSpawn(3, _aliens); j++)
+				{
+					Aliens.Add(new Alien(3, _tiledMap, spriteSheetAlien3));
+				}
+				for (int j = 0; j < _aliens[j].nbAliensSpawn(4, _aliens); j++)
+				{
+					Aliens.Add(new Alien(4, _tiledMap, spriteSheetAlien4));
+				}
+			}
+
 		}
-
-		for (int i = 0; i < 5; i++)
-		{
-			_coeur[i].VieCalcul(i,_joueur, _coeurFull, _coeurHigh, _coeurHalf, _coeurLow, _coeurVide);
-
-		}
-
-		_tiledMapRenderer.Update(gameTime);
-		_deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-		ChronoGeneral += _deltaTime;
-
-		this._joueur.Deplacer(gameTime);
-		this.GameTarget.PlaceTarget();
-		this._tiledMapRenderer.Update(gameTime);
-		Chrono += 1;
-
-		shootingBullets();
-
-		if (Chrono > 40)
-        {
-			// Joueur, Cible, Vitesse
-			Bullets.Add(new Bullet(_joueur, GameTarget, 400));
-			Chrono = 0;
-        }
-        if (respawn)
-        {
-            for (int j = 0; j < _aliens[1].nbAliensSpawn(1, _aliens); j++)
-            {
-                Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1));
-            }
-            for (int j = 0; j < _aliens[1].nbAliensSpawn(2, _aliens); j++)
-            {
-                Aliens.Add(new Alien(2, _tiledMap, spriteSheetAlien2));
-            }
-            for (int j = 0; j < _aliens[1].nbAliensSpawn(3, _aliens); j++)
-            {
-                Aliens.Add(new Alien(3, _tiledMap, spriteSheetAlien3));
-            }
-            for (int j = 0; j < _aliens[1].nbAliensSpawn(4, _aliens); j++)
-            {
-                Aliens.Add(new Alien(4, _tiledMap, spriteSheetAlien4));
-            }
-        }
-
-
     }
 		public override void Draw(GameTime gameTime)
 		{
+		if (_myGame._gameState == "Menu")
+        {
+			_spriteBatch.Begin();
+			_spriteBatch.Draw(_menuBackground, new Vector2(0, 0), Color.White);
+			_spriteBatch.Draw(this._resumeButtonTexture, new Vector2(this._resumeButton.X, this._resumeButton.Y), Color.White);
+			_spriteBatch.Draw(this._optionsButtonTexture, new Vector2(this._optionsButton.X, this._optionsButton.Y), Color.White);
+			_spriteBatch.Draw(this._mainMenuButtonTexture, new Vector2(this._mainMenuButton.X, this._mainMenuButton.Y), Color.White);
+			_spriteBatch.End();
+		}
+		else if (_myGame._gameState == "Game")
+		{ 
 		// On réinitialise le fond en couleur CornflowereBlue
 		_myGame.GraphicsDevice.Clear(Color.Black);
 
@@ -318,6 +368,7 @@ public class ScreenGame : GameScreen
 		}
 		_spriteBatch.DrawString( _police, Exp+"Exp / "+ExpLvlUp +"Exp", ExpPos, Color.White);
 		_spriteBatch.DrawString(_police, "Player level : " + _joueur.Niveau, NivPos, Color.White);
+		_spriteBatch.DrawString(_police, "Temps : " + Math.Round(ChronoGeneral,2), new Vector2(825, 750), Color.White);
 
 		// On dessine la cible
 		_spriteBatch.Draw(_target, this.GameTarget.PositionTarget, Color.White);
@@ -327,6 +378,7 @@ public class ScreenGame : GameScreen
 			_spriteBatch.Draw(_bullet, new Vector2(_playerBullet.BulletPosition.X, _playerBullet.BulletPosition.Y), Color.White);
 
 		_spriteBatch.End();
+		}
 	}
 
 

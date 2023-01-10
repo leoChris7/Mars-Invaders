@@ -30,7 +30,7 @@ namespace MarsInvader
 
         private ScreenManager _screenManager;
         public ScreenGame _screenGame;
-        private screenMenu _screenMenu;
+
         private ScreenStarting _screenStarting;
         private ScreenGameOver _screenGameOver;
 
@@ -38,6 +38,7 @@ namespace MarsInvader
         public Rectangle _leaderboardButton = new Rectangle(450, 300, _BUTTONWIDTH, _BUTTONHEIGHT);
         public Rectangle _optionsRectButton = new Rectangle(450, 400, _BUTTONWIDTH, _BUTTONHEIGHT);
         public Rectangle _leaveButton = new Rectangle(450, 500, _BUTTONWIDTH, _BUTTONHEIGHT);
+
 
         KeyboardState keyboardState;
 
@@ -79,7 +80,6 @@ namespace MarsInvader
         protected override void LoadContent()
         {
             _screenGame = new ScreenGame(this); 
-            _screenMenu = new screenMenu(this);
             _screenStarting = new ScreenStarting(this);
             _screenGameOver = new ScreenGameOver(this);
 
@@ -109,7 +109,6 @@ namespace MarsInvader
             _previousGameState = _gameState;
 
             _gameState = "Menu";
-            _screenManager.LoadScreen(_screenMenu, new FadeTransition(GraphicsDevice, Color.Black));
         }
 
         public void LoadGameOverScreen()
@@ -119,17 +118,22 @@ namespace MarsInvader
             _gameState = "GameOver";
             _screenManager.LoadScreen(_screenGameOver, new FadeTransition(GraphicsDevice, Color.Black));
         }
+        public static bool SourisSurRect(Rectangle rect)
+        {
+            MouseState _mouseState = Mouse.GetState();
+            return rect.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
+        }
 
         protected override void Update(GameTime gameTime)
         {
             keyboardState = Keyboard.GetState();
             // Quitter le jeu
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
-                (_screenMenu.SourisSurRect(_leaveButton) && _gameState == "GeneralMenu"))
+                (SourisSurRect(_leaveButton) && _gameState == "GeneralMenu"))
                 Exit();
 
             // Afficher le jeu
-            if ((keyboardState.IsKeyDown(Keys.Space) || _screenMenu.SourisSurRect(_beginButton)) && _gameState == "GeneralMenu")
+            if ((keyboardState.IsKeyDown(Keys.Space) || SourisSurRect(_beginButton)) && _gameState == "GeneralMenu")
             {
                 LoadGameScreen();
             }
