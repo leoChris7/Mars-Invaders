@@ -71,12 +71,11 @@ public class ScreenGame : GameScreen
 
 		respawn = false;
 		this.gameTarget = new Target(_target);
-		this.Aliens = new List<Alien>();
 		_myGame = game;
 		ChronoGeneral = 0;
 		Chrono = 0;
-		Exp = 0;
 		ExpLvlUp = 10;
+		Exp = 0;
 		aliensTue = 0;
 		ExpPos =new Vector2(Game1._WINDOWSIZE + 10 , 150);
 		NivPos = new Vector2(Game1._WINDOWSIZE + 10, 200);
@@ -176,7 +175,15 @@ public class ScreenGame : GameScreen
 
     public override void LoadContent()
 	{
-		_spriteBatch = new SpriteBatch(GraphicsDevice);
+		Console.WriteLine(_myGame._previousGameState);
+		if (_myGame._previousGameState != "Menu")
+
+        {
+			Console.WriteLine("OK");
+			Exp = 0;
+			aliensTue = 0;
+
+			_spriteBatch = new SpriteBatch(GraphicsDevice);
 
 		_coeurFull = Content.Load<Texture2D>("coeurFull");
 		_coeurHigh = Content.Load<Texture2D>("coeurHigh");
@@ -203,20 +210,23 @@ public class ScreenGame : GameScreen
 
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 		MapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
-
+		this.Aliens = new List<Alien>();
 		_joueur  = new Player("Jed",_tiledMap, MapLayer, spriteSheetAstro);
 
-		for (int i = 0; i < 10; i++)
-		{
-			Aliens.Add(new Alien(1, _tiledMap , spriteSheetAlien1));
-		}
+			for (int i = 0; i < 10; i++)
+			{
+				Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1));
+			}
 
-		for (int i = 0; i < 5; i++)
-		{
-			_coeur[i] = new Coeur(5,i,  _coeurVide);
+			for (int i = 0; i < 5; i++)
+			{
+				_coeur[i] = new Coeur(5, i, _coeurVide);
 
+			}
+			base.LoadContent();
 		}
-		base.LoadContent();
+		
+		
 	}
 
 
@@ -233,7 +243,6 @@ public class ScreenGame : GameScreen
 			if (mouseClickOnContinue &&
 				_myGame._gameState == "Menu")
 			{
-				_myGame._gameState = "Game";
 				_myGame.IsMouseVisible = false;
 
 				_myGame.LoadGameScreen();
@@ -241,6 +250,7 @@ public class ScreenGame : GameScreen
 			else if (mouseClickOnMainMenu)
 			{
 				//gameReset();
+				_myGame._previousGameState = _myGame._gameState;
 				_myGame.LoadStartingScreen();
 
 			}
@@ -410,7 +420,6 @@ public class ScreenGame : GameScreen
 
 			foreach (Alien _alien in _aliens)
 				{
-					Console.WriteLine(Aliens.Count);
 					if (this.Bullets[i]._hitBox.Intersects(_alien.hitBox))
 				{
 						_alien.Health -= 50;

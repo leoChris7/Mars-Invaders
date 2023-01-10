@@ -16,6 +16,7 @@ namespace MarsInvader
     public class Game1 : Game
     {
         public string _gameState;
+        public string _previousGameState;
         // Enregistre l'état de la scène 
             /// GeneralMenu : le menu de démarrage, le menu général
             /// Game : le jeu
@@ -57,6 +58,7 @@ namespace MarsInvader
 
         protected override void Initialize()
         {
+            _previousGameState = _gameState;
             _gameState = "GeneralMenu";
 
             _screenManager = new ScreenManager();
@@ -80,13 +82,11 @@ namespace MarsInvader
             _screenGame = new ScreenGame(this); 
             _screenStarting = new ScreenStarting(this);
             _screenGameOver = new ScreenGameOver(this);
-
-
-
             base.LoadContent();
         }
         public void LoadStartingScreen()
         {
+            _previousGameState = _gameState;
             _gameState = "GeneralMenu";
             _screenManager.LoadScreen(_screenStarting, new FadeTransition(GraphicsDevice, Color.Black));
         }
@@ -94,20 +94,23 @@ namespace MarsInvader
         // Cette méthode gère l'affichage de la scène 1 du jeu, c'est-à-dire la map avec le joueur
         {
             this.IsMouseVisible = false;
+            _previousGameState = _gameState;
             _gameState = "Game";
-            _screenManager.LoadScreen(_screenGame, new FadeTransition(GraphicsDevice, Color.Black)); 
+            _screenManager.LoadScreen(_screenGame); 
         }
 
         public void LoadGameMenuScreen()
         // Cette méthode gère l'affichage de la scène 2 du jeu, c'est-à-dire le menu en jeu
         {
             this.IsMouseVisible = true;
+            _previousGameState = _gameState;
             _gameState = "Menu";
         }
 
         public void LoadGameOverScreen()
         {
             this.IsMouseVisible = true;
+            _previousGameState = _gameState;
             _gameState = "GameOver";
             _screenManager.LoadScreen(_screenGameOver, new FadeTransition(GraphicsDevice, Color.Black));
         }
@@ -134,6 +137,7 @@ namespace MarsInvader
             // Afficher le menu de pause
             else if (keyboardState.IsKeyDown(Keys.Escape) && _gameState == "Game")
             {
+
                 LoadGameMenuScreen();
             }
             base.Update(gameTime);
