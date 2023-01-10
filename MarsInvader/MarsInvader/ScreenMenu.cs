@@ -8,6 +8,9 @@ using MonoGame.Extended.Screens;
 using MonoGame.Extended.Screens.Transitions;
 using SAE101;
 using MarsInvader;
+using MonoGame.Extended.Sprites;
+using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Content;
 
 public class screenMenu : GameScreen
 	{
@@ -15,6 +18,8 @@ public class screenMenu : GameScreen
 		private SpriteFont _police;
 		private Game1 _myGame;
 		private readonly ScreenManager _screenManager;
+		public SpriteSheet spriteSheetAstro;
+
 
 		public SpriteBatch SpriteBatch { get; set; }
 
@@ -42,7 +47,9 @@ public class screenMenu : GameScreen
 			_resumeButtonTexture = Content.Load<Texture2D>("gameMenuResume");
 			_optionsButtonTexture = Content.Load<Texture2D>("gameMenuOptions");
 			_mainMenuButtonTexture = Content.Load<Texture2D>("gameMenuBackToMainMenu");
-			
+		SpriteSheet spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
+
+
 		base.LoadContent();
 		}
 
@@ -65,7 +72,7 @@ public class screenMenu : GameScreen
 			}
 			else if (mouseClickOnMainMenu)
 			{
-				gameReset();
+				//gameReset();
 				_myGame.LoadStartingScreen();
 				
 			}
@@ -74,7 +81,7 @@ public class screenMenu : GameScreen
 		public void gameReset()
 		{
 			_myGame._screenGame.Aliens = new List<Alien>();
-			_myGame._screenGame._joueur = new Player("New", _myGame._screenGame._tiledMap, _myGame._screenGame.MapLayer, _myGame);
+			_myGame._screenGame._joueur = new Player("New", _myGame._screenGame._tiledMap, _myGame._screenGame.MapLayer, spriteSheetAstro);
 			_myGame._screenGame.Chrono = 0;
 		}
 		

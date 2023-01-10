@@ -24,16 +24,13 @@ namespace MarsInvader
 
         private GraphicsDeviceManager _graphics;
         public SpriteBatch SpriteBatch {get; set;}
-        public SpriteSheet spriteSheetAstro;
-        public SpriteSheet spriteSheetAlien1;
-        public SpriteSheet spriteSheetAlien2;
-        public SpriteSheet spriteSheetAlien3;
-        public SpriteSheet spriteSheetAlien4;
+       
 
         private ScreenManager _screenManager;
         public ScreenGame _screenGame;
         private screenMenu _screenMenu;
         private ScreenStarting _screenStarting;
+        private ScreenGameOver _screenGameOver;
 
         public Rectangle _beginButton = new Rectangle(450, 200, _BUTTONWIDTH, _BUTTONHEIGHT);
         public Rectangle _leaderboardButton = new Rectangle(450, 300, _BUTTONWIDTH, _BUTTONHEIGHT);
@@ -81,6 +78,7 @@ namespace MarsInvader
             _screenGame = new ScreenGame(this); 
             _screenMenu = new screenMenu(this);
             _screenStarting = new ScreenStarting(this);
+            _screenGameOver = new ScreenGameOver(this);
 
 
 
@@ -105,6 +103,13 @@ namespace MarsInvader
             this.IsMouseVisible = true;
             _gameState = "Menu";
             _screenManager.LoadScreen(_screenMenu, new FadeTransition(GraphicsDevice, Color.Black));
+        }
+
+        public void LoadGameOverScreen()
+        {
+            this.IsMouseVisible = true;
+            _gameState = "GameOver";
+            _screenManager.LoadScreen(_screenGameOver, new FadeTransition(GraphicsDevice, Color.Black));
         }
 
         protected override void Update(GameTime gameTime)

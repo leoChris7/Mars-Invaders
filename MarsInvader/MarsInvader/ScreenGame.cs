@@ -27,7 +27,11 @@ public class ScreenGame : GameScreen
 		public Texture2D _coeurLow;
 		public Texture2D _coeurVide;
 
-
+		public SpriteSheet spriteSheetAstro;
+		public SpriteSheet spriteSheetAlien1;
+		public SpriteSheet spriteSheetAlien2;
+		public SpriteSheet spriteSheetAlien3;
+		public SpriteSheet spriteSheetAlien4;
 
 	private Texture2D _cible;
 		private TiledMapTileLayer mapLayer;
@@ -38,7 +42,7 @@ public class ScreenGame : GameScreen
 
 
 
-
+		public int Exp;
 		private int _chrono;
 		private float _deltaTime;
 		private int _coefficient;
@@ -55,6 +59,7 @@ public class ScreenGame : GameScreen
 		this.Aliens = new List<Alien>();
 		_myGame = game;
 		Chrono = 0;
+		Exp = 0;
 	}
 
 	public Target GameTarget
@@ -155,14 +160,20 @@ public class ScreenGame : GameScreen
 		_tiledMap = Content.Load<TiledMap>("map_V1");
 		_target = Content.Load<Texture2D>("cible");
 
+		 spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
+		 spriteSheetAlien1 = Content.Load<SpriteSheet>("alienLV1.sf", new JsonContentLoader());
+		 spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
+		 spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
+		 spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
+
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 		MapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 
-		_joueur  = new Player("Jed",_tiledMap, MapLayer, this._myGame);
+		_joueur  = new Player("Jed",_tiledMap, MapLayer, spriteSheetAstro);
 
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 20; i++)
 		{
-			Aliens.Add(new Alien(1, _tiledMap , this._myGame.spriteSheetAlien1));
+			Aliens.Add(new Alien(1, _tiledMap , spriteSheetAlien1));
 		}
 
 		for (int i = 0; i < 5; i++)
@@ -183,23 +194,8 @@ public class ScreenGame : GameScreen
 		for (int i = 0; i < this.Aliens.Count; i++)
 		{
 			// On update 
-			for (int j = 0; j < _aliens[i].nbAliensSpawn(1, _aliens); j++)
-			{
-				Aliens.Add(new Alien(1, _tiledMap, this._myGame.spriteSheetAlien1/*, spriteSheetAlien2, spriteSheetAlien3, spriteSheetAlien4*/));
-			}
-			for (int j = 0; j < _aliens[i].nbAliensSpawn(2, _aliens); j++)
-			{
-				Aliens.Add(new Alien(2, _tiledMap, this._myGame.spriteSheetAlien2));
-			}
-			for (int j = 0; j < _aliens[i].nbAliensSpawn(3, _aliens); j++)
-			{
-				Aliens.Add(new Alien(3, _tiledMap, this._myGame.spriteSheetAlien3));
-			}
-			for (int j = 0; j < _aliens[i].nbAliensSpawn(4, _aliens); j++)
-			{
-				Aliens.Add(new Alien(4, _tiledMap, this._myGame.spriteSheetAlien4));
-			}
 
+			
 			this.Aliens[i].updateAlien(gameTime, _joueur.PositionPerso);
 
 			for (int j = i+1; j < this.Aliens.Count; j++)
@@ -219,6 +215,11 @@ public class ScreenGame : GameScreen
 				_joueur.removeHealth(this.Aliens[i].Attack);
 				// Période d'invincibilité
 				this.Aliens[i].TouchedPlayer = true;
+				if (_joueur.Health <= 0)
+                {
+					_myGame._gameState = "GameOver";
+					_myGame.LoadGameOverScreen();
+                }
 			}
 		}
 
@@ -244,6 +245,26 @@ public class ScreenGame : GameScreen
 			Bullets.Add(new Bullet(_joueur, GameTarget, 400));
 			Chrono = 0;
         }
+		if(_aliens.Count!=0)
+		{
+			for (int j = 0; j < _aliens[j].nbAliensSpawn(1, _aliens); j++)
+			{
+				Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1/*, spriteSheetAlien2, spriteSheetAlien3, spriteSheetAlien4*/));
+			}
+			for (int j = 0; j < _aliens[j].nbAliensSpawn(2, _aliens); j++)
+			{
+				Aliens.Add(new Alien(2, _tiledMap, spriteSheetAlien2));
+			}
+			for (int j = 0; j < _aliens[j].nbAliensSpawn(3, _aliens); j++)
+			{
+				Aliens.Add(new Alien(3, _tiledMap, spriteSheetAlien3));
+			}
+			for (int j = 0; j < _aliens[j].nbAliensSpawn(4, _aliens); j++)
+			{
+				Aliens.Add(new Alien(4, _tiledMap, spriteSheetAlien4));
+			}
+		}
+		
 
 	}
 		public override void Draw(GameTime gameTime)
@@ -325,6 +346,7 @@ public class ScreenGame : GameScreen
 					if (_alien.Health <= 0)
 					{
 						this.Aliens.Remove(_alien);
+						Exp += _alien.Niveau;
 					return 0;
 					}
 			}	

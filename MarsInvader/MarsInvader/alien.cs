@@ -26,31 +26,34 @@ namespace MarsInvader
         private int nbAliensSpawnN3;
         private int nbAliensSpawnN4;
         private bool _touchedPlayer;
-
+        private SpriteSheet spriteSheetN4;
         public const int ALIENSIZE = 24;
-        public const int MAXALIENHEALTH = 100;
+        public const int MAXALIENHEALTH = 50;
         public const double PADDING = 0.9;
-        public const float MAXATTACKCOOLDOWN = 60;
+        public const float MAXATTACKCOOLDOWN = 80;
+        public const int ALIENATTACKBASE = 10;
 
         public Alien( int NiveauA,TiledMap _tiledMap/*, SpriteSheet spriteSheetN1, SpriteSheet spriteSheetN2, SpriteSheet spriteSheetN3*/, SpriteSheet spriteSheetN4)
         {
             Random rnd = new Random();
-            nbAliensSpawnN1=10;
+            nbAliensSpawnN1=1;
             nbAliensSpawnN2=0;
             nbAliensSpawnN3=0;
             nbAliensSpawnN4=0;
-            this.Health = Alien.MAXALIENHEALTH;
+            this.Health = Alien.MAXALIENHEALTH*NiveauA;
             this.Niveau = NiveauA;
-            this.Attack = 25;
-            this.Speed = 150;
+            this.Attack = ALIENATTACKBASE* NiveauA;
+            this.spriteSheetN4 = spriteSheetN4;
+            this.Speed = 100;
             this.TiledMap = _tiledMap;
-            /*if(this.Niveau==1)*/ this.AlienTexture = new AnimatedSprite(spriteSheetN4);
+            /*if(this.Niveau==1)*/ 
+            this.AlienTexture = new AnimatedSprite(spriteSheetN4);
             /*else if (this.Niveau == 2) this.AlienTexture = new AnimatedSprite(spriteSheetN2);
             else if (this.Niveau == 3) this.AlienTexture = new AnimatedSprite(spriteSheetN3);
             else if (this.Niveau == 4) this.AlienTexture = new AnimatedSprite(spriteSheetN4);*/
 
 
-            this.AttackCooldown = Alien.MAXATTACKCOOLDOWN;
+            this.AttackCooldown = Alien.MAXATTACKCOOLDOWN*3;
             
 
             this.PositionAlien = new Vector2(rnd.Next(50, Game1._WINDOWSIZE - 50), rnd.Next(50, Game1._WINDOWSIZE - 50)); 
@@ -155,10 +158,9 @@ namespace MarsInvader
             set
             {
                 if (value > 0 &&value<5 && !String.IsNullOrEmpty(value.ToString()))
-                    this.speed = value;
+                    this.niveau = value;
                 else
                     throw new ArgumentNullException("La vitesse a une erreur de valeur, soit inférieure ou égale à 0, soit vide.");
-
             }
         }
 
@@ -192,6 +194,16 @@ namespace MarsInvader
         }
         public int nbAliensSpawn(int niveau, List<Alien> Aliens)
         {
+            int aliensA=0;
+            for (int i=0;i<Aliens.Count;i++)
+            {
+                if (Aliens[i].Niveau == niveau)
+                {
+                    aliensA++;
+                }
+                Console.WriteLine(Aliens[i].niveau);
+
+            }
             int aliens = 0;
             if (niveau == 1) aliens = nbAliensSpawnN1;
             else if (niveau == 2) aliens = nbAliensSpawnN2;
@@ -199,10 +211,12 @@ namespace MarsInvader
             else  aliens = nbAliensSpawnN4;
 
             int diff = 0;
-            if (Aliens.Count < aliens)
+            if (aliensA < aliens)
             {
-                diff = aliens - Aliens.Count;
+                diff = aliens - aliensA;
             }
+            Console.WriteLine(diff);
+
             return diff;
         }
 

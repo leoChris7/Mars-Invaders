@@ -114,7 +114,7 @@ namespace SAE101
         public TiledMap _tiledMap;
         private MouseState _mouseState;
 
-        public Player(string pseudo, TiledMap _tiledMap, TiledMapTileLayer mapLayer, Game1 _myGame)
+        public Player(string pseudo, TiledMap _tiledMap, TiledMapTileLayer mapLayer, SpriteSheet spriteSheet)
         {
             this.Pseudo = pseudo;
 
@@ -123,7 +123,7 @@ namespace SAE101
             this.Speed = 100;
             this.Points = 0;
             this._tiledMap = _tiledMap;
-            this.Perso = new AnimatedSprite(_myGame.spriteSheetAstro);
+            this.Perso = new AnimatedSprite(spriteSheet);
             this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
             this.hitBox = new Rectangle(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2, Player.PLAYERSIZE, Player.PLAYERSIZE);
             this.mapLayer = mapLayer;
@@ -267,9 +267,6 @@ namespace SAE101
                 this.Health = 0;
                 return 0;
 
-                /// PROBLEME : 
-                /// QUAND UN ALIEN MEURT, LE JOUEUR N'A PLUS DE VIE
-                /// 
             }
             // configurer la fin du jeu car si le joueur a une vie inférieure à 0, il meurt. 
             this.Health -= damage;
