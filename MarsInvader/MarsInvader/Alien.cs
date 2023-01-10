@@ -202,7 +202,6 @@ namespace MarsInvader
                 {
                     aliensA++;
                 }
-                Console.WriteLine(Aliens[i].niveau);
 
             }
             int aliens = 0;
@@ -216,7 +215,6 @@ namespace MarsInvader
             {
                 diff = aliens - aliensA;
             }
-            Console.WriteLine(diff);
 
             return diff;
         }

@@ -1,5 +1,6 @@
 ﻿using MarsInvader;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Content;
@@ -27,18 +28,18 @@ namespace MarsInvader
         private GraphicsDeviceManager _graphics;
         public SpriteBatch SpriteBatch {get; set;}
        
-
+        // Les scènes
         private ScreenManager _screenManager;
-        public ScreenGame _screenGame;
 
+        public ScreenGame _screenGame;
         private ScreenStarting _screenStarting;
         private ScreenGameOver _screenGameOver;
+        private ScreenMenu _screenMenu;
 
         public Rectangle _beginButton = new Rectangle(450, 200, _BUTTONWIDTH, _BUTTONHEIGHT);
         public Rectangle _leaderboardButton = new Rectangle(450, 300, _BUTTONWIDTH, _BUTTONHEIGHT);
         public Rectangle _optionsRectButton = new Rectangle(450, 400, _BUTTONWIDTH, _BUTTONHEIGHT);
         public Rectangle _leaveButton = new Rectangle(450, 500, _BUTTONWIDTH, _BUTTONHEIGHT);
-
 
         KeyboardState keyboardState;
 
@@ -48,6 +49,7 @@ namespace MarsInvader
         /// Dimensions des choix du menu
         public const int _BUTTONWIDTH = 128;
         public const int _BUTTONHEIGHT = 64;
+        private SoundEffect _buttonSound;
 
         public Game1()
         {
@@ -79,9 +81,12 @@ namespace MarsInvader
 
         protected override void LoadContent()
         {
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
             _screenGame = new ScreenGame(this); 
             _screenStarting = new ScreenStarting(this);
             _screenGameOver = new ScreenGameOver(this);
+            _screenMenu = new ScreenMenu(this);
+            _buttonSound = Content.Load<SoundEffect>("buttonSound");
             base.LoadContent();
         }
         public void LoadStartingScreen()
@@ -105,6 +110,7 @@ namespace MarsInvader
             this.IsMouseVisible = true;
             _previousGameState = _gameState;
             _gameState = "Menu";
+            _screenManager.LoadScreen(_screenMenu, new FadeTransition(GraphicsDevice, Color.Black));
         }
 
         public void LoadGameOverScreen()
@@ -126,18 +132,22 @@ namespace MarsInvader
             // Quitter le jeu
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
                 (SourisSurRect(_leaveButton) && _gameState == "GeneralMenu"))
+            {
+                _buttonSound.Play();
                 Exit();
+            }
 
             // Afficher le jeu
             if ((keyboardState.IsKeyDown(Keys.Space) || SourisSurRect(_beginButton)) && _gameState == "GeneralMenu")
             {
+                _buttonSound.Play();
                 LoadGameScreen();
             }
 
             // Afficher le menu de pause
             else if (keyboardState.IsKeyDown(Keys.Escape) && _gameState == "Game")
             {
-
+                _buttonSound.Play();
                 LoadGameMenuScreen();
             }
             base.Update(gameTime);
