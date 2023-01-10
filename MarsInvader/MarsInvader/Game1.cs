@@ -24,11 +24,7 @@ namespace MarsInvader
 
         private GraphicsDeviceManager _graphics;
         public SpriteBatch SpriteBatch {get; set;}
-        public SpriteSheet spriteSheetAstro;
-        public SpriteSheet spriteSheetAlien1;
-        public SpriteSheet spriteSheetAlien2;
-        public SpriteSheet spriteSheetAlien3;
-        public SpriteSheet spriteSheetAlien4;
+       
 
         private ScreenManager _screenManager;
         public ScreenGame _screenGame;
