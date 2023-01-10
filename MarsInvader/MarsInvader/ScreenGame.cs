@@ -42,6 +42,8 @@ public class ScreenGame : GameScreen
 	private Vector2 ExpPos;
 	private Vector2 NivPos;
 
+
+		private float _chronoGeneral;
 		public int aliensTue;
 		public int Exp;
 		public int ExpLvlUp;
@@ -63,6 +65,7 @@ public class ScreenGame : GameScreen
 		respawn = false;
 		this.gameTarget = new Target(_target);
 		_myGame = game;
+		ChronoGeneral = 0;
 		Chrono = 0;
 		ExpLvlUp = 10;
 		Exp = 0;
@@ -141,6 +144,19 @@ public class ScreenGame : GameScreen
         set
         {
             this.mapLayer = value;
+        }
+    }
+
+    public float ChronoGeneral
+    {
+        get
+        {
+            return this._chronoGeneral;
+        }
+
+        set
+        {
+            this._chronoGeneral = value;
         }
     }
 
@@ -241,6 +257,7 @@ public class ScreenGame : GameScreen
 
 		_tiledMapRenderer.Update(gameTime);
 		_deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+		ChronoGeneral += _deltaTime;
 
 		this._joueur.Deplacer(gameTime);
 		this.GameTarget.PlaceTarget();

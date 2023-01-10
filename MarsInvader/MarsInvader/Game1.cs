@@ -18,10 +18,11 @@ namespace MarsInvader
         public string _gameState;
         public string _previousGameState;
         // Enregistre l'état de la scène 
-        /// GeneralMenu : le menu de démarrage, le menu général
-        /// Game : le jeu
-        /// Menu : le menu en jeu
-        /// Ending : le menu de fin
+            /// GeneralMenu : le menu de démarrage, le menu général
+            /// Game : le jeu
+            /// GameOver : le menu de Gameover
+            /// Menu : le menu en jeu
+            /// Ending : le menu de fin
 
         private GraphicsDeviceManager _graphics;
         public SpriteBatch SpriteBatch {get; set;}

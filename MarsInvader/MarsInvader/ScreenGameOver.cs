@@ -14,7 +14,6 @@ using MonoGame.Extended.Content;
 
 public class ScreenGameOver : GameScreen
 {
-	private SpriteFont _police;
 	private Game1 _myGame;
 	private readonly ScreenManager _screenManager;
 
