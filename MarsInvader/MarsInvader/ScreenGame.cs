@@ -47,6 +47,7 @@ public class ScreenGame : GameScreen
 		private SoundEffect _bulletSound, _gameOverSoundEffect, _buttonSound;
 		private Song _gameMusic;
 
+		private Rectangle _resumeButton, _optionsButton, _mainMenuButton;
 		private float _chronoGeneral;
 		public int aliensTue;
 		public int Exp;
@@ -65,7 +66,6 @@ public class ScreenGame : GameScreen
 	public int fireSpeed;
 	KeyboardState keyboardState;
 
-	    MouseState _mouseState;
 		MediaState _mediaState;
 
 
@@ -255,6 +255,7 @@ public class ScreenGame : GameScreen
 		{
 			_joueur.Health = 100;
 		}
+		playingMusic();
 
 		if (_myGame._gameState == "Menu")
 		{
@@ -262,7 +263,7 @@ public class ScreenGame : GameScreen
 			bool mouseClickOnContinue = _resumeButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
 			bool mouseClickOnOptions = _optionsButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
 			bool mouseClickOnMainMenu = _mainMenuButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
-		playingMusic();
+		
 
 			if (mouseClickOnContinue &&
 				_myGame._gameState == "Menu")
@@ -338,13 +339,13 @@ public class ScreenGame : GameScreen
 		if (this.Bullets != new List<Bullet>())
 			bulletManagement();
 
-			if (Chrono > fireSpeed)
+		if (ChronoBullet > fireSpeed)
 			{
 				// Joueur, Cible, Vitesse
 				Bullets.Add(new Bullet(_joueur, GameTarget, 600));
-				Chrono = 0;
+				ChronoBullet = 0;
 			}
-			if (respawn)
+		if (respawn)
 			{
 				for (int j = 0; j < _aliens[j].nbAliensSpawn(1, _aliens); j++)
 				{

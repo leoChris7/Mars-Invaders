@@ -70,7 +70,7 @@ namespace MarsInvader
 
             set
             {
-                if (value <= Alien.MAXALIENHEALTH && !String.IsNullOrEmpty(value.ToString()))
+                if (!String.IsNullOrEmpty(value.ToString()))
                     this.health = value;
                 else
                     throw new ArgumentOutOfRangeException("La vie a une erreur de valeur, est soit inférieure ou égale à 0 ou supérieure à 100 ou vide / null.");
@@ -191,6 +191,84 @@ namespace MarsInvader
             set
             {
                 this._touchedPlayer = value;
+            }
+        }
+
+        public void AlienParNiveau(int niveau)
+        {
+            switch (niveau)
+            {
+                case 0:
+                    nbAliensSpawnN1 = 10;
+                    break;
+
+                case 1:
+                    nbAliensSpawnN1 = 8;
+                    nbAliensSpawnN2 = 2;
+                    break;
+                case 2:
+                    nbAliensSpawnN1 = 6;
+                    nbAliensSpawnN2 = 4;
+                    break;
+                case 3:
+                    nbAliensSpawnN1 = 4;
+                    nbAliensSpawnN2 = 6;
+                    break;
+                case 4:
+                    nbAliensSpawnN1 = 4;
+                    nbAliensSpawnN2 = 4;
+                    nbAliensSpawnN3 = 2;
+                    break;
+                case 5:
+                    nbAliensSpawnN1 = 2;
+                    nbAliensSpawnN2 = 6;
+                    nbAliensSpawnN3 = 2;
+                    break;
+                case 6:
+                    nbAliensSpawnN1 = 2;
+                    nbAliensSpawnN2 = 4;
+                    nbAliensSpawnN3 = 4;
+                    break;
+                case 7:
+                    nbAliensSpawnN1 = 2;
+                    nbAliensSpawnN2 = 4;
+                    nbAliensSpawnN3 = 2;
+                    nbAliensSpawnN4 = 2;
+                    break;
+                case 8:
+                    nbAliensSpawnN1 = 2;
+                    nbAliensSpawnN2 = 2;
+                    nbAliensSpawnN3 = 4;
+                    nbAliensSpawnN4 = 2;
+                    break;
+                case 9:
+                    nbAliensSpawnN2 = 4;
+                    nbAliensSpawnN3 = 4;
+                    nbAliensSpawnN4 = 2;
+                    break;
+                case 10:
+                    nbAliensSpawnN2 = 2;
+                    nbAliensSpawnN3 = 4;
+                    nbAliensSpawnN4 = 4;
+                    break;
+                case 11:
+                    nbAliensSpawnN3 = 6;
+                    nbAliensSpawnN4 = 4;
+                    break;
+                case 12:
+                    nbAliensSpawnN3 = 4;
+                    nbAliensSpawnN4 = 6;
+                    break;
+                case 13:
+                    nbAliensSpawnN3 = 2;
+                    nbAliensSpawnN4 = 8;
+                    break;
+                case 14:
+                    nbAliensSpawnN4 = 10;
+                    break;
+                default:
+                    nbAliensSpawnN4 = 10+niveau-14;
+                    break;
             }
         }
         public int nbAliensSpawn(int niveau, List<Alien> Aliens)
