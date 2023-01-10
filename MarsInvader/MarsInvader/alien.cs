@@ -36,7 +36,7 @@ namespace MarsInvader
         public Alien( int NiveauA,TiledMap _tiledMap/*, SpriteSheet spriteSheetN1, SpriteSheet spriteSheetN2, SpriteSheet spriteSheetN3*/, SpriteSheet spriteSheetN4)
         {
             Random rnd = new Random();
-            nbAliensSpawnN1=1;
+            nbAliensSpawnN1=10;
             nbAliensSpawnN2=0;
             nbAliensSpawnN3=0;
             nbAliensSpawnN4=0;
@@ -54,7 +54,8 @@ namespace MarsInvader
 
 
             this.AttackCooldown = Alien.MAXATTACKCOOLDOWN*3;
-            
+            this.TouchedPlayer = true;
+
 
             this.PositionAlien = new Vector2(rnd.Next(50, Game1._WINDOWSIZE - 50), rnd.Next(50, Game1._WINDOWSIZE - 50)); 
             this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, (int)(ALIENSIZE * PADDING), (int)(ALIENSIZE * PADDING));

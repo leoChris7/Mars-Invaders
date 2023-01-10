@@ -39,10 +39,12 @@ public class ScreenGame : GameScreen
 		private Target gameTarget;
 		private Texture2D _bullet;
 		private List<Bullet> Bullets = new List<Bullet> { };
+	private Vector2 ExpPos;
+	private Vector2 NivPos;
 
-
-
+		public int aliensTue;
 		public int Exp;
+		public int ExpLvlUp;
 		private int _chrono;
 		private float _deltaTime;
 		private int _coefficient;
@@ -51,15 +53,23 @@ public class ScreenGame : GameScreen
 		private double _distanceY;
 		private double _angle;
 		private float _vitesseBalle;
+		private SpriteFont _police;
+	public bool respawn;
+
 
 	public ScreenGame(Game1 game) : base(game)
 		{
 		// INITIALIZE
+		respawn = false;
 		this.gameTarget = new Target(_target);
 		this.Aliens = new List<Alien>();
 		_myGame = game;
 		Chrono = 0;
 		Exp = 0;
+		ExpLvlUp = 10;
+		aliensTue = 0;
+		ExpPos =new Vector2(Game1._WINDOWSIZE + 10 , 150);
+		NivPos = new Vector2(Game1._WINDOWSIZE + 10, 200);
 	}
 
 	public Target GameTarget
@@ -158,13 +168,15 @@ public class ScreenGame : GameScreen
 		 spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
 		 spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
 		 spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
+		_police = Content.Load<SpriteFont>("fontPauseMenu");
+
 
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 		MapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 
 		_joueur  = new Player("Jed",_tiledMap, MapLayer, spriteSheetAstro);
 
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			Aliens.Add(new Alien(1, _tiledMap , spriteSheetAlien1));
 		}
@@ -181,9 +193,8 @@ public class ScreenGame : GameScreen
 
 	public override void Update(GameTime gameTime)
 	{
-		// barreVie = new Rectangle(Game1._WINDOWSIZE +50, 100, _joueur.Health, 10);
 		_joueur.Deplacer(gameTime);
-
+		_joueur.Niveau=_joueur.NiveauCalcul(ref Exp, ref ExpLvlUp,  _joueur.Niveau);
 		for (int i = 0; i < this.Aliens.Count; i++)
 		{
 			// On update 
@@ -233,28 +244,28 @@ public class ScreenGame : GameScreen
 			Bullets.Add(new Bullet(_joueur, GameTarget, 400));
 			Chrono = 0;
         }
-		if(_aliens.Count!=0)
-		{
-			for (int j = 0; j < _aliens[j].nbAliensSpawn(1, _aliens); j++)
-			{
-				Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1/*, spriteSheetAlien2, spriteSheetAlien3, spriteSheetAlien4*/));
-			}
-			for (int j = 0; j < _aliens[j].nbAliensSpawn(2, _aliens); j++)
-			{
-				Aliens.Add(new Alien(2, _tiledMap, spriteSheetAlien2));
-			}
-			for (int j = 0; j < _aliens[j].nbAliensSpawn(3, _aliens); j++)
-			{
-				Aliens.Add(new Alien(3, _tiledMap, spriteSheetAlien3));
-			}
-			for (int j = 0; j < _aliens[j].nbAliensSpawn(4, _aliens); j++)
-			{
-				Aliens.Add(new Alien(4, _tiledMap, spriteSheetAlien4));
-			}
-		}
-		
+        if (respawn)
+        {
+            for (int j = 0; j < _aliens[j].nbAliensSpawn(1, _aliens); j++)
+            {
+                Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1));
+            }
+            for (int j = 0; j < _aliens[j].nbAliensSpawn(2, _aliens); j++)
+            {
+                Aliens.Add(new Alien(2, _tiledMap, spriteSheetAlien2));
+            }
+            for (int j = 0; j < _aliens[j].nbAliensSpawn(3, _aliens); j++)
+            {
+                Aliens.Add(new Alien(3, _tiledMap, spriteSheetAlien3));
+            }
+            for (int j = 0; j < _aliens[j].nbAliensSpawn(4, _aliens); j++)
+            {
+                Aliens.Add(new Alien(4, _tiledMap, spriteSheetAlien4));
+            }
+        }
 
-	}
+
+    }
 		public override void Draw(GameTime gameTime)
 		{
 		// On réinitialise le fond en couleur CornflowereBlue
@@ -277,6 +288,8 @@ public class ScreenGame : GameScreen
 		{
 			_spriteBatch.Draw(_coeur[i].VieTexture, _coeur[i].PositionCoeur, Color.White);
 		}
+		_spriteBatch.DrawString( _police, Exp+"Exp / "+ExpLvlUp +"Exp", ExpPos, Color.White);
+		_spriteBatch.DrawString(_police, "Player level : " + _joueur.Niveau, NivPos, Color.White);
 
 		// On dessine la cible
 		_spriteBatch.Draw(_target, this.GameTarget.PositionTarget, Color.White);
@@ -333,9 +346,11 @@ public class ScreenGame : GameScreen
 					}
 					if (_alien.Health <= 0)
 					{
+						respawn = true;
 						this.Aliens.Remove(_alien);
 						Exp += _alien.Niveau;
-					return 0;
+						aliensTue++;
+						return 0;
 					}
 			}	
 		}
