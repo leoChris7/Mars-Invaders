@@ -15,38 +15,60 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
 public class ScreenGame : GameScreen
+{
+	private Game1 _myGame;
+	public TiledMap _tiledMap;
+	private TiledMapRenderer _tiledMapRenderer;
+	private SpriteBatch _spriteBatch { get; set; }
+	public Player _joueur;
+	private List<Alien> _aliens;
+	Coeur[] _coeur = new Coeur[5];
+	public Texture2D _coeurFull;
+	public Texture2D _coeurHigh;
+	public Texture2D _coeurHalf;
+	public Texture2D _coeurLow;
+	public Texture2D _coeurVide;
+
+	public SpriteSheet spriteSheetAstro;
+	public SpriteSheet spriteSheetAlien1;
+	public SpriteSheet spriteSheetAlien2;
+	public SpriteSheet spriteSheetAlien3;
+	public SpriteSheet spriteSheetAlien4;
+
+	private TiledMapTileLayer mapLayer;
+	private Texture2D _cible;
+	private Texture2D _target;
+	private Target gameTarget;
+	private Texture2D _bullet;
+	private List<Bullet> Bullets = new List<Bullet> { };
+	private Vector2 ExpPos;
+	private Vector2 NivPos;
+
+	private SoundEffect _bulletSound, _gameOverSoundEffect, _buttonSound;
+	private Song _gameMusic;
+
+	private String[] Name1 = new String[]
 	{
-		private Game1 _myGame;
-		public TiledMap _tiledMap;
-		private TiledMapRenderer _tiledMapRenderer;
-		private SpriteBatch _spriteBatch { get; set; }
-		public Player _joueur;
-		private List<Alien> _aliens;
-		Coeur[] _coeur = new Coeur[5];
-		public Texture2D _coeurFull;
-		public Texture2D _coeurHigh;
-		public Texture2D _coeurHalf;
-		public Texture2D _coeurLow;
-		public Texture2D _coeurVide;
+		"Malin", "Malicieux", "Gourmand", "Chanceux", "Fort", "Courtois", "Habile",
+		"Curieux", "Sage", "Agile", "Minutieux", "Agréable", "Aventureux", "Astucieux",
+		"Audacieux", "Bienveillant", "Charismatique", "Concentré", "Confiant", "Drôle",
+		"Efficace", "Habile", "Humble", "Infatigable", "Ingénieux", "Inspiré", "Innovateur",
+		"Persévérant", "Ponctuel", "Polyvalent", "Rusé", "Responsable", "Spontané", "Sympathique",
+		"Habillé", "Vert", "Rouge", "Bleu", "Orange", "Multicolore", "Rose", "Violet",
+		"Mystérieux"
+	};
 
-		public SpriteSheet spriteSheetAstro;
-		public SpriteSheet spriteSheetAlien1;
-		public SpriteSheet spriteSheetAlien2;
-		public SpriteSheet spriteSheetAlien3;
-		public SpriteSheet spriteSheetAlien4;
+	private String[] Name2 = new string[]
+	{
+		"Renard ", "Ours ", "Chat ", "Zèbre ", "Souris ", "Aigle ", "Oisillon ", "Rinocéros ",
+		"Chauve-Souris ", "Pivert ", "Chiot ", "Voiture ", "Vaisseau ", "Bateau ", "Abeille ",
+		"Araignée ", "Alouette ", "Autruche ", "Antilope ", "Alpaga ",  "Anguille ", "Brebis ",
+		"Béluga ", "Crabe ", "Castor ", "Cigale ", "Chouette ", "Capybara ", "Dinosaure ",
+		"Daim ", "Dragon de Komodo ", "Elan ", "Ver ", "Faucon ", "Fourmis ", "Gendarme ",
+		"Tigre ", "Léopard ", "Guépard ", "Girafe ", "Guêpe ", "Bourdon ", "Grenouille ",
+		"Hamster ", "Hermine ", "Iguane ", "Lézard "
 
-		private TiledMapTileLayer mapLayer;
-		private Texture2D _cible;
-		private Texture2D _target;
-		private Target gameTarget;
-		private Texture2D _bullet;
-		private List<Bullet> Bullets = new List<Bullet> { };
-		private Vector2 ExpPos;
-		private Vector2 NivPos;
-
-		private SoundEffect _bulletSound, _gameOverSoundEffect, _buttonSound;
-		private Song _gameMusic;
-
+	};
 		private Rectangle _resumeButton, _optionsButton, _mainMenuButton;
 		private float _chronoGeneral;
 		public int aliensTue;
@@ -63,10 +85,8 @@ public class ScreenGame : GameScreen
 		private SpriteFont _police;
 		public bool respawn;
 		MouseState _mouseState;
-	public int fireSpeed;
-	KeyboardState keyboardState;
-
-		MediaState _mediaState;
+		public int fireSpeed;
+		KeyboardState keyboardState;
 
 
 	public ScreenGame(Game1 game) : base(game)
@@ -78,7 +98,7 @@ public class ScreenGame : GameScreen
 		ChronoGeneral = 0;
 		ChronoBullet = 0;
 		ExpLvlUp = 10;
-		fireSpeed = 60;
+		fireSpeed = 2;
 		Exp = 0;
 		aliensTue = 0;
 		ExpPos = new Vector2(Game1._WINDOWSIZE + 10 , 150);
@@ -178,12 +198,24 @@ public class ScreenGame : GameScreen
         }
     }
 
+    public SpriteFont Police
+    {
+        get
+        {
+            return this._police;
+        }
+
+        set
+        {
+            this._police = value;
+        }
+    }
+
     public override void LoadContent()
 	{
 		if (_myGame._previousGameState != "Menu")
 
         {
-			Console.WriteLine("OK");
 			Exp = 0;
 			aliensTue = 0;
 
@@ -205,7 +237,7 @@ public class ScreenGame : GameScreen
 		 spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
 		 spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
 		 spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
-		_police = Content.Load<SpriteFont>("fontPauseMenu");
+		Police = Content.Load<SpriteFont>("fontPauseMenu");
 
 		_buttonSound = Content.Load<SoundEffect>("buttonSound");
 		_bulletSound = Content.Load<SoundEffect>("bulletFired");
@@ -219,7 +251,7 @@ public class ScreenGame : GameScreen
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 		MapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 		this.Aliens = new List<Alien>();
-		_joueur  = new Player("Jed",_tiledMap, MapLayer, spriteSheetAstro);
+		_joueur = creationJoueur();
 
 			for (int i = 0; i < 10; i++)
 			{
@@ -234,6 +266,17 @@ public class ScreenGame : GameScreen
 			base.LoadContent();
 		}
 	}
+
+	public Player creationJoueur()
+    {
+		Player _player = new Player("Jed", _tiledMap, MapLayer, spriteSheetAstro);
+		return _player;
+	}
+
+	public void playerNameGenerator()
+    {
+
+    }
 
 
 	public override void Update(GameTime gameTime)
@@ -329,8 +372,9 @@ public class ScreenGame : GameScreen
 		this._joueur.Deplacer(gameTime);
 		this.GameTarget.PlaceTarget();
 		this._tiledMapRenderer.Update(gameTime);
-			
-		this.ChronoGeneral += _deltaTime;
+		
+		if (_myGame._gameState == "Game")
+			this.ChronoGeneral += _deltaTime;
 		
 		// On tire une balle
 		shootingBullet();
@@ -339,12 +383,6 @@ public class ScreenGame : GameScreen
 		if (this.Bullets != new List<Bullet>())
 			bulletManagement();
 
-		if (ChronoBullet > fireSpeed)
-			{
-				// Joueur, Cible, Vitesse
-				Bullets.Add(new Bullet(_joueur, GameTarget, 600));
-				ChronoBullet = 0;
-			}
 		if (respawn)
 			{
 				for (int j = 0; j < _aliens[j].nbAliensSpawn(1, _aliens); j++)
@@ -389,9 +427,9 @@ public class ScreenGame : GameScreen
 		{
 			_spriteBatch.Draw(_coeur[i].VieTexture, _coeur[i].PositionCoeur, Color.White);
 		}
-		_spriteBatch.DrawString( _police, Exp+"Exp / "+ExpLvlUp +"Exp", ExpPos, Color.White);
-		_spriteBatch.DrawString(_police, "Player level : " + _joueur.Niveau, NivPos, Color.White);
-		_spriteBatch.DrawString(_police, "Temps : " + Math.Round(ChronoGeneral,2), new Vector2(810, 750), Color.White);
+		_spriteBatch.DrawString( Police, Exp+"Exp / "+ExpLvlUp +"Exp", ExpPos, Color.White);
+		_spriteBatch.DrawString(Police, "Player level : " + _joueur.Niveau, NivPos, Color.White);
+		_spriteBatch.DrawString(Police, "Temps : " + Math.Round(ChronoGeneral,2), new Vector2(810, 750), Color.White);
 
 		// On dessine la cible
 		_spriteBatch.Draw(_target, this.GameTarget.PositionTarget, Color.White);
@@ -408,7 +446,7 @@ public class ScreenGame : GameScreen
     /// Cette méthode permet de tirer des balles
 	{
 		this.ChronoBullet += _deltaTime;
-		if (ChronoBullet > 0.6)
+		if (ChronoBullet > fireSpeed)
 		{
 			// Joueur, Cible, Vitesse
 			Bullets.Add(new Bullet(_joueur, GameTarget, 400));
@@ -420,7 +458,6 @@ public class ScreenGame : GameScreen
 	public void playingMusic()
 	/// Cette méthode permet de gérer la musique du jeu
     {
-		_mediaState = new MediaState();
 		if (!(MediaPlayer.State == MediaState.Playing) && _myGame._gameState == "Game")
 		{ 
 			MediaPlayer.Play(_gameMusic);

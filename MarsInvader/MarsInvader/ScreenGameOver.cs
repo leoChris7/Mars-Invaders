@@ -80,6 +80,9 @@ public class ScreenGameOver : GameScreen
 		_myGame.SpriteBatch.Draw(this._gameOverRestartTexture, new Vector2(this._gameOverRestartButton.X, this._gameOverRestartButton.Y), Color.White);
 		_myGame.SpriteBatch.Draw(this._gameOverMainMenuTexture, new Vector2(this._gameOverMainMenuButton.X, this._gameOverMainMenuButton.Y), Color.White);
 
+		_myGame.SpriteBatch.DrawString(_myGame._screenGame.Police, $"Vous avez survecu {Math.Round(_myGame._screenGame.ChronoGeneral,0)} secondes!", new Vector2(Game1._WINDOWWIDTH / 2 - 200, Game1._WINDOWSIZE / 2), Color.White);
+		_myGame.SpriteBatch.DrawString(_myGame._screenGame.Police, $"Vous avez tue {_myGame._screenGame.aliensTue} aliens.", new Vector2(Game1._WINDOWWIDTH / 2 - 150, Game1._WINDOWSIZE / 2 + 50), Color.White);
+
 		_myGame.SpriteBatch.End();
 	}
 }
