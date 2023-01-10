@@ -178,21 +178,11 @@ public class ScreenGame : GameScreen
 	{
 		_spriteBatch = new SpriteBatch(GraphicsDevice);
 
-
-		_bullet = Content.Load<Texture2D>("bullet");
 		_coeurFull = Content.Load<Texture2D>("coeurFull");
 		_coeurHigh = Content.Load<Texture2D>("coeurHigh");
 		_coeurHalf = Content.Load<Texture2D>("coeurHalf");
 		_coeurLow = Content.Load<Texture2D>("coeurLow");
 		_coeurVide = Content.Load<Texture2D>("coeurVide");
-
-
-		SpriteSheet spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
-
-		SpriteSheet spriteSheetAlien1 = Content.Load<SpriteSheet>("alienLV1.sf", new JsonContentLoader());
-		SpriteSheet spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
-		SpriteSheet spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
-		SpriteSheet spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
 
 		_cible = Content.Load<Texture2D>("cible");
 		_bullet = Content.Load<Texture2D>("bullet");
@@ -210,7 +200,6 @@ public class ScreenGame : GameScreen
 		_resumeButtonTexture = Content.Load<Texture2D>("gameMenuResume");
 		_optionsButtonTexture = Content.Load<Texture2D>("gameMenuOptions");
 		_mainMenuButtonTexture = Content.Load<Texture2D>("gameMenuBackToMainMenu");
-
 
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 		MapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
