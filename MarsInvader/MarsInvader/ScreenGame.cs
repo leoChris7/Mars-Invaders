@@ -62,11 +62,10 @@ public class ScreenGame : GameScreen
 		// INITIALIZE
 		respawn = false;
 		this.gameTarget = new Target(_target);
-		this.Aliens = new List<Alien>();
 		_myGame = game;
 		Chrono = 0;
-		Exp = 0;
 		ExpLvlUp = 10;
+		Exp = 0;
 		aliensTue = 0;
 		ExpPos =new Vector2(Game1._WINDOWSIZE + 10 , 150);
 		NivPos = new Vector2(Game1._WINDOWSIZE + 10, 200);
@@ -147,53 +146,53 @@ public class ScreenGame : GameScreen
 
     public override void LoadContent()
 	{
-		_spriteBatch = new SpriteBatch(GraphicsDevice);
+	
+		if(_myGame._previousGameState!="Menu")
+
+        {
+			Exp = 0;
+			aliensTue = 0;
+
+			_spriteBatch = new SpriteBatch(GraphicsDevice);
 
 
-		_bullet = Content.Load<Texture2D>("bullet");
-		_coeurFull = Content.Load<Texture2D>("coeurFull");
-		_coeurHigh = Content.Load<Texture2D>("coeurHigh");
-		_coeurHalf = Content.Load<Texture2D>("coeurHalf");
-		_coeurLow = Content.Load<Texture2D>("coeurLow");
-		_coeurVide = Content.Load<Texture2D>("coeurVide");
+			_bullet = Content.Load<Texture2D>("bullet");
+			_coeurFull = Content.Load<Texture2D>("coeurFull");
+			_coeurHigh = Content.Load<Texture2D>("coeurHigh");
+			_coeurHalf = Content.Load<Texture2D>("coeurHalf");
+			_coeurLow = Content.Load<Texture2D>("coeurLow");
+			_coeurVide = Content.Load<Texture2D>("coeurVide");
 
+			_cible = Content.Load<Texture2D>("cible");
+			_bullet = Content.Load<Texture2D>("bullet");
+			_tiledMap = Content.Load<TiledMap>("map_V1");
+			_target = Content.Load<Texture2D>("cible");
 
-		SpriteSheet spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
+			spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
+			spriteSheetAlien1 = Content.Load<SpriteSheet>("alienLV1.sf", new JsonContentLoader());
+			spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
+			spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
+			spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
+			_police = Content.Load<SpriteFont>("fontPauseMenu");
+			_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
+			MapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
+			this.Aliens = new List<Alien>();
+			_joueur = new Player("Jed", _tiledMap, MapLayer, spriteSheetAstro);
 
-		SpriteSheet spriteSheetAlien1 = Content.Load<SpriteSheet>("alienLV1.sf", new JsonContentLoader());
-		SpriteSheet spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
-		SpriteSheet spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
-		SpriteSheet spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
+			for (int i = 0; i < 10; i++)
+			{
+				Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1));
+			}
 
-		_cible = Content.Load<Texture2D>("cible");
-		_bullet = Content.Load<Texture2D>("bullet");
-		_tiledMap = Content.Load<TiledMap>("map_V1");
-		_target = Content.Load<Texture2D>("cible");
+			for (int i = 0; i < 5; i++)
+			{
+				_coeur[i] = new Coeur(5, i, _coeurVide);
 
-		 spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
-		 spriteSheetAlien1 = Content.Load<SpriteSheet>("alienLV1.sf", new JsonContentLoader());
-		 spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
-		 spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
-		 spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
-		_police = Content.Load<SpriteFont>("fontPauseMenu");
-
-
-		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
-		MapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
-
-		_joueur  = new Player("Jed",_tiledMap, MapLayer, spriteSheetAstro);
-
-		for (int i = 0; i < 10; i++)
-		{
-			Aliens.Add(new Alien(1, _tiledMap , spriteSheetAlien1));
+			}
+			base.LoadContent();
 		}
-
-		for (int i = 0; i < 5; i++)
-		{
-			_coeur[i] = new Coeur(5,i,  _coeurVide);
-
-		}
-		base.LoadContent();
+		
+		
 	}
 
 
@@ -258,19 +257,19 @@ public class ScreenGame : GameScreen
         }
         if (respawn)
         {
-            for (int j = 0; j < _aliens[j].nbAliensSpawn(1, _aliens); j++)
+            for (int j = 0; j < _aliens[1].nbAliensSpawn(1, _aliens); j++)
             {
                 Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1));
             }
-            for (int j = 0; j < _aliens[j].nbAliensSpawn(2, _aliens); j++)
+            for (int j = 0; j < _aliens[1].nbAliensSpawn(2, _aliens); j++)
             {
                 Aliens.Add(new Alien(2, _tiledMap, spriteSheetAlien2));
             }
-            for (int j = 0; j < _aliens[j].nbAliensSpawn(3, _aliens); j++)
+            for (int j = 0; j < _aliens[1].nbAliensSpawn(3, _aliens); j++)
             {
                 Aliens.Add(new Alien(3, _tiledMap, spriteSheetAlien3));
             }
-            for (int j = 0; j < _aliens[j].nbAliensSpawn(4, _aliens); j++)
+            for (int j = 0; j < _aliens[1].nbAliensSpawn(4, _aliens); j++)
             {
                 Aliens.Add(new Alien(4, _tiledMap, spriteSheetAlien4));
             }

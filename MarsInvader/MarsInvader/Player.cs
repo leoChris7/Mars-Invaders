@@ -114,23 +114,30 @@ namespace SAE101
         private KeyboardState _keyboardState;
         public TiledMap _tiledMap;
         private MouseState _mouseState;
+        private Game1 _myGame;
 
+        public Player(Game1 game) 
+        {
+            // INITIALIZE
+            _myGame = game;
+        }
         public Player(string pseudo, TiledMap _tiledMap, TiledMapTileLayer mapLayer, SpriteSheet spriteSheet)
         {
-            this.Pseudo = pseudo;
 
-            this.Health = Player.MAXPLAYERHEALTH;
-            this.Attack = 1;
-            this.Speed = 100;
-            this.Points = 0;
-            this._tiledMap = _tiledMap;
-            this.Niveau = 0;
-            this.Perso = new AnimatedSprite(spriteSheet);
-            this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
-            this.hitBox = new Rectangle(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2, Player.PLAYERSIZE, Player.PLAYERSIZE);
-            this.mapLayer = mapLayer;
+            
+                this.Pseudo = pseudo;
+                this.Health = Player.MAXPLAYERHEALTH;
+                this.Attack = 1;
+                this.Speed = 100;
+                this.Points = 0;
+                this._tiledMap = _tiledMap;
+                this.Niveau = 0;
+                this.Perso = new AnimatedSprite(spriteSheet);
+                this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
+                this.hitBox = new Rectangle(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2, Player.PLAYERSIZE, Player.PLAYERSIZE);
+                this.mapLayer = mapLayer;
+            
         }
-
         public int Health
         {
             get
