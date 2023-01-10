@@ -103,6 +103,7 @@ namespace SAE101
         private int attack;
         private int points;
         private int speed;
+        private int niveau;
         private String pseudo;
 
         private AnimatedSprite _perso;
@@ -123,6 +124,7 @@ namespace SAE101
             this.Speed = 100;
             this.Points = 0;
             this._tiledMap = _tiledMap;
+            this.Niveau = 0;
             this.Perso = new AnimatedSprite(spriteSheet);
             this._positionPerso = new Vector2(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2);
             this.hitBox = new Rectangle(Game1._WINDOWSIZE / 2, Game1._WINDOWSIZE / 2, Player.PLAYERSIZE, Player.PLAYERSIZE);
@@ -247,7 +249,18 @@ namespace SAE101
             }
         }
 
+        public int Niveau
+        {
+            get
+            {
+                return this.niveau;
+            }
 
+            set
+            {
+                this.niveau = value;
+            }
+        }
 
         public void addHealth(int additionalHealth)
         /// Cette méthode permet d'ajouter de la vie, mais surtout de vérifier que la vie ne dépasse pas le nombre de 100
@@ -273,10 +286,18 @@ namespace SAE101
             return 1;
             // le joueur n'a pas une vie inférieure à 0, le jeu continue. 
         }
-        /*public void CreationPerso(SpriteSheet spriteSheet)
+        
+        public int NiveauCalcul(ref int Exp, ref int ExpLvlUp,  int niveau)
         {
-           _perso = new AnimatedSprite(spriteSheet);
-        }*/
+            
+            if (Exp>=ExpLvlUp)
+            {
+                Exp -= ExpLvlUp;
+                niveau++;
+                ExpLvlUp=(int)Math.Round(ExpLvlUp * 1.5,0);
+            }
+            return niveau;
+        }
         public void Deplacer(GameTime gameTime)
         /// Cette méthode gère les déplacements et l'animation du joueur
         /// Elle ne retourne rien mais modifie les champs de position du personnage

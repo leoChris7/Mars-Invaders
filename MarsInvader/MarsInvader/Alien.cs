@@ -54,7 +54,8 @@ namespace MarsInvader
 
 
             this.AttackCooldown = Alien.MAXATTACKCOOLDOWN*3;
-            
+            this.TouchedPlayer = true;
+
 
             this.PositionAlien = new Vector2(rnd.Next(50, Game1._WINDOWSIZE - 50), rnd.Next(50, Game1._WINDOWSIZE - 50)); 
             this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, (int)(ALIENSIZE * PADDING), (int)(ALIENSIZE * PADDING));
