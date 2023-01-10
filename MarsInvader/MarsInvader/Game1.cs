@@ -130,6 +130,7 @@ namespace MarsInvader
         {
             keyboardState = Keyboard.GetState();
             // Quitter le jeu
+            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
                 (SourisSurRect(_leaveButton) && _gameState == "GeneralMenu"))
             {

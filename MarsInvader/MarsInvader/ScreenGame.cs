@@ -61,6 +61,9 @@ public class ScreenGame : GameScreen
 		private float _vitesseBalle;
 		private SpriteFont _police;
 		public bool respawn;
+		MouseState _mouseState;
+	public int fireSpeed;
+	KeyboardState keyboardState;
 
 	    MouseState _mouseState;
 		MediaState _mediaState;
@@ -75,10 +78,12 @@ public class ScreenGame : GameScreen
 		ChronoGeneral = 0;
 		ChronoBullet = 0;
 		ExpLvlUp = 10;
+		fireSpeed = 60;
 		Exp = 0;
 		aliensTue = 0;
 		ExpPos = new Vector2(Game1._WINDOWSIZE + 10 , 150);
 		NivPos = new Vector2(Game1._WINDOWSIZE + 10, 200);
+
 	}
 
 	public bool SourisSurRect(Rectangle rect)
@@ -233,14 +238,59 @@ public class ScreenGame : GameScreen
 
 	public override void Update(GameTime gameTime)
 	{
+
+		keyboardState = Keyboard.GetState();
+		//level
+		if ((keyboardState.IsKeyDown(Keys.LeftControl) && keyboardState.IsKeyDown(Keys.OemPlus)))
+		{
+			_joueur.Niveau++;
+		}
+		//godmode
+		if ((keyboardState.IsKeyDown(Keys.LeftControl) && keyboardState.IsKeyDown(Keys.G)))
+		{
+			_joueur.Health=10000;
+		}
+		//Healt normal
+		if ((keyboardState.IsKeyDown(Keys.LeftControl) && keyboardState.IsKeyDown(Keys.OemPlus)))
+		{
+			_joueur.Health = 100;
+		}
+
+		if (_myGame._gameState == "Menu")
+		{
+			_mouseState = Mouse.GetState();
+			bool mouseClickOnContinue = _resumeButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
+			bool mouseClickOnOptions = _optionsButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
+			bool mouseClickOnMainMenu = _mainMenuButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
 		playingMusic();
 
-		_joueur.Deplacer(gameTime);
-		_joueur.Niveau = _joueur.NiveauCalcul(ref Exp, ref ExpLvlUp, _joueur.Niveau);
-		for (int i = 0; i < this.Aliens.Count; i++)
+			if (mouseClickOnContinue &&
+				_myGame._gameState == "Menu")
+			{
+				_myGame.IsMouseVisible = false;
+
+				_myGame.LoadGameScreen();
+			}
+			else if (mouseClickOnMainMenu)
+			{
+				//gameReset();
+				_myGame._previousGameState = _myGame._gameState;
+				_myGame.LoadStartingScreen();
+
+			}
+		}
+		else if (_myGame._gameState == "Game")
 		{
-			// On update 
-			this.Aliens[i].updateAlien(gameTime, _joueur.PositionPerso);
+
+
+			_joueur.Deplacer(gameTime);
+			_joueur.Niveau = _joueur.NiveauCalcul(ref Exp, ref ExpLvlUp, _joueur.Niveau, ref fireSpeed);
+			for (int i = 0; i < this.Aliens.Count; i++)
+			{
+				// On update 
+
+
+				this.Aliens[i].updateAlien(gameTime, _joueur.PositionPerso);
 
 			for (int j = i + 1; j < this.Aliens.Count; j++)
 			{
@@ -288,26 +338,34 @@ public class ScreenGame : GameScreen
 		if (this.Bullets != new List<Bullet>())
 			bulletManagement();
 
-		if (respawn)
-		{
-			for (int j = 0; j < _aliens[j].nbAliensSpawn(1, _aliens); j++)
+			if (Chrono > fireSpeed)
 			{
-				Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1));
+				// Joueur, Cible, Vitesse
+				Bullets.Add(new Bullet(_joueur, GameTarget, 600));
+				Chrono = 0;
 			}
-			for (int j = 0; j < _aliens[j].nbAliensSpawn(2, _aliens); j++)
+			if (respawn)
 			{
-				Aliens.Add(new Alien(2, _tiledMap, spriteSheetAlien2));
+				for (int j = 0; j < _aliens[j].nbAliensSpawn(1, _aliens); j++)
+				{
+					Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1));
+				}
+				for (int j = 0; j < _aliens[j].nbAliensSpawn(2, _aliens); j++)
+				{
+					Aliens.Add(new Alien(2, _tiledMap, spriteSheetAlien2));
+				}
+				for (int j = 0; j < _aliens[j].nbAliensSpawn(3, _aliens); j++)
+				{
+					Aliens.Add(new Alien(3, _tiledMap, spriteSheetAlien3));
+				}
+				for (int j = 0; j < _aliens[j].nbAliensSpawn(4, _aliens); j++)
+				{
+					Aliens.Add(new Alien(4, _tiledMap, spriteSheetAlien4));
+				}
 			}
-			for (int j = 0; j < _aliens[j].nbAliensSpawn(3, _aliens); j++)
-			{
-				Aliens.Add(new Alien(3, _tiledMap, spriteSheetAlien3));
-			}
-			for (int j = 0; j < _aliens[j].nbAliensSpawn(4, _aliens); j++)
-			{
-				Aliens.Add(new Alien(4, _tiledMap, spriteSheetAlien4));
-			}
-		}		
-	}
+
+		}
+    }
 		public override void Draw(GameTime gameTime)
 		{
 		// On réinitialise le fond en couleur CornflowereBlue
