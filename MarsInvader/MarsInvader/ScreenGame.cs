@@ -41,7 +41,7 @@ public class ScreenGame : GameScreen
 		private List<Bullet> Bullets = new List<Bullet> { };
 
 
-
+		private float _chronoGeneral;
 		public int Exp;
 		private int _chrono;
 		private float _deltaTime;
@@ -58,6 +58,7 @@ public class ScreenGame : GameScreen
 		this.gameTarget = new Target(_target);
 		this.Aliens = new List<Alien>();
 		_myGame = game;
+		ChronoGeneral = 0;
 		Chrono = 0;
 		Exp = 0;
 	}
@@ -135,6 +136,19 @@ public class ScreenGame : GameScreen
         }
     }
 
+    public float ChronoGeneral
+    {
+        get
+        {
+            return this._chronoGeneral;
+        }
+
+        set
+        {
+            this._chronoGeneral = value;
+        }
+    }
+
     public override void LoadContent()
 	{
 		_spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -191,6 +205,8 @@ public class ScreenGame : GameScreen
 		// barreVie = new Rectangle(Game1._WINDOWSIZE +50, 100, _joueur.Health, 10);
 		_joueur.Deplacer(gameTime);
 
+		Console.WriteLine(ChronoGeneral);
+
 		for (int i = 0; i < this.Aliens.Count; i++)
 		{
 			// On update 
@@ -231,6 +247,7 @@ public class ScreenGame : GameScreen
 
 		_tiledMapRenderer.Update(gameTime);
 		_deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+		ChronoGeneral += _deltaTime;
 
 		this._joueur.Deplacer(gameTime);
 		this.GameTarget.PlaceTarget();

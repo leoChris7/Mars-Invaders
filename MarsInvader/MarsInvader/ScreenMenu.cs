@@ -14,7 +14,7 @@ using MonoGame.Extended.Content;
 
 public class screenMenu : GameScreen
 	{
-		private Texture2D _menuBackground, _resumeButtonTexture, _optionsButtonTexture, _mainMenuButtonTexture;
+		
 		private SpriteFont _police;
 		private Game1 _myGame;
 		private readonly ScreenManager _screenManager;
@@ -24,7 +24,7 @@ public class screenMenu : GameScreen
 		public SpriteBatch SpriteBatch { get; set; }
 
 		MouseState _mouseState;
-
+		private Texture2D _menuBackground, _resumeButtonTexture, _optionsButtonTexture, _mainMenuButtonTexture;
 		private Rectangle _resumeButton, _mainMenuButton, _optionsButton;
 
 		// pour récupérer une référence à l’objet game pour avoir accès à tout ce qui est
@@ -47,10 +47,8 @@ public class screenMenu : GameScreen
 			_resumeButtonTexture = Content.Load<Texture2D>("gameMenuResume");
 			_optionsButtonTexture = Content.Load<Texture2D>("gameMenuOptions");
 			_mainMenuButtonTexture = Content.Load<Texture2D>("gameMenuBackToMainMenu");
-		SpriteSheet spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
-
-
-		base.LoadContent();
+			SpriteSheet spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
+			base.LoadContent();
 		}
 
 		public override void Update(GameTime gameTime)

@@ -19,6 +19,7 @@ namespace MarsInvader
         // Enregistre l'état de la scène 
             /// GeneralMenu : le menu de démarrage, le menu général
             /// Game : le jeu
+            /// GameOver : le menu de Gameover
             /// Menu : le menu en jeu
             /// Ending : le menu de fin
 
