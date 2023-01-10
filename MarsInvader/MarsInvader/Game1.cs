@@ -24,11 +24,7 @@ namespace MarsInvader
 
         private GraphicsDeviceManager _graphics;
         public SpriteBatch SpriteBatch {get; set;}
-        public SpriteSheet spriteSheetAstro;
-        public SpriteSheet spriteSheetAlien1;
-        public SpriteSheet spriteSheetAlien2;
-        public SpriteSheet spriteSheetAlien3;
-        public SpriteSheet spriteSheetAlien4;
+       
 
         private ScreenManager _screenManager;
         public ScreenGame _screenGame;
@@ -82,12 +78,7 @@ namespace MarsInvader
             _screenMenu = new screenMenu(this);
             _screenStarting = new ScreenStarting(this);
 
-            SpriteSheet spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
-
-            SpriteSheet spriteSheetAlien1 = Content.Load<SpriteSheet>("alienLV1.sf", new JsonContentLoader());
-            SpriteSheet spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
-            SpriteSheet spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
-            SpriteSheet spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
+            
 
             base.LoadContent();
         }
