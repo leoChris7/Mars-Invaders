@@ -158,6 +158,13 @@ public class ScreenGame : GameScreen
 		_coeurVide = Content.Load<Texture2D>("coeurVide");
 
 
+		SpriteSheet spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
+
+		SpriteSheet spriteSheetAlien1 = Content.Load<SpriteSheet>("alienLV1.sf", new JsonContentLoader());
+		SpriteSheet spriteSheetAlien2 = Content.Load<SpriteSheet>("alienLV2.sf", new JsonContentLoader());
+		SpriteSheet spriteSheetAlien3 = Content.Load<SpriteSheet>("alienLV3.sf", new JsonContentLoader());
+		SpriteSheet spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
+
 		_cible = Content.Load<Texture2D>("cible");
 		_bullet = Content.Load<Texture2D>("bullet");
 		_tiledMap = Content.Load<TiledMap>("map_V1");
@@ -219,6 +226,11 @@ public class ScreenGame : GameScreen
 				_joueur.removeHealth(this.Aliens[i].Attack);
 				// Période d'invincibilité
 				this.Aliens[i].TouchedPlayer = true;
+				if (_joueur.Health <= 0)
+                {
+					_myGame._gameState = "GameOver";
+					_myGame.LoadGameOverScreen();
+                }
 			}
 		}
 

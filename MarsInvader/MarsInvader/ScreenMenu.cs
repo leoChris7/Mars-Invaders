@@ -18,10 +18,10 @@ public class screenMenu : GameScreen
 		private SpriteFont _police;
 		private Game1 _myGame;
 		private readonly ScreenManager _screenManager;
-	public SpriteSheet spriteSheetAstro;
+		public SpriteSheet spriteSheetAstro;
 
 
-	public SpriteBatch SpriteBatch { get; set; }
+		public SpriteBatch SpriteBatch { get; set; }
 
 		MouseState _mouseState;
 
@@ -72,7 +72,7 @@ public class screenMenu : GameScreen
 			}
 			else if (mouseClickOnMainMenu)
 			{
-				gameReset();
+				//gameReset();
 				_myGame.LoadStartingScreen();
 				
 			}

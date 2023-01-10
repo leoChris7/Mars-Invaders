@@ -36,7 +36,7 @@ namespace MarsInvader
         public Alien( int NiveauA,TiledMap _tiledMap/*, SpriteSheet spriteSheetN1, SpriteSheet spriteSheetN2, SpriteSheet spriteSheetN3*/, SpriteSheet spriteSheetN4)
         {
             Random rnd = new Random();
-            nbAliensSpawnN1=10;
+            nbAliensSpawnN1=1;
             nbAliensSpawnN2=0;
             nbAliensSpawnN3=0;
             nbAliensSpawnN4=0;

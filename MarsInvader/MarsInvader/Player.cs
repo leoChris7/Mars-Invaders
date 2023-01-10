@@ -280,9 +280,6 @@ namespace SAE101
                 this.Health = 0;
                 return 0;
 
-                /// PROBLEME : 
-                /// QUAND UN ALIEN MEURT, LE JOUEUR N'A PLUS DE VIE
-                /// 
             }
             // configurer la fin du jeu car si le joueur a une vie inférieure à 0, il meurt. 
             this.Health -= damage;
