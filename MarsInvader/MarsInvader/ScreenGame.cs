@@ -60,6 +60,8 @@ public class ScreenGame : GameScreen
 		private SpriteFont _police;
 		public bool respawn;
 		MouseState _mouseState;
+	public int fireSpeed;
+	KeyboardState keyboardState;
 
 
 	public ScreenGame(Game1 game) : base(game)
@@ -75,10 +77,12 @@ public class ScreenGame : GameScreen
 		ChronoGeneral = 0;
 		Chrono = 0;
 		ExpLvlUp = 10;
+		fireSpeed = 60;
 		Exp = 0;
 		aliensTue = 0;
 		ExpPos =new Vector2(Game1._WINDOWSIZE + 10 , 150);
 		NivPos = new Vector2(Game1._WINDOWSIZE + 10, 200);
+
 	}
 
 	public bool SourisSurRect(Rectangle rect)
@@ -233,6 +237,24 @@ public class ScreenGame : GameScreen
 
 	public override void Update(GameTime gameTime)
 	{
+
+		keyboardState = Keyboard.GetState();
+		//level
+		if ((keyboardState.IsKeyDown(Keys.LeftControl) && keyboardState.IsKeyDown(Keys.OemPlus)))
+		{
+			_joueur.Niveau++;
+		}
+		//godmode
+		if ((keyboardState.IsKeyDown(Keys.LeftControl) && keyboardState.IsKeyDown(Keys.G)))
+		{
+			_joueur.Health=10000;
+		}
+		//Healt normal
+		if ((keyboardState.IsKeyDown(Keys.LeftControl) && keyboardState.IsKeyDown(Keys.OemPlus)))
+		{
+			_joueur.Health = 100;
+		}
+
 		if (_myGame._gameState == "Menu")
 		{
 			_mouseState = Mouse.GetState();
@@ -260,7 +282,7 @@ public class ScreenGame : GameScreen
 
 
 			_joueur.Deplacer(gameTime);
-			_joueur.Niveau = _joueur.NiveauCalcul(ref Exp, ref ExpLvlUp, _joueur.Niveau);
+			_joueur.Niveau = _joueur.NiveauCalcul(ref Exp, ref ExpLvlUp, _joueur.Niveau, ref fireSpeed);
 			for (int i = 0; i < this.Aliens.Count; i++)
 			{
 				// On update 
@@ -302,7 +324,7 @@ public class ScreenGame : GameScreen
 			_tiledMapRenderer.Update(gameTime);
 			_deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 			ChronoGeneral += _deltaTime;
-
+			_aliens[0].AlienParNiveau(_joueur.Niveau);
 			this._joueur.Deplacer(gameTime);
 			this.GameTarget.PlaceTarget();
 			this._tiledMapRenderer.Update(gameTime);
@@ -310,10 +332,10 @@ public class ScreenGame : GameScreen
 
 			shootingBullets();
 
-			if (Chrono > 40)
+			if (Chrono > fireSpeed)
 			{
 				// Joueur, Cible, Vitesse
-				Bullets.Add(new Bullet(_joueur, GameTarget, 400));
+				Bullets.Add(new Bullet(_joueur, GameTarget, 600));
 				Chrono = 0;
 			}
 			if (respawn)
