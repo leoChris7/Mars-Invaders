@@ -294,7 +294,7 @@ namespace SAE101
             // le joueur n'a pas une vie inférieure à 0, le jeu continue. 
         }
         
-        public int NiveauCalcul(ref int Exp, ref int ExpLvlUp,  int niveau, ref int fireSpeed)
+        public int NiveauCalcul(ref int Exp, ref int ExpLvlUp,  int niveau, ref double fireSpeed)
         {
             
             if (Exp>=ExpLvlUp)
@@ -303,21 +303,29 @@ namespace SAE101
                 niveau++;
                 ExpLvlUp=(int)Math.Round(ExpLvlUp * 1.5,0);
                 LevelUp(ref  fireSpeed);
+                
             }
             return niveau;
         }
 
-        public void LevelUp(ref int fireSpeed)
+        public void LevelUp(ref double fireSpeed)
         {
-            if (this.Niveau > 0)
+            if (this.Niveau > 0 && niveau <=10)
             {
-                fireSpeed /= (int)Math.Pow(0.1, this.Niveau);
-                this.Attack *= (int)Math.Pow( 0.1 , this.Niveau);
-                this.Speed *= (int)Math.Pow(0.1, this.Niveau);
+                fireSpeed -= 0.1;
+                this.Attack += 2;
+                this.Speed += 2;
+                Console.WriteLine(fireSpeed);
+                this.Health += 20;
+                if (this.Health > 100)
+                    this.Health = 100;
             }
-            this.Health += 20;
-            if (this.Health > 100)
+             else if (niveau>10)
+            {
+                fireSpeed -= 0.01;
                 this.Health = 100;
+            }
+            
             
         }
         public void Deplacer(GameTime gameTime)

@@ -32,6 +32,7 @@ namespace MarsInvader
         public const double PADDING = 0.9;
         public const float MAXATTACKCOOLDOWN = 80;
         public const int ALIENATTACKBASE = 10;
+        public double multiplicateurNiveau = 1;
 
         public Alien( int NiveauA,TiledMap _tiledMap/*, SpriteSheet spriteSheetN1, SpriteSheet spriteSheetN2, SpriteSheet spriteSheetN3*/, SpriteSheet spriteSheetN4)
         {
@@ -40,9 +41,9 @@ namespace MarsInvader
             nbAliensSpawnN2=0;
             nbAliensSpawnN3=0;
             nbAliensSpawnN4=0;
-            this.Health = Alien.MAXALIENHEALTH*NiveauA;
+            this.Health =(int)( Alien.MAXALIENHEALTH*NiveauA* multiplicateurNiveau);
             this.Niveau = NiveauA;
-            this.Attack = ALIENATTACKBASE* NiveauA;
+            this.Attack = (int)(ALIENATTACKBASE * NiveauA* multiplicateurNiveau);
             this.spriteSheetN4 = spriteSheetN4;
             this.Speed = 100;
             this.TiledMap = _tiledMap;
@@ -268,6 +269,7 @@ namespace MarsInvader
                     break;
                 default:
                     nbAliensSpawnN4 = 10+niveau-14;
+                    multiplicateurNiveau = 1.1 * (niveau - 14);
                     break;
             }
         }
@@ -280,8 +282,9 @@ namespace MarsInvader
                 {
                     aliensA++;
                 }
-
             }
+
+
             int aliens = 0;
             if (niveau == 1) aliens = nbAliensSpawnN1;
             else if (niveau == 2) aliens = nbAliensSpawnN2;
@@ -445,12 +448,14 @@ namespace MarsInvader
             }
         }
 
-        public void updateAlien(GameTime gameTime, Vector2 positionJoueur)
+        public void updateAlien(GameTime gameTime, Vector2 positionJoueur, int niveau )
         /// Cette méthode gère strictement les aliens à chaque rafraichissement
         {
             this.directionAlien(gameTime, positionJoueur);
             this.alienAttackCooldown();
             this.hitBox = new Rectangle((int)this.PositionAlien.X, (int)this.PositionAlien.Y, 20, 20);
+            AlienParNiveau(niveau);
+
         }
     }
 
