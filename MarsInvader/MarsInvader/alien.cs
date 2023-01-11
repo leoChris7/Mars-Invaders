@@ -243,28 +243,40 @@ namespace MarsInvader
                     nbAliensSpawnN4 = 2;
                     break;
                 case 9:
+                    nbAliensSpawnN1 = 0;
                     nbAliensSpawnN2 = 4;
                     nbAliensSpawnN3 = 4;
                     nbAliensSpawnN4 = 2;
                     break;
                 case 10:
+                    nbAliensSpawnN1 = 0;
                     nbAliensSpawnN2 = 2;
                     nbAliensSpawnN3 = 4;
                     nbAliensSpawnN4 = 4;
                     break;
                 case 11:
+                    nbAliensSpawnN1 = 0;
+                    nbAliensSpawnN2 = 0;
+
                     nbAliensSpawnN3 = 6;
                     nbAliensSpawnN4 = 4;
                     break;
                 case 12:
+                    nbAliensSpawnN1 = 0;
+                    nbAliensSpawnN2 = 0;
                     nbAliensSpawnN3 = 4;
                     nbAliensSpawnN4 = 6;
                     break;
                 case 13:
+                    nbAliensSpawnN1 = 0;
+                    nbAliensSpawnN2 = 0;
                     nbAliensSpawnN3 = 2;
                     nbAliensSpawnN4 = 8;
                     break;
                 case 14:
+                    nbAliensSpawnN1 = 0;
+                    nbAliensSpawnN2 = 0;
+                    nbAliensSpawnN3 = 0;
                     nbAliensSpawnN4 = 10;
                     break;
                 default:
