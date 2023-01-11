@@ -47,28 +47,7 @@ public class ScreenGame : GameScreen
 	private SoundEffect _bulletSound, _gameOverSoundEffect, _buttonSound;
 	private Song _gameMusic;
 
-	private String[] Name1 = new String[]
-	{
-		"Malin", "Malicieux", "Gourmand", "Chanceux", "Fort", "Courtois", "Habile",
-		"Curieux", "Sage", "Agile", "Minutieux", "Agréable", "Aventureux", "Astucieux",
-		"Audacieux", "Bienveillant", "Charismatique", "Concentré", "Confiant", "Drôle",
-		"Efficace", "Habile", "Humble", "Infatigable", "Ingénieux", "Inspiré", "Innovateur",
-		"Persévérant", "Ponctuel", "Polyvalent", "Rusé", "Responsable", "Spontané", "Sympathique",
-		"Habillé", "Vert", "Rouge", "Bleu", "Orange", "Multicolore", "Rose", "Violet",
-		"Mystérieux"
-	};
 
-	private String[] Name2 = new string[]
-	{
-		"Renard ", "Ours ", "Chat ", "Zèbre ", "Souris ", "Aigle ", "Oisillon ", "Rinocéros ",
-		"Chauve-Souris ", "Pivert ", "Chiot ", "Voiture ", "Vaisseau ", "Bateau ", "Abeille ",
-		"Araignée ", "Alouette ", "Autruche ", "Antilope ", "Alpaga ",  "Anguille ", "Brebis ",
-		"Béluga ", "Crabe ", "Castor ", "Cigale ", "Chouette ", "Capybara ", "Dinosaure ",
-		"Daim ", "Dragon de Komodo ", "Elan ", "Ver ", "Faucon ", "Fourmis ", "Gendarme ",
-		"Tigre ", "Léopard ", "Guépard ", "Girafe ", "Guêpe ", "Bourdon ", "Grenouille ",
-		"Hamster ", "Hermine ", "Iguane ", "Lézard "
-
-	};
 		private Rectangle _resumeButton, _optionsButton, _mainMenuButton;
 		private float _chronoGeneral;
 		public int aliensTue;
@@ -258,9 +237,6 @@ public class ScreenGame : GameScreen
 		this.Aliens = new List<Alien>();
 			 List<Bullet> Bullets = new List<Bullet> ();
 
-
-		_joueur = creationJoueur();
-
 			for (int i = 0; i < 10; i++)
 			{
 				Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1));
@@ -275,16 +251,7 @@ public class ScreenGame : GameScreen
 		}
 	}
 
-	public Player creationJoueur()
-    {
-		Player _player = new Player("Jed", _tiledMap, MapLayer, spriteSheetAstro);
-		return _player;
-	}
 
-	public void playerNameGenerator()
-    {
-
-    }
 
 
 	public override void Update(GameTime gameTime)
@@ -443,6 +410,7 @@ public class ScreenGame : GameScreen
 		_spriteBatch.DrawString( Police, Exp+"Exp / "+ExpLvlUp +"Exp", ExpPos, Color.White);
 		_spriteBatch.DrawString(Police, "Player level : " + _joueur.Niveau, NivPos, Color.White);
 		_spriteBatch.DrawString(Police, "Temps : " + Math.Round(ChronoGeneral,2), new Vector2(810, 750), Color.White);
+		_spriteBatch.DrawString(Police, $"Session : {_joueur.Pseudo}", new Vector2(0, 770), Color.White);
 
 		// On dessine la cible
 		_spriteBatch.Draw(_target, this.GameTarget.PositionTarget, Color.White);

@@ -10,6 +10,7 @@ using MonoGame.Extended.Serialization;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
+using System;
 using System.Threading.Tasks;
 
 namespace MarsInvader
@@ -35,7 +36,7 @@ namespace MarsInvader
         private ScreenStarting _screenStarting;
         private ScreenGameOver _screenGameOver;
         private ScreenMenu _screenMenu;
-        private ScreenGenerationPseudo _screenGenerationPseudo;
+        public ScreenGenerationPseudo _screenGenerationPseudo;
 
         public Rectangle _beginButton = new Rectangle(450, 200, _BUTTONWIDTH, _BUTTONHEIGHT);
         public Rectangle _leaderboardButton = new Rectangle(450, 300, _BUTTONWIDTH, _BUTTONHEIGHT);
@@ -140,7 +141,10 @@ namespace MarsInvader
         {
             keyboardState = Keyboard.GetState();
             // Quitter le jeu
-            
+
+            Console.WriteLine(_gameState + "-- STATE GAME");
+            Console.WriteLine(_previousGameState + "-- PREVIOUS STATE GAME");
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
                 (SourisSurRect(_leaveButton) && _gameState == "GeneralMenu"))
             {
@@ -152,8 +156,9 @@ namespace MarsInvader
             if ((keyboardState.IsKeyDown(Keys.Space) || SourisSurRect(_beginButton)) && _gameState == "GeneralMenu")
             {
                 _buttonSound.Play();
-                LoadGameScreen();
+                LoadPseudoChoosingScreen();
             }
+
 
             // Afficher le menu de pause
             else if (keyboardState.IsKeyDown(Keys.Escape) && _gameState == "Game")

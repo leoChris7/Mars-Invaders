@@ -39,6 +39,7 @@ public class ScreenStarting : GameScreen
 		_myGame._gameState = "GeneralMenu";
 		Content.RootDirectory = "Content";
 		game.IsMouseVisible = true;
+        Microsoft.Xna.Framework.Media.MediaPlayer.Pause();
 	}
 
 

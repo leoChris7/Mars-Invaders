@@ -450,6 +450,18 @@
 /processorParam:TextureFormat=Color
 /build:pseudoGenTitle.png
 
+#begin saveButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:saveButton.png
+
 #begin startingNewGameSoundEffect.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

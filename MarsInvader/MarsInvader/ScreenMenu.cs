@@ -11,6 +11,7 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Serialization;
 using MonoGame.Extended.Content;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 public class ScreenMenu : GameScreen
 {
@@ -30,6 +31,8 @@ public class ScreenMenu : GameScreen
 		this._resumeButton = new Rectangle((int)(float)Game1._WINDOWWIDTH / 2 - 64, 200, 128, 32);
 		this._optionsButton = new Rectangle((int)(float)Game1._WINDOWWIDTH / 2 - 64, 300, 128, 32);
 		this._mainMenuButton = new Rectangle((int)(float)Game1._WINDOWWIDTH / 2 - 64, 400, 128, 32);
+
+		
 	}
 
 	public override void LoadContent()
