@@ -11,6 +11,8 @@ using MonoGame.Extended.Tiled.Renderers;
 using MonoGame.Extended.Serialization;
 using SAE101;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 public class ScreenGame : GameScreen
 	{
@@ -33,23 +35,24 @@ public class ScreenGame : GameScreen
 		public SpriteSheet spriteSheetAlien3;
 		public SpriteSheet spriteSheetAlien4;
 
-	private Texture2D _menuBackground, _resumeButtonTexture, _optionsButtonTexture, _mainMenuButtonTexture;
-	private Rectangle _resumeButton, _mainMenuButton, _optionsButton;
-	private Texture2D _cible;
 		private TiledMapTileLayer mapLayer;
+		private Texture2D _cible;
 		private Texture2D _target;
 		private Target gameTarget;
 		private Texture2D _bullet;
 		private List<Bullet> Bullets = new List<Bullet> { };
-	private Vector2 ExpPos;
-	private Vector2 NivPos;
+		private Vector2 ExpPos;
+		private Vector2 NivPos;
 
+		private SoundEffect _bulletSound, _gameOverSoundEffect, _buttonSound;
+		private Song _gameMusic;
 
+		private Rectangle _resumeButton, _optionsButton, _mainMenuButton;
 		private float _chronoGeneral;
 		public int aliensTue;
 		public int Exp;
 		public int ExpLvlUp;
-		private int _chrono;
+		private float _chronoBullet;
 		private float _deltaTime;
 		private int _coefficient;
 		private float _targetOffset;
@@ -63,24 +66,22 @@ public class ScreenGame : GameScreen
 	public int fireSpeed;
 	KeyboardState keyboardState;
 
+		MediaState _mediaState;
+
 
 	public ScreenGame(Game1 game) : base(game)
 		{
 		// INITIALIZE
-		this._resumeButton = new Rectangle((int)(float)Game1._WINDOWWIDTH / 2 - 64, 200, 128, 32);
-		this._optionsButton = new Rectangle((int)(float)Game1._WINDOWWIDTH / 2 - 64, 300, 128, 32);
-		this._mainMenuButton = new Rectangle((int)(float)Game1._WINDOWWIDTH / 2 - 64, 400, 128, 32);
-
 		respawn = false;
 		this.gameTarget = new Target(_target);
 		_myGame = game;
 		ChronoGeneral = 0;
-		Chrono = 0;
+		ChronoBullet = 0;
 		ExpLvlUp = 10;
 		fireSpeed = 60;
 		Exp = 0;
 		aliensTue = 0;
-		ExpPos =new Vector2(Game1._WINDOWSIZE + 10 , 150);
+		ExpPos = new Vector2(Game1._WINDOWSIZE + 10 , 150);
 		NivPos = new Vector2(Game1._WINDOWSIZE + 10, 200);
 
 	}
@@ -104,18 +105,18 @@ public class ScreenGame : GameScreen
 		}
 	}
 
-    public int Chrono
+    public float ChronoBullet
     {
         get
         {
-            return this._chrono;
+            return this._chronoBullet;
         }
 
         set
         {
 			// On vérifie que le chrono est supérieur ou égal à 0 et qu'il ne soit pas nul ou vide
 			if (value >= 0 && !String.IsNullOrEmpty(value.ToString()))
-				this._chrono = value;
+				this._chronoBullet = value;
 			else
 				throw new ArgumentException("Le chrono doit être supérieur ou égal à 0 et non null.");
         }
@@ -179,7 +180,6 @@ public class ScreenGame : GameScreen
 
     public override void LoadContent()
 	{
-		Console.WriteLine(_myGame._previousGameState);
 		if (_myGame._previousGameState != "Menu")
 
         {
@@ -207,10 +207,14 @@ public class ScreenGame : GameScreen
 		 spriteSheetAlien4 = Content.Load<SpriteSheet>("alienLV4.sf", new JsonContentLoader());
 		_police = Content.Load<SpriteFont>("fontPauseMenu");
 
-		_menuBackground = Content.Load<Texture2D>("gameMenuBackground");
-		_resumeButtonTexture = Content.Load<Texture2D>("gameMenuResume");
-		_optionsButtonTexture = Content.Load<Texture2D>("gameMenuOptions");
-		_mainMenuButtonTexture = Content.Load<Texture2D>("gameMenuBackToMainMenu");
+		_buttonSound = Content.Load<SoundEffect>("buttonSound");
+		_bulletSound = Content.Load<SoundEffect>("bulletFired");
+		_gameOverSoundEffect = Content.Load<SoundEffect>("gameOverSoundEffect");
+		_gameMusic = Content.Load<Song>("gameMusic");
+
+		if (!(MediaPlayer.State == MediaState.Playing) && _myGame._gameState == "Game")
+			MediaPlayer.Play(_gameMusic);
+			
 
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 		MapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
@@ -229,10 +233,7 @@ public class ScreenGame : GameScreen
 			}
 			base.LoadContent();
 		}
-		
-		
 	}
-
 
 
 	public override void Update(GameTime gameTime)
@@ -254,6 +255,7 @@ public class ScreenGame : GameScreen
 		{
 			_joueur.Health = 100;
 		}
+		playingMusic();
 
 		if (_myGame._gameState == "Menu")
 		{
@@ -261,6 +263,7 @@ public class ScreenGame : GameScreen
 			bool mouseClickOnContinue = _resumeButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
 			bool mouseClickOnOptions = _optionsButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
 			bool mouseClickOnMainMenu = _mainMenuButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
+		
 
 			if (mouseClickOnContinue &&
 				_myGame._gameState == "Menu")
@@ -290,55 +293,59 @@ public class ScreenGame : GameScreen
 
 				this.Aliens[i].updateAlien(gameTime, _joueur.PositionPerso);
 
-				for (int j = i + 1; j < this.Aliens.Count; j++)
-				{
-					if (this.Aliens[i].hitBox.Intersects(this.Aliens[j].hitBox))
-					{
-						_aliens[i].directionOppAlien(gameTime, _joueur.PositionPerso);
-						break;
-					}
-				}
-
-
-
-				// si les aliens touchent le joueur, enlever de la vie au joueur
-				if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox) && this.Aliens[i].TouchedPlayer == false)
-				{
-					_joueur.removeHealth(this.Aliens[i].Attack);
-					// Période d'invincibilité
-					this.Aliens[i].TouchedPlayer = true;
-					if (_joueur.Health <= 0)
-					{
-						_myGame._gameState = "GameOver";
-						_myGame.LoadGameOverScreen();
-					}
-				}
-			}
-
-			for (int i = 0; i < 5; i++)
+			for (int j = i + 1; j < this.Aliens.Count; j++)
 			{
-				_coeur[i].VieCalcul(i, _joueur, _coeurFull, _coeurHigh, _coeurHalf, _coeurLow, _coeurVide);
-
+				if (this.Aliens[i].hitBox.Intersects(this.Aliens[j].hitBox))
+				{
+					_aliens[i].directionOppAlien(gameTime, _joueur.PositionPerso);
+					break;
+				}
 			}
 
-			_tiledMapRenderer.Update(gameTime);
-			_deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-			ChronoGeneral += _deltaTime;
-			_aliens[0].AlienParNiveau(_joueur.Niveau);
-			this._joueur.Deplacer(gameTime);
-			this.GameTarget.PlaceTarget();
-			this._tiledMapRenderer.Update(gameTime);
-			Chrono += 1;
+			// si les aliens touchent le joueur, enlever de la vie au joueur
+			if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox) && this.Aliens[i].TouchedPlayer == false)
+			{
+				_joueur.removeHealth(this.Aliens[i].Attack);
+				// Période d'invincibilité
+				this.Aliens[i].TouchedPlayer = true;
+				if (_joueur.Health <= 0)
+				{
+					_myGame._gameState = "GameOver";
+					MediaPlayer.Stop();
+					_gameOverSoundEffect.Play();
+					_myGame.LoadGameOverScreen();
+				}
+			}
+		}
 
-			shootingBullets();
+		for (int i = 0; i < 5; i++)
+		{
+			_coeur[i].VieCalcul(i, _joueur, _coeurFull, _coeurHigh, _coeurHalf, _coeurLow, _coeurVide);
+		}
 
-			if (Chrono > fireSpeed)
+		_tiledMapRenderer.Update(gameTime);
+		_deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+			
+		this._joueur.Deplacer(gameTime);
+		this.GameTarget.PlaceTarget();
+		this._tiledMapRenderer.Update(gameTime);
+			
+		this.ChronoGeneral += _deltaTime;
+		
+		// On tire une balle
+		shootingBullet();
+
+		// On vérifie que la collection de balles n'est pas vide avant d'executer la méthode, pour éviter une éxécution inutile.
+		if (this.Bullets != new List<Bullet>())
+			bulletManagement();
+
+		if (ChronoBullet > fireSpeed)
 			{
 				// Joueur, Cible, Vitesse
 				Bullets.Add(new Bullet(_joueur, GameTarget, 600));
-				Chrono = 0;
+				ChronoBullet = 0;
 			}
-			if (respawn)
+		if (respawn)
 			{
 				for (int j = 0; j < _aliens[j].nbAliensSpawn(1, _aliens); j++)
 				{
@@ -362,17 +369,6 @@ public class ScreenGame : GameScreen
     }
 		public override void Draw(GameTime gameTime)
 		{
-		if (_myGame._gameState == "Menu")
-        {
-			_spriteBatch.Begin();
-			_spriteBatch.Draw(_menuBackground, new Vector2(0, 0), Color.White);
-			_spriteBatch.Draw(this._resumeButtonTexture, new Vector2(this._resumeButton.X, this._resumeButton.Y), Color.White);
-			_spriteBatch.Draw(this._optionsButtonTexture, new Vector2(this._optionsButton.X, this._optionsButton.Y), Color.White);
-			_spriteBatch.Draw(this._mainMenuButtonTexture, new Vector2(this._mainMenuButton.X, this._mainMenuButton.Y), Color.White);
-			_spriteBatch.End();
-		}
-		else if (_myGame._gameState == "Game")
-		{ 
 		// On réinitialise le fond en couleur CornflowereBlue
 		_myGame.GraphicsDevice.Clear(Color.Black);
 
@@ -395,7 +391,7 @@ public class ScreenGame : GameScreen
 		}
 		_spriteBatch.DrawString( _police, Exp+"Exp / "+ExpLvlUp +"Exp", ExpPos, Color.White);
 		_spriteBatch.DrawString(_police, "Player level : " + _joueur.Niveau, NivPos, Color.White);
-		_spriteBatch.DrawString(_police, "Temps : " + Math.Round(ChronoGeneral,2), new Vector2(825, 750), Color.White);
+		_spriteBatch.DrawString(_police, "Temps : " + Math.Round(ChronoGeneral,2), new Vector2(810, 750), Color.White);
 
 		// On dessine la cible
 		_spriteBatch.Draw(_target, this.GameTarget.PositionTarget, Color.White);
@@ -405,11 +401,38 @@ public class ScreenGame : GameScreen
 			_spriteBatch.Draw(_bullet, new Vector2(_playerBullet.BulletPosition.X, _playerBullet.BulletPosition.Y), Color.White);
 
 		_spriteBatch.End();
+		
+	}
+
+	public void shootingBullet()
+    /// Cette méthode permet de tirer des balles
+	{
+		this.ChronoBullet += _deltaTime;
+		if (ChronoBullet > 0.6)
+		{
+			// Joueur, Cible, Vitesse
+			Bullets.Add(new Bullet(_joueur, GameTarget, 400));
+			_bulletSound.Play(0.3f, 0, 0);
+			ChronoBullet = 0.1f;
 		}
 	}
 
+	public void playingMusic()
+	/// Cette méthode permet de gérer la musique du jeu
+    {
+		_mediaState = new MediaState();
+		if (!(MediaPlayer.State == MediaState.Playing) && _myGame._gameState == "Game")
+		{ 
+			MediaPlayer.Play(_gameMusic);
+			MediaPlayer.Volume = 1.5f;
+		}
 
-	public int shootingBullets()
+		if (_myGame._gameState == "Menu" || _myGame._gameState == "GeneralMenu")
+			MediaPlayer.Volume = 0.5f;
+	}
+
+
+	public int bulletManagement()
 	/// Cette méthode gère le jet de balles prenant en compte le joueur ainsi que la cible
 	{
 		for (int i = 0; i < Bullets.Count; i++)

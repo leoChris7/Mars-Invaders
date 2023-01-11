@@ -108,6 +108,48 @@
 /processorParam:TextureFormat=Color
 /build:bullet.png
 
+#begin bulletBonusLootItem.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:bulletBonusLootItem.png
+
+#begin bulletFired.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:bulletFired.mp3
+
+#begin bulletFired.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:bulletFired.ogg
+
+#begin bulletFired.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:bulletFired.wav
+
+#begin bulletFired.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:bulletFired.wav
+
+#begin buttonSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:buttonSound.wav
+
 #begin cible.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -235,6 +277,12 @@
 /processorParam:TextureFormat=Color
 /build:gameMenuResume.png
 
+#begin gameMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:gameMusic.mp3
+
 #begin gameover.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -270,6 +318,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:gameoverRecommencer.png
+
+#begin gameOverSoundEffect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:gameOverSoundEffect.wav
+
+#begin healthDanger.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:healthDanger.wav
+
+#begin hearthLootItem.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:hearthLootItem.png
 
 #begin leaderboardGeneralMenu.png
 /importer:TextureImporter
@@ -335,6 +407,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:optionsGeneralMenu.png
+
+#begin startingNewGameSoundEffect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:startingNewGameSoundEffect.wav
 
 #begin terrain_3.png
 /importer:TextureImporter

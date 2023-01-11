@@ -7,23 +7,20 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Screens;
 using MonoGame.Extended.Screens.Transitions;
 using SAE101;
-using MarsInvader;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Serialization;
 using MonoGame.Extended.Content;
+using Microsoft.Xna.Framework.Audio;
 
 public class ScreenGameOver : GameScreen
 {
 	private Game1 _myGame;
 	private readonly ScreenManager _screenManager;
 
-	public SpriteBatch SpriteBatch { get; set; }
-
 	MouseState _mouseState;
 
 	private Texture2D _gameOverMainMenuTexture, _gameOverRestartTexture, _gameOverBackground;
 	private Rectangle _gameOverMainMenuButton, _gameOverRestartButton;
-
 	// pour récupérer une référence à l’objet game pour avoir accès à tout ce qui est
 	// défini dans Game1
 
@@ -37,8 +34,6 @@ public class ScreenGameOver : GameScreen
 
 	public override void LoadContent()
 	{
-		SpriteBatch = new SpriteBatch(GraphicsDevice);
-
 		_gameOverBackground = Content.Load<Texture2D>("gameover");
 		_gameOverMainMenuTexture = Content.Load<Texture2D>("gameoverMenuPrincipal");
 		_gameOverRestartTexture = Content.Load<Texture2D>("gameoverRecommencer");
@@ -63,7 +58,6 @@ public class ScreenGameOver : GameScreen
 		else if (mouseClickOnMainMenu)
 		{
 			_myGame._gameState = "GeneralMenu";
-			//gameReset();
 			_myGame.LoadStartingScreen();
 
 		}
@@ -79,14 +73,14 @@ public class ScreenGameOver : GameScreen
 	{
 		_myGame.GraphicsDevice.Clear(Color.Black);
 
-		SpriteBatch.Begin();
+		_myGame.SpriteBatch.Begin();
 
-		SpriteBatch.Draw(_gameOverBackground, new Vector2(0, 0), Color.White);
+		_myGame.SpriteBatch.Draw(_gameOverBackground, new Vector2(0, 0), Color.White);
 
-		SpriteBatch.Draw(this._gameOverRestartTexture, new Vector2(this._gameOverRestartButton.X, this._gameOverRestartButton.Y), Color.White);
-		SpriteBatch.Draw(this._gameOverMainMenuTexture, new Vector2(this._gameOverMainMenuButton.X, this._gameOverMainMenuButton.Y), Color.White);
+		_myGame.SpriteBatch.Draw(this._gameOverRestartTexture, new Vector2(this._gameOverRestartButton.X, this._gameOverRestartButton.Y), Color.White);
+		_myGame.SpriteBatch.Draw(this._gameOverMainMenuTexture, new Vector2(this._gameOverMainMenuButton.X, this._gameOverMainMenuButton.Y), Color.White);
 
-		SpriteBatch.End();
+		_myGame.SpriteBatch.End();
 	}
 }
 

@@ -148,7 +148,7 @@ namespace SAE101
             set
             {
                 // si la vie est bien supérieure à 0, inférieure ou égale à 100 et n'est pas vide / null
-                if (value <= 100 && !String.IsNullOrEmpty(value.ToString()))
+                if (!String.IsNullOrEmpty(value.ToString()))
                     this.health = value;
                 else
                     throw new ArgumentOutOfRangeException("La vie a une erreur de valeur, est soit inférieure ou égale à 0 ou supérieure à 100 ou vide / null.");
