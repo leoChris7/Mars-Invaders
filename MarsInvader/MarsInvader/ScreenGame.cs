@@ -85,8 +85,8 @@ public class ScreenGame : GameScreen
 		private SpriteFont _police;
 		public bool respawn;
 		MouseState _mouseState;
-		public int fireSpeed;
-		KeyboardState keyboardState;
+	public double fireSpeed;
+	KeyboardState keyboardState;
 
 
 	public ScreenGame(Game1 game) : base(game)
@@ -98,7 +98,7 @@ public class ScreenGame : GameScreen
 		ChronoGeneral = 0;
 		ChronoBullet = 0;
 		ExpLvlUp = 10;
-		fireSpeed = 2;
+		fireSpeed = 1.2;
 		Exp = 0;
 		aliensTue = 0;
 		ExpPos = new Vector2(Game1._WINDOWSIZE + 10 , 150);
@@ -217,7 +217,12 @@ public class ScreenGame : GameScreen
 
         {
 			Exp = 0;
+			ExpLvlUp = 10;
 			aliensTue = 0;
+			respawn = false;
+			ChronoGeneral = 0;
+			ChronoBullet = 0;
+			fireSpeed = 1.2;
 
 			_spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -251,6 +256,9 @@ public class ScreenGame : GameScreen
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 		MapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 		this.Aliens = new List<Alien>();
+			 List<Bullet> Bullets = new List<Bullet> ();
+
+
 		_joueur = creationJoueur();
 
 			for (int i = 0; i < 10; i++)
@@ -281,12 +289,16 @@ public class ScreenGame : GameScreen
 
 	public override void Update(GameTime gameTime)
 	{
-
+		//LevelUp
 		keyboardState = Keyboard.GetState();
-		//level
+		if ((keyboardState.IsKeyDown(Keys.LeftControl) && keyboardState.IsKeyDown(Keys.L)))
+		{
+			Exp+=100;
+		}
+		//stat up
 		if ((keyboardState.IsKeyDown(Keys.LeftControl) && keyboardState.IsKeyDown(Keys.OemPlus)))
 		{
-			_joueur.Niveau++;
+			_joueur.LevelUp(ref fireSpeed);
 		}
 		//godmode
 		if ((keyboardState.IsKeyDown(Keys.LeftControl) && keyboardState.IsKeyDown(Keys.G)))
@@ -294,7 +306,7 @@ public class ScreenGame : GameScreen
 			_joueur.Health=10000;
 		}
 		//Healt normal
-		if ((keyboardState.IsKeyDown(Keys.LeftControl) && keyboardState.IsKeyDown(Keys.OemPlus)))
+		if ((keyboardState.IsKeyDown(Keys.LeftControl) && keyboardState.IsKeyDown(Keys.OemMinus)))
 		{
 			_joueur.Health = 100;
 		}
@@ -334,32 +346,32 @@ public class ScreenGame : GameScreen
 				// On update 
 
 
-				this.Aliens[i].updateAlien(gameTime, _joueur.PositionPerso);
+				this.Aliens[i].updateAlien(gameTime, _joueur.PositionPerso, _joueur.Niveau);
 
-			for (int j = i + 1; j < this.Aliens.Count; j++)
-			{
-				if (this.Aliens[i].hitBox.Intersects(this.Aliens[j].hitBox))
+				for (int j = i + 1; j < this.Aliens.Count; j++)
 				{
-					_aliens[i].directionOppAlien(gameTime, _joueur.PositionPerso);
-					break;
+					if (this.Aliens[i].hitBox.Intersects(this.Aliens[j].hitBox))
+					{
+						_aliens[i].directionOppAlien(gameTime, _joueur.PositionPerso);
+						break;
+					}
+				}
+
+				// si les aliens touchent le joueur, enlever de la vie au joueur
+				if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox) && this.Aliens[i].TouchedPlayer == false)
+				{
+					_joueur.removeHealth(this.Aliens[i].Attack);
+					// Période d'invincibilité
+					this.Aliens[i].TouchedPlayer = true;
+					if (_joueur.Health <= 0)
+					{
+						_myGame._gameState = "GameOver";
+						MediaPlayer.Stop();
+						_gameOverSoundEffect.Play();
+						_myGame.LoadGameOverScreen();
+					}
 				}
 			}
-
-			// si les aliens touchent le joueur, enlever de la vie au joueur
-			if (this.Aliens[i].hitBox.Intersects(this._joueur.hitBox) && this.Aliens[i].TouchedPlayer == false)
-			{
-				_joueur.removeHealth(this.Aliens[i].Attack);
-				// Période d'invincibilité
-				this.Aliens[i].TouchedPlayer = true;
-				if (_joueur.Health <= 0)
-				{
-					_myGame._gameState = "GameOver";
-					MediaPlayer.Stop();
-					_gameOverSoundEffect.Play();
-					_myGame.LoadGameOverScreen();
-				}
-			}
-		}
 
 		for (int i = 0; i < 5; i++)
 		{
@@ -388,6 +400,7 @@ public class ScreenGame : GameScreen
 				for (int j = 0; j < _aliens[j].nbAliensSpawn(1, _aliens); j++)
 				{
 					Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1));
+                    
 				}
 				for (int j = 0; j < _aliens[j].nbAliensSpawn(2, _aliens); j++)
 				{
