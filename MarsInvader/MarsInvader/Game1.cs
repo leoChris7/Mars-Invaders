@@ -35,6 +35,7 @@ namespace MarsInvader
         private ScreenStarting _screenStarting;
         private ScreenGameOver _screenGameOver;
         private ScreenMenu _screenMenu;
+        private ScreenGenerationPseudo _screenGenerationPseudo;
 
         public Rectangle _beginButton = new Rectangle(450, 200, _BUTTONWIDTH, _BUTTONHEIGHT);
         public Rectangle _leaderboardButton = new Rectangle(450, 300, _BUTTONWIDTH, _BUTTONHEIGHT);
@@ -86,6 +87,8 @@ namespace MarsInvader
             _screenStarting = new ScreenStarting(this);
             _screenGameOver = new ScreenGameOver(this);
             _screenMenu = new ScreenMenu(this);
+            _screenGenerationPseudo = new ScreenGenerationPseudo(this);
+            
             _buttonSound = Content.Load<SoundEffect>("buttonSound");
             base.LoadContent();
         }
@@ -102,6 +105,13 @@ namespace MarsInvader
             _previousGameState = _gameState;
             _gameState = "Game";
             _screenManager.LoadScreen(_screenGame); 
+        }
+
+        public void LoadPseudoChoosingScreen()
+        {
+            _previousGameState = _gameState;
+            _gameState = "Pseudo";
+            _screenManager.LoadScreen(_screenGenerationPseudo, new FadeTransition(GraphicsDevice, Color.Black));
         }
 
         public void LoadGameMenuScreen()

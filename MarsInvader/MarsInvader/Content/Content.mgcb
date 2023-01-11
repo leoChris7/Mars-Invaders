@@ -120,24 +120,6 @@
 /processorParam:TextureFormat=Color
 /build:bulletBonusLootItem.png
 
-#begin bulletFired.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:bulletFired.mp3
-
-#begin bulletFired.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:bulletFired.ogg
-
-#begin bulletFired.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:bulletFired.wav
-
 #begin bulletFired.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -384,6 +366,18 @@
 /processor:TiledMapProcessor
 /build:map_V1.tmx
 
+#begin MarsInvaderMainTitle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:MarsInvaderMainTitle.png
+
 #begin MenuBackground.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -407,6 +401,54 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:optionsGeneralMenu.png
+
+#begin pseudoGenbackButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:pseudoGenbackButton.png
+
+#begin pseudoGenContinueButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:pseudoGenContinueButton.png
+
+#begin pseudoGengenerateButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:pseudoGengenerateButton.png
+
+#begin pseudoGenTitle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:pseudoGenTitle.png
 
 #begin startingNewGameSoundEffect.wav
 /importer:WavImporter
