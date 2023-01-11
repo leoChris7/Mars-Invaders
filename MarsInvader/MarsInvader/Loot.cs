@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAE101;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +11,21 @@ namespace MarsInvader
 {
     internal class Loot
     {
+        private const int LOOTSIZE=16;
         private Vector2 lootPos;
-        private string lootType;
+        private int lootType;
         private Texture2D lootTexture;
+        private Rectangle lootHitBox;
 
-        public Loot(Vector2 lootPos, string lootType, Texture2D lootTexture)
+        public Loot(Vector2 lootPos, int lootType, Texture2D lootTexture1, Texture2D lootTexture2, Texture2D lootTexture3)
         {
             this.LootPos = lootPos;
             this.LootType = lootType;
-            this.LootTexture = lootTexture;
+
+            if(this.lootType==0)this.LootTexture = lootTexture1;            
+            else if (this.lootType == 1) this.LootTexture = lootTexture2;
+            else if (this.lootType == 2) this.LootTexture = lootTexture3;
+            this.LootHitBox = new Rectangle((int)this.LootPos.X, (int)this.LootPos.Y, LOOTSIZE+6, LOOTSIZE+6 );
         }
 
         public Vector2 LootPos
@@ -34,7 +41,7 @@ namespace MarsInvader
             }
         }
 
-        public string LootType
+        public int LootType
         {
             get
             {
@@ -59,5 +66,45 @@ namespace MarsInvader
                 this.lootTexture = value;
             }
         }
+
+        public Rectangle LootHitBox
+        {
+            get
+            {
+                return this.lootHitBox;
+            }
+
+            set
+            {
+                this.lootHitBox = value;
+            }
+        }
+
+        
+        public bool Recupere(Player joueur,ref bool bulletLootDrop,ref int exp, ref float ChronoDrop)
+        {
+            if (joueur.hitBox.Intersects(this.lootHitBox))
+            {
+                Console.WriteLine("loot");
+                switch (this.LootType)
+                {
+                    case 0:
+                        joueur.addHealth(20);
+                        break;
+
+                    case 1:
+                        bulletLootDrop = true;
+                        ChronoDrop = 0;
+                        break;
+                    case 2:
+                        exp += 50;
+                        break;
+                }
+                return true;
+            }
+            else 
+                return false;
+            }
     }
+
 }

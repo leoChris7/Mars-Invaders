@@ -16,20 +16,27 @@ using Microsoft.Xna.Framework.Media;
 
 public class ScreenGame : GameScreen
 {
+	private const int PROBABILITY = 10;
+
 	private Game1 _myGame;
 	public TiledMap _tiledMap;
 	private TiledMapRenderer _tiledMapRenderer;
+	public float ChronoDrop;
+
 	private SpriteBatch _spriteBatch { get; set; }
 	public Player _joueur;
 	private List<Alien> _aliens;
+	private List<Loot> _loots;
 	Coeur[] _coeur = new Coeur[5];
 	public Texture2D _coeurFull;
 	public Texture2D _coeurHigh;
 	public Texture2D _coeurHalf;
 	public Texture2D _coeurLow;
 	public Texture2D _coeurVide;
-
-	public SpriteSheet spriteSheetAstro;
+    private Texture2D heartDrop;
+    private Texture2D bulletDrop;
+    private Texture2D coinDrop;
+    public SpriteSheet spriteSheetAstro;
 	public SpriteSheet spriteSheetAlien1;
 	public SpriteSheet spriteSheetAlien2;
 	public SpriteSheet spriteSheetAlien3;
@@ -87,9 +94,9 @@ public class ScreenGame : GameScreen
 		MouseState _mouseState;
 	public double fireSpeed;
 	KeyboardState keyboardState;
+    public bool bulletLootDrop;
 
-
-	public ScreenGame(Game1 game) : base(game)
+    public ScreenGame(Game1 game) : base(game)
 		{
 		// INITIALIZE
 		respawn = false;
@@ -211,6 +218,7 @@ public class ScreenGame : GameScreen
         }
     }
 
+
     public override void LoadContent()
 	{
 		if (_myGame._previousGameState != "Menu")
@@ -231,8 +239,11 @@ public class ScreenGame : GameScreen
 		_coeurHalf = Content.Load<Texture2D>("coeurHalf");
 		_coeurLow = Content.Load<Texture2D>("coeurLow");
 		_coeurVide = Content.Load<Texture2D>("coeurVide");
+			heartDrop = Content.Load<Texture2D>("hearthLootItem");
+			bulletDrop = Content.Load<Texture2D>("bulletBonusLootItem");
+			coinDrop = Content.Load<Texture2D>("lootCoin");
 
-		_cible = Content.Load<Texture2D>("cible");
+			_cible = Content.Load<Texture2D>("cible");
 		_bullet = Content.Load<Texture2D>("bullet");
 		_tiledMap = Content.Load<TiledMap>("map_V1");
 		_target = Content.Load<Texture2D>("cible");
@@ -257,10 +268,11 @@ public class ScreenGame : GameScreen
 		MapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 		this.Aliens = new List<Alien>();
 			 List<Bullet> Bullets = new List<Bullet> ();
+		_loots = new List<Loot>();
 
 
-		_joueur = creationJoueur();
-
+			_joueur = creationJoueur();
+			_loots.Add(new Loot(new Vector2(Game1._WINDOWSIZE/2, Game1._WINDOWSIZE/2), 0, heartDrop, bulletDrop, coinDrop));
 			for (int i = 0; i < 10; i++)
 			{
 				Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1));
@@ -291,6 +303,7 @@ public class ScreenGame : GameScreen
 	{
 		//LevelUp
 		keyboardState = Keyboard.GetState();
+		lootManagement();
 		if ((keyboardState.IsKeyDown(Keys.LeftControl) && keyboardState.IsKeyDown(Keys.L)))
 		{
 			Exp+=100;
@@ -391,12 +404,13 @@ public class ScreenGame : GameScreen
 		// On tire une balle
 		shootingBullet();
 
+
+
 		// On vérifie que la collection de balles n'est pas vide avant d'executer la méthode, pour éviter une éxécution inutile.
-		if (this.Bullets != new List<Bullet>())
+			if (this.Bullets != new List<Bullet>())
 			bulletManagement();
 
-		if (respawn)
-			{
+		
 				for (int j = 0; j < _aliens[j].nbAliensSpawn(1, _aliens); j++)
 				{
 					Aliens.Add(new Alien(1, _tiledMap, spriteSheetAlien1));
@@ -414,7 +428,7 @@ public class ScreenGame : GameScreen
 				{
 					Aliens.Add(new Alien(4, _tiledMap, spriteSheetAlien4));
 				}
-			}
+			
 
 		}
     }
@@ -450,6 +464,12 @@ public class ScreenGame : GameScreen
 		// On dessine chaque balle sur l'écran
 		foreach(Bullet _playerBullet in this.Bullets)
 			_spriteBatch.Draw(_bullet, new Vector2(_playerBullet.BulletPosition.X, _playerBullet.BulletPosition.Y), Color.White);
+		if (_loots != null)
+		{
+			foreach (Loot loot in _loots)
+				_spriteBatch.Draw(loot.LootTexture, new Vector2(loot.LootPos.X, loot.LootPos.Y), Color.White);
+		}
+		
 
 		_spriteBatch.End();
 		
@@ -459,10 +479,20 @@ public class ScreenGame : GameScreen
     /// Cette méthode permet de tirer des balles
 	{
 		this.ChronoBullet += _deltaTime;
+		this.ChronoDrop += _deltaTime;
 		if (ChronoBullet > fireSpeed)
 		{
 			// Joueur, Cible, Vitesse
 			Bullets.Add(new Bullet(_joueur, GameTarget, 400));
+			if(bulletLootDrop==true)
+            {
+				Bullets.Add(new Bullet(_joueur, GameTarget, 400));
+				Bullets.Add(new Bullet(_joueur, GameTarget, 400));
+
+			}
+			if (ChronoDrop > 7f)
+				bulletLootDrop = false;
+
 			_bulletSound.Play(0.3f, 0, 0);
 			ChronoBullet = 0.1f;
 		}
@@ -512,7 +542,7 @@ public class ScreenGame : GameScreen
 				this.Bullets.RemoveAt(i);
 				continue;
 			}
-
+			Random rnd = new Random();
 			foreach (Alien _alien in _aliens)
 				{
 					if (this.Bullets[i]._hitBox.Intersects(_alien.hitBox))
@@ -523,18 +553,52 @@ public class ScreenGame : GameScreen
 						return 0;
 						
 					}
-					if (_alien.Health <= 0)
-					{
-						respawn = true;
-						this.Aliens.Remove(_alien);
-						Exp += _alien.Niveau;
-						aliensTue++;
-						return 0;
-					}
+				if (_alien.Health <= 0)
+				{
+					aliensTue++;
+					
+					
+						if (DropChance(aliensTue))
+						{
+							_loots.Add(new Loot(_alien.PositionAlien, rnd.Next(0, 3), heartDrop, bulletDrop, coinDrop));
+                            Console.WriteLine("loot");
+						}
+					this.Aliens.Remove(_alien);
+					Exp += _alien.Niveau;
+					return 0;
+				}
+					
+				
+				
+					
 			}	
 		}
 		return 1;
 	}
-	
+
+	public int lootManagement()
+    {
+		if (_loots != null)
+		{
+			foreach (Loot loot in _loots)
+			{
+				if (loot.Recupere(_joueur, ref bulletLootDrop,ref Exp,ref ChronoDrop))
+				{
+					this._loots.Remove(loot);
+					return 0;
+				}
+			}
+		}
+		return 3;
+	}
+	public bool DropChance(int aliensTue)
+	{
+		bool drop = false;
+		if (aliensTue % PROBABILITY == 0)
+			drop = true;
+		Console.WriteLine(aliensTue % PROBABILITY);
+		return drop;
+	}
+
 }
 
