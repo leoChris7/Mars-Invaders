@@ -30,7 +30,7 @@ namespace MarsInvader
         public SpriteBatch SpriteBatch {get; set;}
        
         // Les scènes
-        private ScreenManager _screenManager;
+        public ScreenManager _screenManager;
 
         public ScreenGame _screenGame;
         private ScreenStarting _screenStarting;
@@ -39,10 +39,14 @@ namespace MarsInvader
         public ScreenGenerationPseudo _screenGenerationPseudo;
 
         public Rectangle _beginButton = new Rectangle(450, 200, _BUTTONWIDTH, _BUTTONHEIGHT);
-        public Rectangle _leaderboardButton = new Rectangle(450, 300, _BUTTONWIDTH, _BUTTONHEIGHT);
-        public Rectangle _optionsRectButton = new Rectangle(450, 400, _BUTTONWIDTH, _BUTTONHEIGHT);
         public Rectangle _leaveButton = new Rectangle(450, 500, _BUTTONWIDTH, _BUTTONHEIGHT);
 
+        public Rectangle _redCross = new Rectangle(0, 0, 32, 32);
+        public Rectangle _mutedMusic = new Rectangle(0, 0, 32, 32);
+        public Rectangle _mutedSounds = new Rectangle(36, 0, 32, 32);
+
+        public Texture2D _volumeTexture, _musicalNoteTexture, _redCrossTexture;
+        public SoundEffect _buttonSound, _newGameSE;
         KeyboardState keyboardState;
 
         public const int _WINDOWSIZE = 800;
@@ -51,7 +55,10 @@ namespace MarsInvader
         /// Dimensions des choix du menu
         public const int _BUTTONWIDTH = 128;
         public const int _BUTTONHEIGHT = 64;
-        private SoundEffect _buttonSound;
+        
+
+        public bool musicMuted = false;
+        public bool soundMuted = false;
 
         public Game1()
         {
@@ -89,7 +96,11 @@ namespace MarsInvader
             _screenGameOver = new ScreenGameOver(this);
             _screenMenu = new ScreenMenu(this);
             _screenGenerationPseudo = new ScreenGenerationPseudo(this);
-            
+
+            _volumeTexture = Content.Load<Texture2D>("volumeSymbol");
+            _musicalNoteTexture = Content.Load<Texture2D>("musicalNote");
+            _redCrossTexture = Content.Load<Texture2D>("redCross");
+            _newGameSE = Content.Load<SoundEffect>("startingNewGameSoundEffect");
             _buttonSound = Content.Load<SoundEffect>("buttonSound");
             base.LoadContent();
         }
@@ -105,6 +116,8 @@ namespace MarsInvader
             this.IsMouseVisible = false;
             _previousGameState = _gameState;
             _gameState = "Game";
+
+            _screenGame.playingSound(_newGameSE);
             _screenManager.LoadScreen(_screenGame); 
         }
 
@@ -142,20 +155,17 @@ namespace MarsInvader
             keyboardState = Keyboard.GetState();
             // Quitter le jeu
 
-            Console.WriteLine(_gameState + "-- STATE GAME");
-            Console.WriteLine(_previousGameState + "-- PREVIOUS STATE GAME");
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
                 (SourisSurRect(_leaveButton) && _gameState == "GeneralMenu"))
             {
-                _buttonSound.Play();
+                _screenGame.playingSound(_buttonSound);
                 Exit();
             }
 
             // Afficher le jeu
             if ((keyboardState.IsKeyDown(Keys.Space) || SourisSurRect(_beginButton)) && _gameState == "GeneralMenu")
             {
-                _buttonSound.Play();
+                _screenGame.playingSound(_buttonSound);
                 LoadPseudoChoosingScreen();
             }
 
@@ -163,9 +173,11 @@ namespace MarsInvader
             // Afficher le menu de pause
             else if (keyboardState.IsKeyDown(Keys.Escape) && _gameState == "Game")
             {
-                _buttonSound.Play();
+                _screenGame.playingSound(_buttonSound);
                 LoadGameMenuScreen();
             }
+            
+
             base.Update(gameTime);
         }
 

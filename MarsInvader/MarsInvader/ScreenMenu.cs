@@ -57,14 +57,14 @@ public class ScreenMenu : GameScreen
 		{
 			_myGame.IsMouseVisible = false;
 
-			_buttonSound.Play();
+			_myGame._screenGame.playingSound(_buttonSound);
 			_myGame.LoadGameScreen();
 		}
 		else if (mouseClickOnMainMenu)
 		{
 			//gameReset();
 			_myGame._previousGameState = _myGame._gameState;
-			_buttonSound.Play();
+			_myGame._screenGame.playingSound(_buttonSound);
 			_myGame.LoadStartingScreen();
 
 		}

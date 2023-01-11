@@ -390,6 +390,18 @@
 /processorParam:TextureFormat=Color
 /build:MenuBackground.png
 
+#begin musicalNote.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:musicalNote.png
+
 #begin optionsGeneralMenu.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -450,6 +462,18 @@
 /processorParam:TextureFormat=Color
 /build:pseudoGenTitle.png
 
+#begin redCross.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:redCross.png
+
 #begin saveButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -502,4 +526,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:vieJoueur.png
+
+#begin volumeSymbol.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:volumeSymbol.png
 

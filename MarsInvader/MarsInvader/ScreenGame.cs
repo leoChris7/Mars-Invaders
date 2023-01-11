@@ -229,7 +229,7 @@ public class ScreenGame : GameScreen
 		_gameMusic = Content.Load<Song>("gameMusic");
 
 		if (!(MediaPlayer.State == MediaState.Playing) && _myGame._gameState == "Game")
-			MediaPlayer.Play(_gameMusic);
+			playingMusic();
 			
 
 		_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
@@ -334,11 +334,12 @@ public class ScreenGame : GameScreen
 					{
 						_myGame._gameState = "GameOver";
 						MediaPlayer.Stop();
-						_gameOverSoundEffect.Play();
+						playingSound(_gameOverSoundEffect);
 						_myGame.LoadGameOverScreen();
 					}
 				}
 			}
+
 
 		for (int i = 0; i < 5; i++)
 		{
@@ -431,14 +432,28 @@ public class ScreenGame : GameScreen
 		{
 			// Joueur, Cible, Vitesse
 			Bullets.Add(new Bullet(_joueur, GameTarget, 400));
-			_bulletSound.Play(0.3f, 0, 0);
+			playingSound(_bulletSound, 0.3f, 0, 0);
 			ChronoBullet = 0.1f;
 		}
 	}
 
+	public void playingSound(SoundEffect Sound)
+    {
+		if (_myGame.soundMuted == false)
+			Sound.Play();
+    }
+
+	public void playingSound(SoundEffect Sound, float volume, float pitch, float pan)
+	{
+		if (_myGame.soundMuted == false)
+			Sound.Play(volume, pitch, pan);
+	}
+
 	public void playingMusic()
 	/// Cette méthode permet de gérer la musique du jeu
-    {
+    {	
+		if (!_myGame.musicMuted)
+		{ 
 		if (!(MediaPlayer.State == MediaState.Playing) && _myGame._gameState == "Game")
 		{ 
 			MediaPlayer.Play(_gameMusic);
@@ -447,6 +462,7 @@ public class ScreenGame : GameScreen
 
 		if (_myGame._gameState == "Menu" || _myGame._gameState == "GeneralMenu")
 			MediaPlayer.Volume = 0.5f;
+		}
 	}
 
 

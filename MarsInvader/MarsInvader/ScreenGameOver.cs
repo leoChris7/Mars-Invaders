@@ -1,41 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
 using MarsInvader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Screens;
-using MonoGame.Extended.Screens.Transitions;
-using SAE101;
-using MonoGame.Extended.Sprites;
-using MonoGame.Extended.Serialization;
-using MonoGame.Extended.Content;
-using Microsoft.Xna.Framework.Audio;
 using System.IO;
+using Microsoft.Xna.Framework.Media;
 
 public class ScreenGameOver : GameScreen
 {
-	private Game1 _myGame;
-	private readonly ScreenManager _screenManager;
-
+	ScreenManager _screenManager;
 	MouseState _mouseState;
 
+	private Game1 _myGame;
 	private Texture2D _gameOverMainMenuTexture, _gameOverRestartTexture, _gameOverBackground, _saveButtonTexture;
 	private Rectangle _gameOverMainMenuButton, _gameOverRestartButton, _saveButton;
-	// pour récupérer une référence à l’objet game pour avoir accès à tout ce qui est
-	// défini dans Game1
 
 	public ScreenGameOver(Game1 game) : base(game)
 	{
 		_myGame = game;
-		_screenManager = new ScreenManager();
+		_screenManager = _myGame._screenManager;
+
 		this._gameOverMainMenuButton = new Rectangle((int)(float)Game1._WINDOWWIDTH / 2 - 64, 300, 128, 32);
 		this._gameOverRestartButton = new Rectangle((int)(float)Game1._WINDOWWIDTH / 2 - 64, 200, 128, 32);
-		this._saveButton = new Rectangle((int)(float)Game1._WINDOWWIDTH / 2 - 64, 500, 128, 32);
+		this._saveButton = new Rectangle((int)(float)Game1._WINDOWWIDTH / 2 - 64, 700, 128, 32);
 	}
 
 	public override void LoadContent()
 	{
+		MediaPlayer.Stop();
 		_gameOverBackground = Content.Load<Texture2D>("gameover");
 		_gameOverMainMenuTexture = Content.Load<Texture2D>("gameoverMenuPrincipal");
 		_gameOverRestartTexture = Content.Load<Texture2D>("gameoverRecommencer");
@@ -45,8 +38,6 @@ public class ScreenGameOver : GameScreen
 
 	public override void Update(GameTime gameTime)
 	{
-
-
 		_mouseState = Mouse.GetState();
 		bool mouseClickOnRestart = _gameOverRestartButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
 		bool mouseClickOnMainMenu = _gameOverMainMenuButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
@@ -64,14 +55,17 @@ public class ScreenGameOver : GameScreen
 		{
 			_myGame._gameState = "GeneralMenu";
 			_myGame.LoadStartingScreen();
-
 		}
 
 		else if (mouseClickOnSave)
-        {
+		{
 			// Add on leaderboard
-			File.AppendAllText("leaderboard.txt",
-				   "" + _myGame._screenGame._joueur.Pseudo + " \t Temps : " + _myGame._screenGame.ChronoGeneral + " \t Aliens tués : " + _myGame._screenGame.aliensTue + Environment.NewLine);
+			String[] Texte = new String[]{  };
+			Console.WriteLine(File.ReadAllText("leaderboard.txt"));
+			File.OpenHandle("leaderboard.txt");
+			File.AppendAllText("./leaderboard.txt", ""+_myGame._screenGame._joueur.Pseudo + " \t Temps : " + _myGame._screenGame.ChronoGeneral + " \t Aliens tués : " + _myGame._screenGame.aliensTue);
+			
+			Console.WriteLine("saved!!");
 		}
 	}
 

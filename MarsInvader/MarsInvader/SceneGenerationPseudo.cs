@@ -27,6 +27,7 @@ public class ScreenGenerationPseudo : GameScreen
 
 	private Texture2D _background, _generationButtonTexture, _continueButtonTexture, _backButtonTexture, _titleTexture;
 	private Rectangle _generationButton, _continueButton, _backButton;
+
 	// pour récupérer une référence à l’objet game pour avoir accès à tout ce qui est
 	// défini dans Game1
 
@@ -117,6 +118,7 @@ public class ScreenGenerationPseudo : GameScreen
 		_backButtonTexture = Content.Load<Texture2D>("pseudoGenbackButton");
 		_titleTexture = Content.Load<Texture2D>("pseudoGenTitle");
 		Police = Content.Load<SpriteFont>("fontPauseMenu");
+		
 
 		this._tiledMap = Content.Load<TiledMap>("map_V1");
 		this.spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
@@ -127,8 +129,6 @@ public class ScreenGenerationPseudo : GameScreen
 
 	public override void Update(GameTime gameTime)
 	{
-
-
 		_mouseState = Mouse.GetState();
 		bool mouseClickOnBack = _backButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
 		bool mouseClickOnGenerate = _generationButton.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
@@ -137,17 +137,20 @@ public class ScreenGenerationPseudo : GameScreen
 		if (mouseClickOnBack &&
 			_myGame._gameState == "Pseudo")
 		{
+			_myGame._screenGame.playingSound(_myGame._buttonSound);
 			_myGame.LoadStartingScreen();
 		}
 
 		else if (mouseClickOnContinue && _myGame._gameState == "Pseudo")
 		{
 			_myGame._screenGame._joueur = new Player(newPseudo, _tiledMap, MapLayer, spriteSheetAstro);
+			_myGame._screenGame.playingSound(_myGame._buttonSound);
 			_myGame.LoadGameScreen();
 		} 
 
 		else if (mouseClickOnGenerate)
         {
+			_myGame._screenGame.playingSound(_myGame._buttonSound);
 			this.newPseudo = playerNameGenerator();
 		}
 	}
