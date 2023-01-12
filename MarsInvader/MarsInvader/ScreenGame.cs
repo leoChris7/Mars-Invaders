@@ -249,8 +249,6 @@ public class ScreenGame : GameScreen
 			 List<Bullet> Bullets = new List<Bullet> ();
 		_loots = new List<Loot>();
 
-
-			_joueur = creationJoueur();
 			_loots.Add(new Loot(new Vector2(Game1._WINDOWSIZE/2, Game1._WINDOWSIZE/2), 0, heartDrop, bulletDrop, coinDrop));
 			for (int i = 0; i < 10; i++)
 			{
@@ -548,7 +546,6 @@ public class ScreenGame : GameScreen
 						if (DropChance(aliensTue))
 						{
 							_loots.Add(new Loot(_alien.PositionAlien, rnd.Next(0, 3), heartDrop, bulletDrop, coinDrop));
-                            Console.WriteLine("loot");
 						}
 					this.Aliens.Remove(_alien);
 					Exp += _alien.Niveau;
@@ -583,7 +580,6 @@ public class ScreenGame : GameScreen
 		bool drop = false;
 		if (aliensTue % PROBABILITY == 0)
 			drop = true;
-		Console.WriteLine(aliensTue % PROBABILITY);
 		return drop;
 	}
 

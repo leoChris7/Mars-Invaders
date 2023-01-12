@@ -2,18 +2,15 @@
 using Microsoft.Xna.Framework.Graphics;
 using SAE101;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MarsInvader
 {
     internal class Loot
     {
         private const int LOOTSIZE=16;
-        private Vector2 lootPos;
+
         private int lootType;
+        private Vector2 lootPos;
         private Texture2D lootTexture;
         private Rectangle lootHitBox;
 
@@ -82,6 +79,7 @@ namespace MarsInvader
 
         
         public bool Recupere(Player joueur,ref bool bulletLootDrop,ref int exp, ref float ChronoDrop)
+        /// Cette méthode permet de gérer les drops d'ennemis.
         {
             if (joueur.hitBox.Intersects(this.lootHitBox))
             {

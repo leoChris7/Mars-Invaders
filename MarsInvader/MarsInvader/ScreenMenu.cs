@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using MarsInvader;
+﻿using MarsInvader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Screens;
-using MonoGame.Extended.Screens.Transitions;
-using SAE101;
-using MonoGame.Extended.Sprites;
-using MonoGame.Extended.Serialization;
-using MonoGame.Extended.Content;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
 
 public class ScreenMenu : GameScreen
 {
@@ -62,11 +54,9 @@ public class ScreenMenu : GameScreen
 		}
 		else if (mouseClickOnMainMenu)
 		{
-			//gameReset();
 			_myGame._previousGameState = _myGame._gameState;
 			_myGame._screenGame.playingSound(_buttonSound);
 			_myGame.LoadStartingScreen();
-
 		}
 	}
 

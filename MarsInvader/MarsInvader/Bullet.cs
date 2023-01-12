@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SAE101;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MarsInvader
 {
@@ -95,11 +90,5 @@ namespace MarsInvader
                 this._playerPosition = value;
             }
         }
-
-        public void DirigerVers()
-        {
-            
-        }
-
     }
 }

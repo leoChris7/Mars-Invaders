@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Screens;
-using System.IO;
 using Microsoft.Xna.Framework.Media;
 
 public class ScreenGameOver : GameScreen
@@ -59,13 +58,7 @@ public class ScreenGameOver : GameScreen
 
 		else if (mouseClickOnSave)
 		{
-			// Add on leaderboard
-			String[] Texte = new String[]{  };
-			Console.WriteLine(File.ReadAllText("leaderboard.txt"));
-			File.OpenHandle("leaderboard.txt");
-			File.AppendAllText("./leaderboard.txt", ""+_myGame._screenGame._joueur.Pseudo + " \t Temps : " + _myGame._screenGame.ChronoGeneral + " \t Aliens tués : " + _myGame._screenGame.aliensTue);
-			
-			Console.WriteLine("saved!!");
+			// Ajouter le joueur dans les meilleurs
 		}
 	}
 
