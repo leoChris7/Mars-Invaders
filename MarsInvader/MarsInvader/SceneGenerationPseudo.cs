@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using MarsInvader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Screens;
-using MonoGame.Extended.Screens.Transitions;
 using SAE101;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Serialization;
 using MonoGame.Extended.Content;
-using Microsoft.Xna.Framework.Audio;
 using MonoGame.Extended.Tiled;
 
 public class ScreenGenerationPseudo : GameScreen
@@ -51,14 +48,9 @@ public class ScreenGenerationPseudo : GameScreen
 		"Daim ", "Dragon de Komodo ", "Elan ", "Ver ", "Faucon ", "Fourmis ", "Gendarme ",
 		"Tigre ", "Leopard ", "Guepard ", "Girafe ", "Guepe ", "Bourdon ", "Grenouille ",
 		"Hamster ", "Hermine ", "Iguane ", "Lezard "
-
 	};
 
-
-
-
 	private SpriteFont Police;
-
 	private String newPseudo;
 
     public string[] Name1
@@ -119,7 +111,6 @@ public class ScreenGenerationPseudo : GameScreen
 		_titleTexture = Content.Load<Texture2D>("pseudoGenTitle");
 		Police = Content.Load<SpriteFont>("fontPauseMenu");
 		
-
 		this._tiledMap = Content.Load<TiledMap>("map_V1");
 		this.spriteSheetAstro = Content.Load<SpriteSheet>("astroAnimation.sf", new JsonContentLoader());
 		this.MapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("obstacles");

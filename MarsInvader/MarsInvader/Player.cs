@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Sprites;
-using MonoGame.Extended.Content;
-using SAE101;
-using MonoGame.Extended.Serialization;
 using MonoGame.Extended.Tiled;
 using MarsInvader;
 
@@ -307,13 +299,13 @@ namespace SAE101
         }
 
         public void LevelUp(ref double fireSpeed)
+        /// Augmenter le niveau du joueur
         {
             if (this.Niveau > 0 && niveau <=10)
             {
                 fireSpeed -= 0.1;
                 this.Attack += 2;
                 this.Speed += 2;
-                Console.WriteLine(fireSpeed);
                 this.Health += 20;
                 if (this.Health > 100)
                     this.Health = 100;
@@ -322,10 +314,9 @@ namespace SAE101
             {
                 fireSpeed -= 0.01;
                 this.Health = 100;
-            }
-            
-            
+            }     
         }
+
         public void Deplacer(GameTime gameTime)
         /// Cette méthode gère les déplacements et l'animation du joueur
         /// Elle ne retourne rien mais modifie les champs de position du personnage

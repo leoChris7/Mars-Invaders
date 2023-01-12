@@ -1,17 +1,9 @@
-﻿using MarsInvader;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Content;
 using MonoGame.Extended.Screens;
 using MonoGame.Extended.Screens.Transitions;
-using MonoGame.Extended.Serialization;
-using MonoGame.Extended.Sprites;
-using MonoGame.Extended.Tiled;
-using MonoGame.Extended.Tiled.Renderers;
-using System;
-using System.Threading.Tasks;
 
 namespace MarsInvader
 {
@@ -32,11 +24,13 @@ namespace MarsInvader
         // Les scènes
         public ScreenManager _screenManager;
 
-        public ScreenGame _screenGame;
         private ScreenStarting _screenStarting;
         private ScreenGameOver _screenGameOver;
         private ScreenMenu _screenMenu;
+        public ScreenGame _screenGame;
         public ScreenGenerationPseudo _screenGenerationPseudo;
+
+        KeyboardState keyboardState;
 
         public Rectangle _beginButton = new Rectangle(450, 200, _BUTTONWIDTH, _BUTTONHEIGHT);
         public Rectangle _leaveButton = new Rectangle(450, 500, _BUTTONWIDTH, _BUTTONHEIGHT);
@@ -47,7 +41,6 @@ namespace MarsInvader
 
         public Texture2D _volumeTexture, _musicalNoteTexture, _redCrossTexture;
         public SoundEffect _buttonSound, _newGameSE;
-        KeyboardState keyboardState;
 
         public const int _WINDOWSIZE = 800;
         public const int _WINDOWWIDTH = 1000;
@@ -56,7 +49,6 @@ namespace MarsInvader
         public const int _BUTTONWIDTH = 128;
         public const int _BUTTONHEIGHT = 64;
         
-
         public bool musicMuted = false;
         public bool soundMuted = false;
 
@@ -104,12 +96,51 @@ namespace MarsInvader
             _buttonSound = Content.Load<SoundEffect>("buttonSound");
             base.LoadContent();
         }
+        protected override void Update(GameTime gameTime)
+        {
+            keyboardState = Keyboard.GetState();
+            // Quitter le jeu
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                (SourisSurRect(_leaveButton) && _gameState == "GeneralMenu"))
+            {
+                _screenGame.playingSound(_buttonSound);
+                Exit();
+            }
+
+            // Afficher le jeu
+            if ((keyboardState.IsKeyDown(Keys.Space) || SourisSurRect(_beginButton)) && _gameState == "GeneralMenu")
+            {
+                _screenGame.playingSound(_buttonSound);
+                LoadPseudoChoosingScreen();
+            }
+
+
+            // Afficher le menu de pause
+            else if (keyboardState.IsKeyDown(Keys.Escape) && _gameState == "Game")
+            {
+                _screenGame.playingSound(_buttonSound);
+                LoadGameMenuScreen();
+            }
+
+
+            base.Update(gameTime);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            // On ne dessine rien dans Game1.
+            base.Draw(gameTime);
+        }
+
         public void LoadStartingScreen()
+        // Cette méthode gère l'affichage de la scène du menu général
         {
             _previousGameState = _gameState;
             _gameState = "GeneralMenu";
             _screenManager.LoadScreen(_screenStarting, new FadeTransition(GraphicsDevice, Color.Black));
         }
+
         public void LoadGameScreen()
         // Cette méthode gère l'affichage de la scène 1 du jeu, c'est-à-dire la map avec le joueur
         {
@@ -122,6 +153,7 @@ namespace MarsInvader
         }
 
         public void LoadPseudoChoosingScreen()
+        // Cette méthode gère l'affichage de la scène de choix du nom
         {
             _previousGameState = _gameState;
             _gameState = "Pseudo";
@@ -144,47 +176,11 @@ namespace MarsInvader
             _gameState = "GameOver";
             _screenManager.LoadScreen(_screenGameOver, new FadeTransition(GraphicsDevice, Color.Black));
         }
+
         public static bool SourisSurRect(Rectangle rect)
         {
             MouseState _mouseState = Mouse.GetState();
             return rect.Contains(_mouseState.Position) && _mouseState.LeftButton == ButtonState.Pressed;
-        }
-
-        protected override void Update(GameTime gameTime)
-        {
-            keyboardState = Keyboard.GetState();
-            // Quitter le jeu
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
-                (SourisSurRect(_leaveButton) && _gameState == "GeneralMenu"))
-            {
-                _screenGame.playingSound(_buttonSound);
-                Exit();
-            }
-
-            // Afficher le jeu
-            if ((keyboardState.IsKeyDown(Keys.Space) || SourisSurRect(_beginButton)) && _gameState == "GeneralMenu")
-            {
-                _screenGame.playingSound(_buttonSound);
-                LoadPseudoChoosingScreen();
-            }
-
-
-            // Afficher le menu de pause
-            else if (keyboardState.IsKeyDown(Keys.Escape) && _gameState == "Game")
-            {
-                _screenGame.playingSound(_buttonSound);
-                LoadGameMenuScreen();
-            }
-            
-
-            base.Update(gameTime);
-        }
-
-        protected override void Draw(GameTime gameTime)
-        {
-            // On ne dessine rien dans Game1.
-            base.Draw(gameTime);
         }
     }
 }

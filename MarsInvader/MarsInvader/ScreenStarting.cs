@@ -1,22 +1,17 @@
-﻿using System;
-using MarsInvader;
+﻿using MarsInvader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Screens;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Sprites;
-using MonoGame.Extended.Tiled;
-using MonoGame.Extended.Tiled.Renderers;
 using MonoGame.Extended.Serialization;
-using SAE101;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Media;
 
 public class ScreenStarting : GameScreen
 {
 	private Game1 _myGame;
-	private Texture2D _mainBackground, _begin, _options, _leaderboard, _leave;
+	private Texture2D _mainBackground, _begin, _options, _leaderboard, _leave, _controles;
 
 	public Rectangle _beginButton = new Rectangle(450, 200, _BUTTONWIDTH, _BUTTONHEIGHT);
 	public Rectangle _leaderboardButton = new Rectangle(450, 300, _BUTTONWIDTH, _BUTTONHEIGHT);
@@ -50,6 +45,7 @@ public class ScreenStarting : GameScreen
 		_begin = Content.Load<Texture2D>("beginGeneralMenu");
 		_leaderboard = Content.Load<Texture2D>("leaderboardGeneralMenu");
 		_leave = Content.Load<Texture2D>("leaveGeneralMenu");
+		_controles = Content.Load<Texture2D>("Controles");
 
 		base.LoadContent();
 	}
@@ -108,6 +104,7 @@ public class ScreenStarting : GameScreen
 		_myGame.SpriteBatch.Draw(_leaderboard, new Vector2(450, 300), Color.White);
 		_myGame.SpriteBatch.Draw(_options, new Vector2(450, 400), Color.White);
 		_myGame.SpriteBatch.Draw(_leave, new Vector2(450, 500), Color.White);
+		_myGame.SpriteBatch.Draw(_controles, new Vector2(780, 20), Color.White);
 
 		_myGame.SpriteBatch.Draw(_myGame._volumeTexture, new Vector2(_myGame._mutedSounds.X, _myGame._mutedSounds.Y), Color.White);
 		_myGame.SpriteBatch.Draw(_myGame._musicalNoteTexture, new Vector2(_myGame._mutedMusic.X, _myGame._mutedMusic.Y), Color.White);
